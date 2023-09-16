@@ -1,5 +1,7 @@
 # `<Close to Home>`
 
+## Description
+
 ## Database Schema Design
 
 ![A screenshot from dbdigagram.io of the expected database design for this project.](dbdiagram-visual.png)

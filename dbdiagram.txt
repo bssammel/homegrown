@@ -21,7 +21,7 @@ Table spots{
   price INTEGER
   createdAt DATETIME
   updatedAt DATETIME
-  avgRating DECIMAL
+  //avgRating DECIMAL//update to aggregate, not a column on the table, fewer routes
   previewImage VARCHAR
 } 
 Ref: users.(id) - spots.(ownerId)
@@ -34,7 +34,7 @@ Table reviews{
   stars DECIMAL
   createdAt DATETIME
   updatedAt DATETIME
-  User [ref: > users]
+  //User [ref: > users]
   //Spot
   //ReviewImages
 } 
@@ -43,8 +43,10 @@ Ref: spots.(id) - reviews.(spotId)
 
 Table reviewImages{
   id INTEGER PK
+  reviewId INTEGER
   url VARCHAR
 } 
+Ref: reviews.(id) - reviewImages.(reviewId)
 
 Table bookings{
   id INTEGER PK
