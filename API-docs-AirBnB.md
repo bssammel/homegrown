@@ -1,4 +1,4 @@
-# `<Spot-Clean>`
+# `<Close to Home>`
 
 ## Database Schema Design
 
