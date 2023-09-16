@@ -4,7 +4,7 @@
 
 ## Database Schema Design
 
-![A screenshot from dbdigagram.io of the expected database design for this project.](dbdiagram-visual.png)
+![A screenshot from dbdigagram.io of the expected database design for this project.](images/dbdiagram-visual.png)
 
 ## API Documentation
 
