@@ -1,0 +1,60 @@
+Table users{
+  id INTEGER PK
+  firstName VARCHAR
+  lastName VARCHAR
+  email VARCHAR
+  username VARCHAR
+  password VARCHAR
+} 
+
+Table spots{
+  id INTEGER PK
+  ownerId INTEGER 
+  address VARCHAR
+  city VARCHAR
+  state VARCHAR
+  country VARCHAR
+  lat DECIMAL
+  lng DECIMAL
+  name VARCHAR
+  description VARCHAR
+  price INTEGER
+  createdAt DATETIME
+  updatedAt DATETIME
+  avgRating DECIMAL
+  previewImage VARCHAR
+} 
+Ref: users.(id) - spots.(ownerId)
+
+Table reviews{
+  id INTEGER PK
+  userId INTEGER 
+  spotId INTEGER 
+  review VARCHAR
+  stars DECIMAL
+  createdAt DATETIME
+  updatedAt DATETIME
+  User [ref: > users]
+  //Spot
+  //ReviewImages
+} 
+Ref: users.(id) - reviews.(userId)
+Ref: spots.(id) - reviews.(spotId)
+
+Table reviewImages{
+  id INTEGER PK
+  url VARCHAR
+} 
+
+Table bookings{
+  id INTEGER PK
+  userId INTEGER 
+  spotId INTEGER  
+  startDate DATE
+  endDate DATE
+  createdAt DATETIME
+  updatedAt DATETIME
+} 
+
+Ref: users.(id) - bookings.(userId)
+Ref: spots.(id) - bookings.(spotId)
