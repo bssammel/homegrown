@@ -4,7 +4,9 @@ Table users{
   lastName VARCHAR
   email VARCHAR
   username VARCHAR
-  password VARCHAR
+  hashedPassword VARCHAR
+  createdAt TIMESTAMP
+  updatedAt TIMESTAMP
 } 
 
 Table spots{
@@ -19,12 +21,22 @@ Table spots{
   name VARCHAR
   description VARCHAR
   price INTEGER
-  createdAt DATETIME
-  updatedAt DATETIME
+  createdAt TIMESTAMP
+  updatedAt TIMESTAMP
   //avgRating DECIMAL//update to aggregate, not a column on the table, fewer routes
-  previewImage VARCHAR
+  //previewImage VARCHAR
 } 
-Ref: users.(id) - spots.(ownerId)
+Ref: users.(id) < spots.(ownerId)
+Table spotImages{
+  id INTEGER PK
+  spotId INTEGER
+  url VARCHAR
+  previewBool BOOLEAN
+  createdAt TIMESTAMP
+  updatedAt TIMESTAMP
+} 
+Ref: spots.(id) < spotImages.(spotId)
+
 
 Table reviews{
   id INTEGER PK
@@ -32,21 +44,23 @@ Table reviews{
   spotId INTEGER 
   review VARCHAR
   stars DECIMAL
-  createdAt DATETIME
-  updatedAt DATETIME
+  createdAt TIMESTAMP
+  updatedAt TIMESTAMP
   //User [ref: > users]
   //Spot
   //ReviewImages
 } 
-Ref: users.(id) - reviews.(userId)
-Ref: spots.(id) - reviews.(spotId)
+Ref: users.(id) < reviews.(userId)
+Ref: spots.(id) < reviews.(spotId)
 
 Table reviewImages{
   id INTEGER PK
   reviewId INTEGER
   url VARCHAR
+  createdAt TIMESTAMP
+  updatedAt TIMESTAMP
 } 
-Ref: reviews.(id) - reviewImages.(reviewId)
+Ref: reviews.(id) < reviewImages.(reviewId)
 
 Table bookings{
   id INTEGER PK
@@ -54,9 +68,9 @@ Table bookings{
   spotId INTEGER  
   startDate DATE
   endDate DATE
-  createdAt DATETIME
-  updatedAt DATETIME
+  createdAt TIMESTAMP
+  updatedAt TIMESTAMP
 } 
 
-Ref: users.(id) - bookings.(userId)
-Ref: spots.(id) - bookings.(spotId)
+Ref: users.(id) < bookings.(userId)
+Ref: spots.(id) < bookings.(spotId)
