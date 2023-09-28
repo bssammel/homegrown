@@ -13,26 +13,36 @@ module.exports = {
   async up (queryInterface, Sequelize) {
    await User.bulkCreate([
     {
+      firstName: 'Tester',
+      lastName: 'McTesterson',
       email: 'test@simon.site',
       username: 'TesterMcTesterson',
       hashedPassword: bcrypt.hashSync('superSecurePass')
     },
     {
+      firstName: 'Simon',
+      lastName: 'Snow',
       email: 'simonsnow@watford.edu',
       username: 'SimonSnow',
       hashedPassword: bcrypt.hashSync('TheChosen1')
     },
     {
+      firstName: 'Tyrannus',//note to self, should I edit the constraints to allow hyphens and spaces? maybe ask in office hours
+      lastName: 'Pitch',
       email: 'tyrannusbasiltongrimmpitch@watford.edu',
       username: 'BazGrimmPitch',
       hashedPassword: bcrypt.hashSync('actuallyAVampire')
     },
     {
+      firstName: 'Penelope',
+      lastName: 'Bunce',
       email: 'penelopebunce@watford.edu',
       username: 'PenelopeBunce',
       hashedPassword: bcrypt.hashSync('micahBunce')
     },
     {
+      firstName: 'Agatha',
+      lastName: 'Wellbelove',
       email: 'agathawellbelove@watford.edu',
       username: 'AgathaWellbelove',
       hashedPassword: bcrypt.hashSync('iLoveLucy')

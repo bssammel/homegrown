@@ -11,6 +11,32 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init(
     {
+      firstName: {
+        type: DataTypes.STRING,
+        // allowNull: false,
+        validate: {
+          len: [1, 255],
+          isAlpha: true
+          // isAlpha(value) {
+          //   if (!Validator.isAlpha(value)) {
+          //     throw new Error("First name must only contain letters.");
+          //   }
+          // }
+        }
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        // allowNull: false,
+        validate: {
+          len: [1, 255],
+          isAlpha: true
+          // isAlpha(value) {
+          //   if (!Validator.isAlpha(value)) {
+          //     throw new Error("Last name must only contain letters.");
+          //   }
+          // }
+        }
+      },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
