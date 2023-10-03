@@ -3,30 +3,38 @@ const {
   Model, Validator
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class SpotImage extends Model {
-  
+  class Review extends Model {
+    
     static associate(models) {
       // define association here
-      SpotImage.belongsTo(
+      Review.belongsTo(
         models.Spot,
         {
           foreignKey: 'spotId',
           onDelete:'CASCADE'
         }
       )
+      Review.belongsTo(
+        models.User,
+        {
+          foreignKey: 'userId',
+          onDelete:'CASCADE'
+        }
+      )
     }
   }
-  SpotImage.init({
+  Review.init({
     spotId:{type: DataTypes.INTEGER, allowNull:false},
-    url: {type: DataTypes.STRING, allowNull:false},
-    preview: {type: DataTypes.BOOLEAN, allowNull: false}
+    userId:{type: DataTypes.INTEGER, allowNull:false},
+    review: {type: DataTypes.STRING, allowNull:false},
+    stars: {type: DataTypes.DECIMAL, allowNull: false}
   }, {
     sequelize,
-    modelName: 'SpotImage',
+    modelName: 'Review',
     defaultScope: {
       attributes: {
         exclude: ["createdAt", "updatedAt"]}
       }
   });
-  return SpotImage;
+  return Review;
 };
