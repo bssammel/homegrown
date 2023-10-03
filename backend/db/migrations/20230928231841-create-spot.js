@@ -21,7 +21,7 @@ module.exports = {
           model:"Users",//refers to table not model, done with addtl migration in prod
           key: "id",//users.id
         },
-        onDelete: 'cascade'
+        onDelete: "CASCADE"
       },
       address: {
         type: Sequelize.STRING,
@@ -72,7 +72,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName= "Spots"
+    options.tableName = "Spots";
     await queryInterface.dropTable(options);
   }
 };
