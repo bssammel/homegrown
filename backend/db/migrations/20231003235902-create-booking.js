@@ -1,5 +1,6 @@
 'use strict';
 
+
 /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
@@ -9,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Reviews', {
+    await queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -32,11 +33,15 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      review: {
-        type: Sequelize.STRING,
+      startDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        // unique: true
       },
-      stars: {
-        type: Sequelize.DECIMAL
+      endDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        // unique: true
       },
       createdAt: {
         allowNull: false,
@@ -48,10 +53,10 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue:Sequelize.literal("CURRENT_TIMESTAMP")
       }
-    }, options);
+    });
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
+    options.tableName = "Bookings";
     await queryInterface.dropTable(options);
   }
 };
