@@ -11,22 +11,22 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
   await SpotImage.bulkCreate([ {
-    spotId:4,
+    spotId:1,
     url:'imageUrlForOakGroveTinyHome',
     preview:true
    },
    {
-    spotId:5,
+    spotId:2,
     url:'imageUrlForLakesideCommunityGarden',
     preview:true
    },
    {
-    spotId:6,
+    spotId:3,
     url:'imageUrlForSlopingBackyard1',
     preview:true
    },
    {
-    spotId:6,
+    spotId:3,
     url:'imageUrlForSlopingBackyard2',
     preview:false
    },
