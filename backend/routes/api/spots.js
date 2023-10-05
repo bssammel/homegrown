@@ -16,7 +16,15 @@ router.get('/current', requireAuth, async (req,res) =>{
     return res.json({currentUserSpots});
 })
 
-
+router.get('/:spotId', async (req,res,next) =>{
+    const desiredSpot = await Spot.findByPk(req.params.spotId);
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    }
+    return res.json(desiredSpot);
+})
 
 router.get('/', async (req, res) =>{
     //where = {};
@@ -24,6 +32,7 @@ router.get('/', async (req, res) =>{
     return res.json({// TODO: Need to add aggregates for avg rating and preview image url
         spots,
     });
+
 });
 
 
