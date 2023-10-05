@@ -1,3 +1,4 @@
+//where server is spawned, center of application
 const express = require('express');
 require('express-async-errors');
 const morgan = require('morgan');
@@ -7,13 +8,11 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 
-const { environment } = require('./config');
+const { environment } = require('./config');//
 const isProduction = environment === 'production';
 const { ValidationError } = require('sequelize');
 
 const app = express();
-// backend/app.js
-const routes = require('./routes');
 
 
 app.use(morgan('dev'));
@@ -45,7 +44,7 @@ if (!isProduction) {
   );
 
   
-
+const routes = require('./routes');
 app.use(routes); // Connect all the routes
 
 // Catch unhandled requests and forward to error handler.
