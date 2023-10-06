@@ -9,6 +9,9 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+//!Add an image to a Review based on the rE
+
+
 //! Get Reviews written by current user
 // TODO: need to make foreign key set up for preview image to pull in data from there and add the column to spot.previewImage
 router.get('/current', requireAuth, async (req,res) =>{

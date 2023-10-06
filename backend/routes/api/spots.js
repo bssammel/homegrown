@@ -13,40 +13,61 @@ const router = express.Router();
 const validateSpotCreation = [
     check('address')
         .exists({ checkFalsy : true})
+        // .isEmpty({ checkFalsy : true})
         .withMessage('Street address is required'),
     check('city')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .withMessage('City is required'),
     check('state')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .withMessage('State is required'),
     check('country')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .withMessage('Country is required'),
     check('lat')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .isDecimal()
         .isFloat({min: -90, max: 90})
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .isDecimal()
         .isFloat({min: -180, max: 180})
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .isLength({min: 1, max: 49})
         .withMessage('Name must be less than 50 characters'),
     check('description')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .withMessage('Description is required'),
     check('price')
         .exists({ checkFalsy : true})
+        // .isEmpty()
         .isNumeric()
-        .withMessage('Price per day is requited'),
+        .withMessage('Price per day is required'),
     handleValidationErrors
 ];
 
+const validateReviewCreation = [
+    check('review')
+    .exists({checkFalsy : true})
+    // .isEmpty()
+    .withMessage('Review text is required'),
+check('stars')
+    .exists({checkFalsy : true})
+    // .isEmpty()
+    .isInt({min:1, max: 5})
+    .withMessage('Stars must be an integer from 1 to 5'),
+handleValidationErrors
+]
 
 
 // const router = require('express').Router();
@@ -104,8 +125,8 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
         preview: newSpotImage.preview});
 })
 
-//! Get Reviews  for spot by spotId
-// TODO: 
+//! Get Reviews for spot by spotId
+// TODO: Nothing, completed 
 router.get('/:spotId/reviews', async (req,res,next) =>{
     const {spotId} = req.params.spotId;
     const where = {};
@@ -131,6 +152,43 @@ router.get('/:spotId/reviews', async (req,res,next) =>{
     });
 
     return res.json({desiredSpotReviews});
+})
+
+//! Create Review for Spot by spotId
+// TODO: 
+router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,res,next) =>{
+
+
+    console.log(req.params.id);
+    console.log('###############')
+    console.log(req.params.spotId)
+    const {user} = req;
+    const userId = user.id;
+
+    const {review, stars} = req.body;
+
+    const desiredSpot = await Spot.findByPk(req.params.spotId);
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
+
+    const reviewsForSpotWithUser = await Review.findAll({
+        where: {userId : userId, spotId: req.params.spotId}
+    })
+
+    if(reviewsForSpotWithUser.length >= 1){
+        const err = new Error('User already has a review for this spot')
+        err.status = 500;
+        return next(err);
+    }
+
+    const newReview = await Review.create({
+        spotId: Number(req.params.spotId), userId:userId, review:review, stars: stars
+    });
+
+    return res.json({id:newReview.id, userId: newReview.userId, spotId: newReview.spotId, review: newReview.review, stars:  newReview.stars,  createdAt: newReview.createdAt, updatedAt:newReview.updatedAt});
 })
 
 //! Edit a Spot 
@@ -248,8 +306,6 @@ router.get('/', async (req, res) =>{
     });
 
 });
-
-
 
 
 //! add spot 
