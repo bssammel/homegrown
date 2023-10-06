@@ -113,10 +113,10 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
     //isolate info for new spot data to update with
     const spotId = req.params.spotId;//spot id to identify which spot to update
     // console.log(`#####spotId:  ${spotId}`);
-    // * setting up new spot image
-    const spotToUpdate = await Spot.findByPk(req.params.spotId);//find spot that needs the new image
+    // * finding spot to update in db
+    const spotToUpdate = await Spot.findByPk(req.params.spotId);
 
-    if(!spotToUpdate){//if we can't find the spot that needs the new image, then return err
+    if(!spotToUpdate){//if we can't find the spot that needs the update, then return err
         const err = new Error('Spot couldn\'t be found');
         err.status = 404;
         return next(err);
@@ -149,21 +149,6 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
         price: price
     })
 
-    // const updatedSpot = {
-    //     id: spotToUpdate.id,
-    //     ownerId: ownerId, 
-    //     address: spotToUpdate.address, 
-    //     city: spotToUpdate.city, 
-    //     state: spotToUpdate.state, 
-    //     country: spotToUpdate.country, 
-    //     lat: spotToUpdate.lat, 
-    //     lng: spotToUpdate.lng, 
-    //     name: spotToUpdate.name, 
-    //     description: spotToUpdate.description, 
-    //     price: spotToUpdate.price,
-    //     createdAt:spotToUpdate.createdAt,
-    //     updatedAt: spotToUpdate.updatedAt
-    // };
    
     return res.json({
         id: spotToUpdate.id,
@@ -182,6 +167,38 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
     });
 })
 
+//! Delete a Spot 
+// TODO : Nothing, completed
+router.delete('/:spotId', requireAuth, async (req,res,next) =>{
+    const spotId = req.params.spotId;//spot id to identify which spot to delete/destroy
+    // * finding spot to delete
+    const spotToDelete = await Spot.findByPk(req.params.spotId);
+
+    if(!spotToDelete){//if we can't find the spot to delete, then return err
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    }
+
+    // * Proper Auth! confirm if current user is owner of spot/Proper Auth!
+    const {user} = req;//
+    const userId = user.id;
+    const ownerId = spotToDelete.ownerId;
+    if(userId !== ownerId){
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        err.errors = { message: 'Forbidden' };
+        err.status = 403;
+        return next(err);
+    }
+
+    //* delete spot
+    await spotToDelete.destroy();
+   
+    return res.json({
+        message: "Successfully deleted"
+    });
+})
 
 //!Get Spot based on spotId
 router.get('/:spotId', async (req,res,next) =>{
