@@ -13,7 +13,7 @@ const router = express.Router();
 // TODO: need to make foreign key set up for preview image to pull in data from there and add the column to spot.previewImage
 router.get('/current', requireAuth, async (req,res) =>{
     const {user} = req;
-    console.log("User Id?: ",user.id);
+    // console.log("User Id?: ",user.id);
     const userId = user.id;
     const where = {};
     where.userId = userId;

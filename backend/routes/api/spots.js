@@ -1,5 +1,5 @@
 //first line
-const { User, Spot, SpotImage } = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
@@ -69,7 +69,7 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
     // * isolate needed info
     const {url, preview} = req.body;//isolate info for new spot image to be created
     const spotId = req.params.spotId;//spot id to pass in with image details
-    console.log(`#####spotId:  ${spotId}`);
+    // console.log(`#####spotId:  ${spotId}`);
     // * setting up new spot image
     const spotWithNewImage = await Spot.findByPk(req.params.spotId);//find spot that needs the new image
 
@@ -104,6 +104,34 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
         preview: newSpotImage.preview});
 })
 
+//! Get Reviews  for spot by spotId
+// TODO: 
+router.get('/:spotId/reviews', async (req,res,next) =>{
+    const {spotId} = req.params.spotId;
+    const where = {};
+    where.spotId = req.params.spotId;
+    const desiredSpot = await Spot.findByPk(req.params.spotId);
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
+    const desiredSpotReviews = await Review.findAll({
+        where,
+        include: [
+            {
+                model: User,
+                attributes: ['id','firstName','lastName']
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id','url']
+            },
+        ],
+    });
+
+    return res.json({desiredSpotReviews});
+})
 
 //! Edit a Spot 
 // TODO : Nothing, completed
