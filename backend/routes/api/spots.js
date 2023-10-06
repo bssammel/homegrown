@@ -1,5 +1,5 @@
 //first line
-const { User, Spot } = require('../../db/models');
+const { User, Spot, SpotImage } = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
@@ -24,6 +24,48 @@ router.get('/current', requireAuth, async (req,res) =>{
     return res.json({currentUserSpots});
 })
 
+//! Add an Image to a Spot based on the Spot's Id 
+// TODO : Nothing, fully passing
+router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
+    // * isolate needed info
+    const {url, preview} = req.body;//isolate info for new spot image to be created
+    const spotId = req.params.spotId;//spot id to pass in with image details
+    console.log(`#####spotId:  ${spotId}`);
+    // * setting up new spot image
+    const spotWithNewImage = await Spot.findByPk(req.params.spotId);//find spot that needs the new image
+
+    if(!spotWithNewImage){//if we can't find the spot that needs the new image, then return err
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    }
+
+    // * confirm if current user is owner of spot
+    const {user} = req;//
+    const userId = user.id;
+    const ownerId = spotWithNewImage.ownerId;
+    if(userId !== ownerId){
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        err.errors = { message: 'Forbidden' };
+        err.status = 403;
+        return next(err);
+    }
+
+    const newSpotImage = await SpotImage.create({  spotId, url, preview  });
+
+    // const spotImageReturn = {
+    //     id: newSpotImage.id,
+    //     url: newSpotImage.url,
+    //     preview: newSpotImage.preview
+    // }
+   
+    return res.json({id: newSpotImage.id,
+        url: newSpotImage.url,
+        preview: newSpotImage.preview});
+})
+
+//!Get Spot based on spotId
 router.get('/:spotId', async (req,res,next) =>{
     const desiredSpot = await Spot.findByPk(req.params.spotId);
     if(!desiredSpot){
@@ -81,7 +123,7 @@ const validateSpotCreation = [
 router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{ // TODO: not sure the require auth is functioning as expected here
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const {user} = req;
-    console.log("User Id?!!!!!!!!!: ",user.id);
+    // console.log("User Id?!!!!!!!!!: ",user.id);
     const ownerId = user.id;
     const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
@@ -104,6 +146,8 @@ router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{ //
         spot: newSpot
     });
  });
+
+
 
 
 //last line
