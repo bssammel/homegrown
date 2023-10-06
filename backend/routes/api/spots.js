@@ -78,7 +78,7 @@ const validateSpotCreation = [
     handleValidationErrors
 ];
 
-router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{
+router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{ // TODO: not sure the require auth is functioning as expected here
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const {user} = req;
     console.log("User Id?!!!!!!!!!: ",user.id);
