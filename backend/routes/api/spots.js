@@ -158,10 +158,6 @@ router.get('/:spotId/reviews', async (req,res,next) =>{
 // TODO: 
 router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,res,next) =>{
 
-
-    console.log(req.params.id);
-    console.log('###############')
-    console.log(req.params.spotId)
     const {user} = req;
     const userId = user.id;
 
@@ -188,7 +184,7 @@ router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,r
         spotId: Number(req.params.spotId), userId:userId, review:review, stars: stars
     });
 
-    return res.json({id:newReview.id, userId: newReview.userId, spotId: newReview.spotId, review: newReview.review, stars:  newReview.stars,  createdAt: newReview.createdAt, updatedAt:newReview.updatedAt});
+    return res.status(201).json({id:newReview.id, userId: newReview.userId, spotId: newReview.spotId, review: newReview.review, stars:  newReview.stars,  createdAt: newReview.createdAt, updatedAt:newReview.updatedAt});
 })
 
 //! Edit a Spot 
@@ -234,7 +230,6 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
         description: description, 
         price: price
     })
-
    
     return res.json({
         id: spotToUpdate.id,
@@ -251,6 +246,7 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
             createdAt:spotToUpdate.createdAt,
             updatedAt: spotToUpdate.updatedAt
     });
+    
 })
 
 //! Delete a Spot 
@@ -331,7 +327,7 @@ router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{ //
         createdAt:spot.createdAt,
         updatedAt: spot.updatedAt
     };
-    return res.json({
+    return res.status(201).json({
         spot: newSpot
     });
  });
