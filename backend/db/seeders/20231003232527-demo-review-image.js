@@ -17,11 +17,11 @@ module.exports = {
       },
       {
         reviewId:2,
-        url:"imageUrlForReviewForRaisedBed"
+        url:"imageUrlForReviewForLakeside"
       },
       {
         reviewId:3,
-        url:"imageUrlForReviewForLakeside"
+        url:"imageUrlForReviewForRaisedBed"
       },
     ], {validate: true});
   },

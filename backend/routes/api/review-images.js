@@ -1,5 +1,5 @@
 //first line
-const { Spot, SpotImage} = require('../../db/models');
+const { Review, ReviewImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
@@ -7,12 +7,12 @@ const express = require('express');
 const router = express.Router();
 
 
-//!Delete a Spot Image based on Image Id
+//!Delete a Review Image based on Image Id
 router.delete('/:imageId', requireAuth, async (req,res,next) => {
-    //* SpotImage obj
-    const spotImageToDelete = await SpotImage.findByPk(req.params.imageId);
-    if(!spotImageToDelete){
-        const err = new Error('Spot Image couldn\'t be found');
+    //* ReviewImage obj
+    const reviewImageToDelete = await ReviewImage.findByPk(req.params.imageId);
+    if(!reviewImageToDelete){
+        const err = new Error('Review Image couldn\'t be found');
         err.status = 404;
         return next(err);
     };
@@ -21,13 +21,13 @@ router.delete('/:imageId', requireAuth, async (req,res,next) => {
     const {user} = req;
     const userId = user.id;
 
-    //* isolate ownerId from spot
-    const spotId = spotImageToDelete.spotId;
-    const spotWithImage = await Spot.findByPk(spotId);
-    const ownerId = spotWithImage.ownerId;
+    //* isolate ownerId from review
+    const reviewId = reviewImageToDelete.reviewId;
+    const reviewWithImage = await Review.findByPk(reviewId);
+    const authorId = reviewWithImage.userId;
     
     // * Authorize User
-    if (userId !== ownerId){
+    if (userId !== authorId){
         const err = new Error('Forbidden');
         err.title = 'Forbidden';
         err.errors = { message: 'Forbidden' };
@@ -35,7 +35,7 @@ router.delete('/:imageId', requireAuth, async (req,res,next) => {
         return next(err);
     }
 
-    await spotImageToDelete.destroy();
+    await reviewImageToDelete.destroy();
     return res.json({
         message: "Successfully deleted"
     });
