@@ -1,5 +1,5 @@
 //first line
-const { User, Spot, SpotImage, Review, ReviewImage} = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage, Booking} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
@@ -113,18 +113,14 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
     }
 
     const newSpotImage = await SpotImage.create({  spotId, url, preview  });
-
-    // const spotImageReturn = {
-    //     id: newSpotImage.id,
-    //     url: newSpotImage.url,
-    //     preview: newSpotImage.preview
-    // }
    
     return res.json({id: newSpotImage.id,
         url: newSpotImage.url,
         preview: newSpotImage.preview});
 })
 
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!! Reviews CRUD by Spot Id 
 //! Get Reviews for spot by spotId
 // TODO: Nothing, completed 
 router.get('/:spotId/reviews', async (req,res,next) =>{
@@ -187,14 +183,62 @@ router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,r
     return res.status(201).json({id:newReview.id, userId: newReview.userId, spotId: newReview.spotId, review: newReview.review, stars:  newReview.stars,  createdAt: newReview.createdAt, updatedAt:newReview.updatedAt});
 })
 
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Bookings CRUD based on spotId
+//!Get Bookings based on spotId
+// TODO:
+router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
+    const where = {};
+    where.spotId = req.params.spotId;
+    const desiredSpot = await Spot.findByPk(req.params.spotId);
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
+
+
+    const {user} = req;
+    const currentUserId = user.id;
+    const spotOwnerId = desiredSpot.ownerId;
+    console.log(`spotOwnerId: ${spotOwnerId}, currentUserId : ${currentUserId}`);
+    if(currentUserId !== spotOwnerId){
+        console.log("I am the guest!!!")
+        const desiredSpotBookings = await Booking.findAll({
+            where,
+            attributes: [
+                "spotId",
+                "startDate",
+                "endDate"
+            ],
+        });
+    
+        return res.json({desiredSpotBookings});
+    } else if (currentUserId === spotOwnerId){
+        console.log("I am the owner!!!")
+        const Bookings = await Booking.findAll({
+            where,
+            include: [
+                {
+                    model: User,
+                    attributes: ['id','firstName','lastName']
+                },
+            ],
+        });
+    
+        return res.json({Bookings});
+    }
+})
+
+//!!!!!!!!!!!!!!!!!!!!!!!! routes by spotId
+
 //! Edit a Spot 
 // TODO : Nothing, completed
 router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =>{
     // * isolate needed info
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     //isolate info for new spot data to update with
-    const spotId = req.params.spotId;//spot id to identify which spot to update
-    // console.log(`#####spotId:  ${spotId}`);
+    const spotId = req.params.spotId;//spot id to identify which spot to update;
     // * finding spot to update in db
     const spotToUpdate = await Spot.findByPk(req.params.spotId);
 
@@ -292,6 +336,9 @@ router.get('/:spotId', async (req,res,next) =>{
     } // TODO: add aggregates
     return res.json(desiredSpot);
 })
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!! Universal Spots
 
 //! Get all spots
 router.get('/', async (req, res) =>{

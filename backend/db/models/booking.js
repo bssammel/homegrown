@@ -49,9 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Booking',
     defaultScope: {
-      attributes: {
-        exclude: ["createdAt", "updatedAt"]//protects sensitive information by excluding it from .findAll
-      }
+      // attributes: {
+      //   // exclude: ["createdAt", "updatedAt"]//protects sensitive information by excluding it from .findAll
+      // }
     }
   });
   return Booking;
