@@ -1,5 +1,5 @@
 //first line
-const { User, Spot, SpotImage, Review, ReviewImage, Booking} = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage, Booking, sequelize} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
@@ -342,10 +342,40 @@ router.get('/:spotId', async (req,res,next) =>{
 
 //! Get all spots
 router.get('/', async (req, res) =>{
-    //where = {};
-    const spots = await Spot.findAll();
+   
+    const Spots = await Spot.findAll(
+        {include: [{//avgRating
+                model: Review,
+                attributes: []
+            },
+            { model: SpotImage,
+                as: 'previewImage',
+                where: {preview: true},
+                attributes: ['url'],}
+        ],
+
+        attributes:[
+            "id",
+            "ownerId",
+            "address",
+            "city",
+            "state",
+            "country",
+            "lat",
+            "lng",
+            "name",
+            "description",
+            "price",
+            "createdAt",
+            "updatedAt",
+            [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
+        ,
+        group:['Spot.id'],
+        raw:true},       
+    );
+
     return res.json({// TODO: Need to add aggregates for avg rating and preview image url
-        spots,
+        Spots,
         
     });
 
