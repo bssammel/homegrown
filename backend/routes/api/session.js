@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -82,7 +82,10 @@ router.get('/',(req, res) => {
         return res.json({
           user: safeUser
         });
-      } else return res.json({ user: null });
+      } else {
+        res.status(200)
+        const nullUser = { user: null }
+        return res.json(nullUser);}
     }
   );
 

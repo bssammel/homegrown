@@ -346,6 +346,7 @@ router.get('/', async (req, res) =>{
     const spots = await Spot.findAll();
     return res.json({// TODO: Need to add aggregates for avg rating and preview image url
         spots,
+        
     });
 
 });
