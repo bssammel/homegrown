@@ -10,7 +10,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 //! Delete bookings made my owner of spot or guest
-// TODO:
+// TODO: Nothing, complete
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
     //* Booking obj
