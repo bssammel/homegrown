@@ -9,7 +9,60 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
-//!Add an image to a Review based on the rE
+//!Add an image to a Review based on the reviewId
+// TODO: -----
+router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
+    // * isolate needed info for post
+    const {url} =req.body;
+    const reviewId = Number(req.params.reviewId);
+    const reviewWithNewImage = await Review.findByPk(reviewId);
+
+    if(!reviewWithNewImage){
+        const err = new Error('Review couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    }
+
+    // * Proper Auth- is current user author of review?
+    const {user} = req;
+    const userId = user.id;
+    const reviewUserId = reviewWithNewImage.userId;
+    if(userId !== reviewUserId){
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        err.errors = { message: 'Forbidden' };
+        err.status = 403;
+        return next(err);
+    }
+
+    if(reviewWithNewImage){
+        let reviewImage;
+        const currentReviewImages = await ReviewImage.findAll({
+            where: {reviewId : reviewId}
+        });
+        if(currentReviewImages.length <= 9){
+            reviewImage = await ReviewImage.create({
+                reviewId, url
+            });
+        } else {
+            const err = new Error('Maximum number of images for this resource was reached' );
+            err.status = 403;
+            return next(err);
+        }
+        const newReviewImage = {
+            id: reviewImage.id,
+            url: reviewImage.url
+        }
+
+        return res.json({id: reviewImage.id,
+            url: reviewImage.url})
+    }
+
+
+
+
+
+});
 
 
 //! Get Reviews written by current user
