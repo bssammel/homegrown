@@ -4,6 +4,8 @@ const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
 
+const { Op } = require('sequelize');
+
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -51,7 +53,7 @@ const validateSpotCreation = [
     check('price')
         .exists({ checkFalsy : true})
         // .isEmpty()
-        .isNumeric()
+        .isInt({min: 1})
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
@@ -72,20 +74,49 @@ handleValidationErrors
 
 // const router = require('express').Router();
 //! Get spots of current user
+// TODO: 
 router.get('/current', requireAuth, async (req,res) =>{
     const {user} = req;
     //console.log("User Id?: ",user.id);
     const ownerId = user.id;
     const where = {};
     where.ownerId = ownerId
-    const currentUserSpots = await Spot.findAll({
-        where,// TODO: same as below need to add aggregates
-    });
-    return res.json({currentUserSpots});
+    const Spots = await Spot.findAll({
+        where,
+        include: [{//avgRating
+            model: Review,
+            attributes: []
+        },
+        { model: SpotImage,
+            as: 'previewImage',
+            where: {preview: true},
+            attributes: ['url'],}
+    ],
+
+    attributes:[
+        "id",
+        "ownerId",
+        "address",
+        "city",
+        "state",
+        "country",
+        "lat",
+        "lng",
+        "name",
+        "description",
+        "price",
+        "createdAt",
+        "updatedAt",
+        [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
+    ,
+    group:['Spot.id'],
+    raw:true}, 
+    );
+    return res.json({Spots});
 })
 
 //! Add an Image to a Spot based on the Spot's Id 
-// TODO : Nothing, fully passing
+// TODO : 
 router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
     // * isolate needed info
     const {url, preview} = req.body;//isolate info for new spot image to be created
@@ -122,7 +153,7 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!! Reviews CRUD by Spot Id 
 //! Get Reviews for spot by spotId
-// TODO: Nothing, completed 
+// TODO: 
 router.get('/:spotId/reviews', async (req,res,next) =>{
     const {spotId} = req.params.spotId;
     const where = {};
@@ -133,7 +164,7 @@ router.get('/:spotId/reviews', async (req,res,next) =>{
         err.status = 404;
         return next(err);
     } 
-    const desiredSpotReviews = await Review.findAll({
+    const Reviews = await Review.findAll({
         where,
         include: [
             {
@@ -147,7 +178,7 @@ router.get('/:spotId/reviews', async (req,res,next) =>{
         ],
     });
 
-    return res.json({desiredSpotReviews});
+    return res.json({Reviews});
 })
 
 //! Create Review for Spot by spotId
@@ -185,6 +216,108 @@ router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,r
 
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Bookings CRUD based on spotId
+
+
+//! Verify Dates for bookings
+const verifyDates = (newStart, newEnd, existingStart, existingEnd) => {
+
+    if(newStart >= existingStart && newEnd <= existingEnd){
+        return false;
+    }
+
+    if(existingStart <= newStart && newStart <= existingEnd){
+        return false;
+    }
+
+    if(existingStart <= newEnd && newEnd <= existingEnd){
+        return false;
+    }
+
+    if(newStart <= existingStart && existingEnd <= newEnd) return false;
+
+    if(newStart === existingStart || newEnd === existingEnd || newEnd === existingStart || newStart === existingEnd){
+        return false;
+    }
+    return true;
+}
+
+//!Create Booking based on spotId
+router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
+    const where = {};
+    where.spotId = req.params.spotId;
+    const bookedSpotId = Number(req.params.spotId);
+    const desiredSpot = await Spot.findByPk(req.params.spotId);
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
+
+    const conflictingErr = () => {
+        const err = new Error('Sorry, this spot is already booked for the specific dates');
+        err.errors = { startDate: 'Start date conflicts with an existing booking', endDate: 'End date conflicts with an existing booking'};
+        err.status = 403;
+        return next(err);
+    }
+
+    const {user} = req;
+    const currentUserId = user.id;
+    const spotOwnerId = desiredSpot.ownerId;
+    const bookingStartDate = req.body.startDate;
+    const parsedStartDate = Date.parse(bookingStartDate);
+    const bookingEndDate = req.body.endDate;
+    const parsedEndDate = Date.parse(bookingEndDate);
+    // console.log(`spotOwnerId: ${spotOwnerId}, currentUserId : ${currentUserId}`);
+    if (currentUserId === spotOwnerId){
+        // console.log("I am the owner!!!")
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        err.errors = { message: 'Forbidden' };
+        err.status = 403;
+        return next(err);
+    
+    }//! Ensure that person making booking is not owner
+    // console.log("I am the guest!!!");
+    //!now check that the body is valid
+    //end date has to be greater than start after parsed
+    //* get startDate
+
+    const timeDifference = parsedEndDate - parsedStartDate; //if less than or = to 0, means startDate is before or the same as end date; pos = end date after start, valid
+    if(timeDifference <= 0 ){
+            const err = new Error('Bad Request');
+            err.errors = { endDate: 'endDate cannot be on or before startDate' };
+            err.status = 403;
+            return next(err);
+    }//great, the body is valid, what about those dates though, do they interfere with an already booked time?
+   
+    where.spotId = bookedSpotId;
+    const existingBookingDates = await Booking.findAll({
+        where,
+        attributes: ['startDate', 'endDate']
+    });
+    console.log(existingBookingDates);
+    for (let i = 0; i < existingBookingDates.length; i++) {
+        const datePairObj = existingBookingDates[i];
+    
+        retrievedStart = datePairObj.dataValues.startDate;
+        parsedRetrievedStart = Date.parse(retrievedStart);
+        retrievedEnd = datePairObj.dataValues.endDate;
+        parsedRetrievedEnd = Date.parse(retrievedEnd);
+
+        const verifiedDate = verifyDates(parsedStartDate, parsedEndDate, parsedRetrievedStart, parsedRetrievedEnd);
+
+        if(verifiedDate === false) return conflictingErr();
+    };
+    const spotId = bookedSpotId;
+    const userId = currentUserId;
+    const startDate = bookingStartDate;
+    const endDate = bookingEndDate;
+
+    const newBooking = await Booking.create({spotId, userId, startDate, endDate})
+
+    return res.json(newBooking);
+});
+
 //!Get Bookings based on spotId
 // TODO:
 router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
@@ -197,14 +330,13 @@ router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
         return next(err);
     } 
 
-
     const {user} = req;
     const currentUserId = user.id;
     const spotOwnerId = desiredSpot.ownerId;
-    console.log(`spotOwnerId: ${spotOwnerId}, currentUserId : ${currentUserId}`);
+    // console.log(`spotOwnerId: ${spotOwnerId}, currentUserId : ${currentUserId}`);
     if(currentUserId !== spotOwnerId){
         console.log("I am the guest!!!")
-        const desiredSpotBookings = await Booking.findAll({
+        const Bookings = await Booking.findAll({
             where,
             attributes: [
                 "spotId",
@@ -213,9 +345,9 @@ router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
             ],
         });
     
-        return res.json({desiredSpotBookings});
-    } else if (currentUserId === spotOwnerId){
-        console.log("I am the owner!!!")
+        return res.json({Bookings});
+    } else if (currentUserId === spotOwnerId){//
+        // console.log("I am the owner!!!")/
         const Bookings = await Booking.findAll({
             where,
             include: [
@@ -228,12 +360,71 @@ router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
     
         return res.json({Bookings});
     }
-})
+});
+
+
+
+
 
 //!!!!!!!!!!!!!!!!!!!!!!!! routes by spotId
 
+//!Get Spot based on spotId
+router.get('/:spotId', async (req,res,next) =>{
+
+    const desiredSpot = await Spot.findAll({
+        where : {id: req.params.spotId},
+
+        include: [
+        { model: SpotImage,}
+    ],
+    attributes:[
+        "id",
+        "ownerId",
+        "address",
+        "city",
+        "state",
+        "country",
+        "lat",
+        "lng",
+        "name",
+        "description",
+        "price",
+        "createdAt",
+        "updatedAt",
+    ],
+    group:['Spot.id'],
+    });
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
+
+    const aggregates = {};
+    aggregates.numReviews = await Review.findAll({
+        where: {
+            spotId: req.params.spotId
+        },
+        attributes: [[sequelize.fn("COUNT", sequelize.col("Review.id")), 'numReviews']]
+    })
+    const numReviews = aggregates.numReviews[0].dataValues.numReviews;
+
+    aggregates.avgRating = await Review.findAll({
+        where: {
+            spotId: req.params.spotId
+        },
+        attributes: [[sequelize.fn("AVG", sequelize.col("Review.stars")), 'avgRating'],]
+    })
+    const avgRating = aggregates.avgRating[0].dataValues.avgRating;
+
+    desiredSpot[0].dataValues.numReviews = numReviews;
+    desiredSpot[0].dataValues.avgRating = avgRating;
+
+    return res.json(desiredSpot);
+});
+
 //! Edit a Spot 
-// TODO : Nothing, completed
+// TODO : 
 router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =>{
     // * isolate needed info
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -294,7 +485,7 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
 })
 
 //! Delete a Spot 
-// TODO : Nothing, completed
+// TODO : 
 router.delete('/:spotId', requireAuth, async (req,res,next) =>{
     const spotId = req.params.spotId;//spot id to identify which spot to delete/destroy
     // * finding spot to delete
@@ -326,28 +517,16 @@ router.delete('/:spotId', requireAuth, async (req,res,next) =>{
     });
 })
 
-//!Get Spot based on spotId
-router.get('/:spotId', async (req,res,next) =>{
-    const desiredSpot = await Spot.findByPk(req.params.spotId);
-    if(!desiredSpot){
-        const err = new Error('Spot couldn\'t be found');
-        err.status = 404;
-        return next(err);
-    } // TODO: add aggregates
-    return res.json(desiredSpot);
-})
+
 
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!! Universal Spots
 
 //! Get all spots
 router.get('/', async (req, res) =>{
-   
+    // * 1- create array of Spot Objects --Done
     const Spots = await Spot.findAll(
-        {include: [{//avgRating
-                model: Review,
-                attributes: []
-            },
+        {include: [
             { model: SpotImage,
                 as: 'previewImage',
                 where: {preview: true},
@@ -367,13 +546,81 @@ router.get('/', async (req, res) =>{
             "description",
             "price",
             "createdAt",
-            "updatedAt",
-            [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
+            "updatedAt",]
         ,
         group:['Spot.id'],
         raw:true},       
     );
 
+    // const testArr = [1, 2, 3, 4, 5, 6];
+    // for(let i = 0; i < testArr.length; i++) {    }
+   //* 2- create array of Review Objects
+
+    const reviewsObjArr = await Review.findAll();
+    console.log('#######');
+    console.log(reviewsObjArr);
+    // * 3- create array of ratings objects (will just be empty at first unti after first loop)
+    const statsObjArr = [];
+
+    // * 3- loop through Review Objects and isolate spotId
+    for (let i = 0; i < reviewsObjArr.length; i++) {
+        const foundId = reviewsObjArr[i].dataValues.spotId;
+         // * 3.1.1-find object in statsobjArr where spotId is foundId on reviewsObjArr
+         console.log(`foundId= ${foundId}`)
+        //  console.log(`statsObjArr[i].spotId= ${statsObjArr[i].spotId}`)
+
+        console.log("statsObjArr.length",statsObjArr.length)
+        if(statsObjArr.length === 0){//* if not found
+            const requestedId = reviewsObjArr[i].dataValues.spotId;
+            const newStatObj = {};//create new stat obj to be pushed to stats Obj Arr
+            newStatObj.spotId = requestedId; // * add SpotId keyvalue pair to newStatObj [{spotId: #, }]
+            newStatObj.numReviews = 1; // *-  create numReviews kVP and set as 1 [{spotId: 3, numReviews:1}]
+            newStatObj.starsArr = [];
+            // console.log(`newStatObj.starsArr isArray= ${Array.isArray(newStatObj.starsArr)}`)
+            // console.log(`reviewsObjArr[i].dataValues.stars= ${reviewsObjArr[i].dataValues.stars}`);
+            // console.log(`reviewsObjArr[i].dataValues.stars isNum= ${reviewsObjArr[i].dataValues.stars}`);
+            const newStarDecimalToPush = Number(reviewsObjArr[i].dataValues.stars);
+            newStatObj.starsArr = [newStarDecimalToPush]  // *- then add starsArr to object with review objects stars value starsArr = [#, #, #]
+            // console.log(`newStatObj.starsArr isArray= ${Array.isArray(newStatObj.starsArr)}`)
+           statsObjArr.push(newStatObj);
+            // console.log(statsObjArr)
+            // console.log(`statsObjArr[i].starsArr  isArray= ${Array.isArray(statsObjArr[i].starsArr)}`)
+            // console.log("I am running at line 469");
+        }
+        const requestedId = statsObjArr.find((statsObj) => {
+            console.log(statsObj, "string")
+            console.log(`statsObj.spotId= ${statsObj.spotId}`)
+            if(statsObj.spotId === foundId){
+                statsObj.numReviews= statsObj.numReviews++;
+                // console.log(`statsObj.starsArr = ${statsObj.starsArr}`)
+                // console.log(`statsObj.starsArr  isArray= ${Array.isArray(statsObj.starsArr)}`)
+                // statsObj.starsArr = statsObj.starsArr;
+                statsObj.starsArr.push(reviewsObjArr[i].dataValues.stars);
+                statsObjArr[i] = statsObj;
+            }  
+        });
+        
+    
+    }//looped through all reviewObjects. now to loop through spots objects and add appropriate numReviews and avgRating
+
+    for (let j = 0; j < Spots.length; j++) {
+        // const spot = Spots[j];
+        // console.log(Spots[j]);
+        const requestedSpotId = Spots[j].id;
+        // console.log(`requestedSpotId= ${requestedSpotId}`)
+        const matchingStatsObj = statsObjArr.find((foundStatsObj) => {
+            // console.log(`foundStatsObj.spotId= ${foundStatsObj.spotId}`)
+            if(foundStatsObj.spotId === requestedSpotId){
+                return foundStatsObj;
+            }
+        });
+        console.log("matchingStatsObj, ",matchingStatsObj)
+        if(matchingStatsObj){
+            console.log("I am Running ###########")
+            Spots[j].numReviews = matchingStatsObj.numReviews;
+            Spots[j].avgRating = matchingStatsObj.starsArr.reduce((a,b)=> a+b)/starsArr.length;
+        }
+    }
     return res.json({// TODO: Need to add aggregates for avg rating and preview image url
         Spots,
         
@@ -383,7 +630,7 @@ router.get('/', async (req, res) =>{
 
 
 //! add spot 
-router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{ // TODO: not sure the require auth is functioning as expected here
+router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{ 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const {user} = req;
     // console.log("User Id?!!!!!!!!!: ",user.id);

@@ -30,7 +30,7 @@ router.get('/current', requireAuth, async (req,res) =>{
     const userId = user.id;
     const where = {};
     where.userId = userId;
-    const currentUserReviews = await Review.findAll({
+    const Reviews = await Review.findAll({
         where,
         include: [
             {
@@ -39,15 +39,20 @@ router.get('/current', requireAuth, async (req,res) =>{
             },
             {
                 model: Spot,
+                include : { model: SpotImage,
+                    as: 'previewImage',
+                    where: {preview: true},
+                    attributes: ['url'],},
                 attributes: ['id','ownerId','address', 'city','state', 'country', 'lat', 'lng','name','price', ]
             },
             {
                 model: ReviewImage,
                 attributes: ['id','url']
             },
+            
         ],
     });
-    return res.json({currentUserReviews});
+    return res.json({Reviews});
 })
 
 //!Add an image to a Review based on the reviewId
