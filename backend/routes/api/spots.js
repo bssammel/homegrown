@@ -614,9 +614,7 @@ router.get('/', validateQueryParam, async (req, res) =>{
         
         if (page > 10) page = 10;
         if (size > 20) size = 10;
-        
-        // const errObj= {};
-    
+            
         page = Number(page);
         size = Number(size);
 

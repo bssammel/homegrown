@@ -1,4 +1,3 @@
-//first line
 const { Review, ReviewImage} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 

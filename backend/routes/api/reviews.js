@@ -1,4 +1,3 @@
-//first line
 const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 

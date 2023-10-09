@@ -1,11 +1,7 @@
-//first line
 const { User, Spot, Review, Booking, SpotImage } = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js')
 
 const express = require('express');
-
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -48,8 +44,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
         const timeDifference = currentTime - parsedStartDate; //if negative, means startDate is in future, pos = past
         if(timeDifference > 0){
             const err = new Error('Bookings that have been started can\'t be deleted');
-            // err.title = 'Forbidden';
-            // err.errors = { message: 'Forbidden' };
             err.status = 403;
             return next(err);
         } else {
