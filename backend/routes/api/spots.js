@@ -618,12 +618,15 @@ router.get('/', validateQueryParam, async (req, res) =>{
         finalObj.page = page;
         finalObj.size = size;
 
-        const Spots = finalObj;
+        spots.page = page;
+        spots.size = size;
+
+        // const Spots = finalObj;
         
         // query.limit = size;
         // query.offset = size * (page - 1);
 
-        return res.json({Spots});
+        return res.json({spots});
     } else {
 
         return res.json({Spots: spots});
