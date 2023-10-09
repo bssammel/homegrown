@@ -599,7 +599,7 @@ router.get('/', validateQueryParam, async (req, res) =>{
             "updatedAt",
             [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
         ,
-        group:['Spot.id'],
+        group:['Spot.id', 'previewImage.url'],
         raw:true},       
     );
 
