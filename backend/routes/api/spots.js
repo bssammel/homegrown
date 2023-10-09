@@ -577,10 +577,6 @@ router.get('/', validateQueryParam, async (req, res) =>{
                 model: Review,
                 attributes: []
             },
-            { model: SpotImage,
-                as: 'previewImage',
-                where: {preview: true},
-                attributes: ['url'],}
         ],
 
         attributes:[
@@ -603,6 +599,22 @@ router.get('/', validateQueryParam, async (req, res) =>{
         raw:true},       
     );
 
+    const addPreviewImg = await Spot.findAll(
+        {include: [
+            { model: SpotImage,
+                as: 'previewImage',
+                where: {preview: true},
+                attributes: ['url'],}
+        ],
+
+        attributes:[]
+        ,
+        group:['Spot.id'],
+        raw:true},       
+    );
+
+    spots.previewImage = addPreviewImg;
+
     if (req.query) {
         const finalObj = {...spots};
 
@@ -617,6 +629,7 @@ router.get('/', validateQueryParam, async (req, res) =>{
     
         finalObj.page = page;
         finalObj.size = size;
+
 
         spots.page = page;
         spots.size = size;
