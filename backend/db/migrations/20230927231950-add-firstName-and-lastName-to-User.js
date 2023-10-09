@@ -1,7 +1,7 @@
 'use strict';
 
 let options = {};
-options.tableName = "Users";
+options.tableName = 'Users';
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -10,11 +10,11 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.addColumn(options,'firstName', {
-      type: Sequelize.STRING(256),
+      type: Sequelize.STRING(30),
       // allowNull: false
     });
     await queryInterface.addColumn(options,'lastName', {
-      type: Sequelize.STRING(256),
+      type: Sequelize.STRING(30),
       // allowNull: false
     });
   },
