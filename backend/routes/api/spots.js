@@ -73,14 +73,14 @@ handleValidationErrors
 
 //! query parameter validations
 const validateQueryParam = [
-    check('page')
-        .exists({checkFalsy: true})
-        .isInt({ min: 1 })
-        .withMessage('Page must be greater than or equal to 1'),
-    check('size')
-        .exists({checkFalsy: true})
-        .isInt({ min: 1 })
-        .withMessage('Size must be greater than or equal to 1'),
+    // check('page')
+    //     .exists({checkFalsy: true})
+    //     .isInt({ min: 1 })
+    //     .withMessage('Page must be greater than or equal to 1'),
+    // check('size')
+    //     .exists({checkFalsy: true})
+    //     .isInt({ min: 1 })
+    //     .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
         .optional()
         .isDecimal()
@@ -604,25 +604,24 @@ router.get('/', validateQueryParam, async (req, res) =>{
     );
 
     if (req.query) {
+        const finalObj = {...spots};
+
         let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
-
-        const query = {};
-
-        page = page ? Number(page) : 1;
-        size = size ? Number(size) : 20;
-
+        if(!page || isNaN(page) || page > 10) {page = 1}
+        if(!size || isNaN(size) || size > 20) { size = 20}
         
-        if (page > 10) page = 10;
-        if (size > 20) size = 10;
+        page = Number(page);
+        size = Number(size);
         
         // const errObj= {};
     
-        page = Number(page);
-        size = Number(size);
+        finalObj.page = page;
+        finalObj.size = size;
 
+        const Spots = finalObj;
         
-        query.limit = size;
-        query.offset = size * (page - 1);
+        // query.limit = size;
+        // query.offset = size * (page - 1);
 
         return res.json({Spots: spots, page, size});
     } else {
