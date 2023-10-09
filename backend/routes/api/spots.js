@@ -152,35 +152,6 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
 
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!! Reviews CRUD by Spot Id 
-//! Get Reviews for spot by spotId
-// TODO: 
-router.get('/:spotId/reviews', async (req,res,next) =>{
-    const {spotId} = req.params.spotId;
-    const where = {};
-    where.spotId = req.params.spotId;
-    const desiredSpot = await Spot.findByPk(req.params.spotId);
-    if(!desiredSpot){
-        const err = new Error('Spot couldn\'t be found');
-        err.status = 404;
-        return next(err);
-    } 
-    const Reviews = await Review.findAll({
-        where,
-        include: [
-            {
-                model: User,
-                attributes: ['id','firstName','lastName']
-            },
-            {
-                model: ReviewImage,
-                attributes: ['id','url']
-            },
-        ],
-    });
-
-    return res.json({Reviews});
-})
-
 //! Create Review for Spot by spotId
 // TODO: 
 router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,res,next) =>{
@@ -213,6 +184,37 @@ router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,r
 
     return res.status(201).json({id:newReview.id, userId: newReview.userId, spotId: newReview.spotId, review: newReview.review, stars:  newReview.stars,  createdAt: newReview.createdAt, updatedAt:newReview.updatedAt});
 })
+
+//! Get Reviews for spot by spotId
+// TODO: 
+router.get('/:spotId/reviews', async (req,res,next) =>{
+    const {spotId} = req.params.spotId;
+    const where = {};
+    where.spotId = req.params.spotId;
+    const desiredSpot = await Spot.findByPk(req.params.spotId);
+    if(!desiredSpot){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
+    const Reviews = await Review.findAll({
+        where,
+        include: [
+            {
+                model: User,
+                attributes: ['id','firstName','lastName']
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id','url']
+            },
+        ],
+    });
+
+    return res.json({Reviews});
+})
+
+
 
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Bookings CRUD based on spotId
@@ -363,18 +365,25 @@ router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
 });
 
 
-
-
-
-//!!!!!!!!!!!!!!!!!!!!!!!! routes by spotId
+//!!!!!!!!!!!!!!!!!!!!!!!! Spots CRUD by spotId
 
 //!Get Spot based on spotId
 router.get('/:spotId', async (req,res,next) =>{
+    const desiredSpotBeta = await Spot.findByPk(req.params.spotId)
 
+    if(!desiredSpotBeta){
+        const err = new Error('Spot couldn\'t be found');
+        err.status = 404;
+        return next(err);
+    } 
     const desiredSpot = await Spot.findAll({
         where : {id: req.params.spotId},
 
         include: [
+            {model : User,
+            as: "Owner",
+            attributes: ['id','firstName', 'lastName']
+        },
         { model: SpotImage,}
     ],
     attributes:[
@@ -394,11 +403,11 @@ router.get('/:spotId', async (req,res,next) =>{
     ],
     group:['Spot.id'],
     });
-    if(!desiredSpot){
-        const err = new Error('Spot couldn\'t be found');
-        err.status = 404;
-        return next(err);
-    } 
+    // if(!desiredSpot){
+    //     const err = new Error('Spot couldn\'t be found');
+    //     err.status = 404;
+    //     return next(err);
+    // } 
 
     const aggregates = {};
     aggregates.numReviews = await Review.findAll({
@@ -518,8 +527,6 @@ router.delete('/:spotId', requireAuth, async (req,res,next) =>{
 })
 
 
-
-
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!! Universal Spots
 
 //! Get all spots
@@ -527,6 +534,10 @@ router.get('/', async (req, res) =>{
     // * 1- create array of Spot Objects --Done
     const Spots = await Spot.findAll(
         {include: [
+            {//avgRating
+                model: Review,
+                attributes: []
+            },
             { model: SpotImage,
                 as: 'previewImage',
                 where: {preview: true},
@@ -546,81 +557,13 @@ router.get('/', async (req, res) =>{
             "description",
             "price",
             "createdAt",
-            "updatedAt",]
+            "updatedAt",
+            [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
         ,
         group:['Spot.id'],
         raw:true},       
     );
 
-    // const testArr = [1, 2, 3, 4, 5, 6];
-    // for(let i = 0; i < testArr.length; i++) {    }
-   //* 2- create array of Review Objects
-
-    const reviewsObjArr = await Review.findAll();
-    console.log('#######');
-    console.log(reviewsObjArr);
-    // * 3- create array of ratings objects (will just be empty at first unti after first loop)
-    const statsObjArr = [];
-
-    // * 3- loop through Review Objects and isolate spotId
-    for (let i = 0; i < reviewsObjArr.length; i++) {
-        const foundId = reviewsObjArr[i].dataValues.spotId;
-         // * 3.1.1-find object in statsobjArr where spotId is foundId on reviewsObjArr
-         console.log(`foundId= ${foundId}`)
-        //  console.log(`statsObjArr[i].spotId= ${statsObjArr[i].spotId}`)
-
-        console.log("statsObjArr.length",statsObjArr.length)
-        if(statsObjArr.length === 0){//* if not found
-            const requestedId = reviewsObjArr[i].dataValues.spotId;
-            const newStatObj = {};//create new stat obj to be pushed to stats Obj Arr
-            newStatObj.spotId = requestedId; // * add SpotId keyvalue pair to newStatObj [{spotId: #, }]
-            newStatObj.numReviews = 1; // *-  create numReviews kVP and set as 1 [{spotId: 3, numReviews:1}]
-            newStatObj.starsArr = [];
-            // console.log(`newStatObj.starsArr isArray= ${Array.isArray(newStatObj.starsArr)}`)
-            // console.log(`reviewsObjArr[i].dataValues.stars= ${reviewsObjArr[i].dataValues.stars}`);
-            // console.log(`reviewsObjArr[i].dataValues.stars isNum= ${reviewsObjArr[i].dataValues.stars}`);
-            const newStarDecimalToPush = Number(reviewsObjArr[i].dataValues.stars);
-            newStatObj.starsArr = [newStarDecimalToPush]  // *- then add starsArr to object with review objects stars value starsArr = [#, #, #]
-            // console.log(`newStatObj.starsArr isArray= ${Array.isArray(newStatObj.starsArr)}`)
-           statsObjArr.push(newStatObj);
-            // console.log(statsObjArr)
-            // console.log(`statsObjArr[i].starsArr  isArray= ${Array.isArray(statsObjArr[i].starsArr)}`)
-            // console.log("I am running at line 469");
-        }
-        const requestedId = statsObjArr.find((statsObj) => {
-            console.log(statsObj, "string")
-            console.log(`statsObj.spotId= ${statsObj.spotId}`)
-            if(statsObj.spotId === foundId){
-                statsObj.numReviews= statsObj.numReviews++;
-                // console.log(`statsObj.starsArr = ${statsObj.starsArr}`)
-                // console.log(`statsObj.starsArr  isArray= ${Array.isArray(statsObj.starsArr)}`)
-                // statsObj.starsArr = statsObj.starsArr;
-                statsObj.starsArr.push(reviewsObjArr[i].dataValues.stars);
-                statsObjArr[i] = statsObj;
-            }  
-        });
-        
-    
-    }//looped through all reviewObjects. now to loop through spots objects and add appropriate numReviews and avgRating
-
-    for (let j = 0; j < Spots.length; j++) {
-        // const spot = Spots[j];
-        // console.log(Spots[j]);
-        const requestedSpotId = Spots[j].id;
-        // console.log(`requestedSpotId= ${requestedSpotId}`)
-        const matchingStatsObj = statsObjArr.find((foundStatsObj) => {
-            // console.log(`foundStatsObj.spotId= ${foundStatsObj.spotId}`)
-            if(foundStatsObj.spotId === requestedSpotId){
-                return foundStatsObj;
-            }
-        });
-        console.log("matchingStatsObj, ",matchingStatsObj)
-        if(matchingStatsObj){
-            console.log("I am Running ###########")
-            Spots[j].numReviews = matchingStatsObj.numReviews;
-            Spots[j].avgRating = matchingStatsObj.starsArr.reduce((a,b)=> a+b)/starsArr.length;
-        }
-    }
     return res.json({// TODO: Need to add aggregates for avg rating and preview image url
         Spots,
         
