@@ -168,10 +168,16 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     // console.log(existingBookingDates);
     for (let i = 0; i < existingBookingDates.length; i++) {
         const datePairObj = existingBookingDates[i];
+
+
         retrievedStart = datePairObj.dataValues.startDate;
-        parsedRetrievedStart = Date.parse(retrievedStart);
+        retrievedStartYikes = retrievedStart.slice(0,9);
+        parsedRetrievedStart = Date.parse(retrievedStartYikes);
+
+        
         retrievedEnd = datePairObj.dataValues.endDate;
-        parsedRetrievedEnd = Date.parse(retrievedEnd);
+        retrievedEndYikes = retrievedEnd.slice(0,9);
+        parsedRetrievedEnd = Date.parse(retrievedEndYikes);
 
         const verifiedDate = verifyDates(parsedNewStartDate, parsedNewEndDate, parsedRetrievedStart, parsedRetrievedEnd);
 
