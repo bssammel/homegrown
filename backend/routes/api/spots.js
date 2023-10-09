@@ -63,12 +63,53 @@ const validateReviewCreation = [
     .exists({checkFalsy : true})
     // .isEmpty()
     .withMessage('Review text is required'),
-check('stars')
+    check('stars')
     .exists({checkFalsy : true})
     // .isEmpty()
     .isInt({min:1, max: 5})
     .withMessage('Stars must be an integer from 1 to 5'),
 handleValidationErrors
+]
+
+//! query parameter validations
+const validateQueryParam = [
+    check('page')
+        .exists({checkFalsy: true})
+        .isInt({ min: 1 })
+        .withMessage('Page must be greater than or equal to 1'),
+    check('size')
+        .exists({checkFalsy: true})
+        .isInt({ min: 1 })
+        .withMessage('Size must be greater than or equal to 1'),
+    check('maxLat')
+        .optional()
+        .isDecimal()
+        .isFloat({min: -90, max: 90})
+        .withMessage('Maximum latitude is invalid'),
+    check('minLat')
+        .optional()
+        .isDecimal()
+        .isFloat({min: -90, max: 90})
+        .withMessage('Minimum latitude is invalid'),
+    check('minLng')
+        .optional()
+        .isDecimal()
+        .isFloat({min: -180, max: 180})
+        .withMessage('Minimum longitude is invalid'),
+    check('maxLng')
+        .optional()
+        .isDecimal()
+        .isFloat({min: -180, max: 180})
+        .withMessage('Maximum longitude is invalid'),
+    check('minPrice')
+        .optional()
+        .isFloat({min: 0})
+        .withMessage('Minimum price must be greater than or equal to 0'),
+    check('maxPrice')
+        .optional()
+        .isFloat({min: 0})
+        .withMessage('Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
 ]
 
 
@@ -376,6 +417,7 @@ router.get('/:spotId', async (req,res,next) =>{
         err.status = 404;
         return next(err);
     } 
+
     const desiredSpot = await Spot.findAll({
         where : {id: req.params.spotId},
 
@@ -403,11 +445,7 @@ router.get('/:spotId', async (req,res,next) =>{
     ],
     group:['Spot.id'],
     });
-    // if(!desiredSpot){
-    //     const err = new Error('Spot couldn\'t be found');
-    //     err.status = 404;
-    //     return next(err);
-    // } 
+
 
     const aggregates = {};
     aggregates.numReviews = await Review.findAll({
@@ -530,9 +568,10 @@ router.delete('/:spotId', requireAuth, async (req,res,next) =>{
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!! Universal Spots
 
 //! Get all spots
-router.get('/', async (req, res) =>{
+router.get('/', validateQueryParam, async (req, res) =>{
+
     // * 1- create array of Spot Objects --Done
-    const Spots = await Spot.findAll(
+    const spots = await Spot.findAll(
         {include: [
             {//avgRating
                 model: Review,
@@ -564,12 +603,33 @@ router.get('/', async (req, res) =>{
         raw:true},       
     );
 
-    return res.json({// TODO: Need to add aggregates for avg rating and preview image url
-        Spots,
-        
-    });
+    if (req.query) {
+        let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-});
+        const query = {};
+
+        page = page ? Number(page) : 1;
+        size = size ? Number(size) : 20;
+
+        
+        if (page > 10) page = 10;
+        if (size > 20) size = 10;
+        
+        // const errObj= {};
+    
+        page = Number(page);
+        size = Number(size);
+
+        
+        query.limit = size;
+        query.offset = size * (page - 1);
+
+        return res.json({Spots: spots, page, size});
+    } else {
+
+        return res.json({Spots: spots});
+    }});
+
 
 
 //! add spot 
