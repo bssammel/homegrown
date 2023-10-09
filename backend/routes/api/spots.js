@@ -73,14 +73,14 @@ handleValidationErrors
 
 //! query parameter validations
 const validateQueryParam = [
-    check('page')
-        .exists({checkFalsy: true})
-        .isInt({ min: 1 })
-        .withMessage('Page must be greater than or equal to 1'),
-    check('size')
-        .exists({checkFalsy: true})
-        .isInt({ min: 1 })
-        .withMessage('Size must be greater than or equal to 1'),
+    // check('page')
+    //     .exists({checkFalsy: true})
+    //     .isInt({ min: 1 })
+    //     .withMessage('Page must be greater than or equal to 1'),
+    // check('size')
+    //     .exists({checkFalsy: true})
+    //     .isInt({ min: 1 })
+    //     .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
         .optional()
         .isDecimal()
