@@ -32,7 +32,8 @@ router.post('/',
             username: credential,
             email: credential
           }
-        }
+        },
+        include: ['firstName', 'lastName']
     });
   
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
@@ -42,7 +43,7 @@ router.post('/',
         err.errors = { credential: 'The provided credentials were invalid.' };
         return next(err);
     }
-  
+
     const safeUser = {
         id: user.id,
         firstName: user.firstName,
@@ -79,6 +80,8 @@ router.get('/',(req, res) => {
           email: user.email,
           username: user.username,
         };
+        console.log(safeUser);
+        // console.log(firstName + lastName);
         return res.json({
           user: safeUser
         });
