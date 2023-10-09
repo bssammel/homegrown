@@ -623,7 +623,7 @@ router.get('/', validateQueryParam, async (req, res) =>{
         // query.limit = size;
         // query.offset = size * (page - 1);
 
-        return res.json({Spots: spots, page, size});
+        return res.json({Spots});
     } else {
 
         return res.json({Spots: spots});
