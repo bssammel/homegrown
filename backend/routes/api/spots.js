@@ -593,7 +593,7 @@ router.delete('/:spotId', requireAuth, async (req,res,next) =>{
 router.get('/', validateQueryParam, async (req, res) =>{
 
     // * 1- create array of Spot Objects --Done
-    const spots = await Spot.findAll(
+    const Spots = await Spot.findAll(
         {include: [
             {//avgRating
                 model: Review,
@@ -626,8 +626,8 @@ router.get('/', validateQueryParam, async (req, res) =>{
     );
 
     // console.log(spots, "line 618")
-    for (let i = 0; i < spots.length; i++) {
-        const spot = spots[i];
+    for (let i = 0; i < Spots.length; i++) {
+        const spot = Spots[i];
         spot["previewImage"] = spot["previewImage.url"];
         delete spot["previewImage.url"];
     }
@@ -653,10 +653,10 @@ router.get('/', validateQueryParam, async (req, res) =>{
         query.limit = size;
         query.offset = size * (page - 1);
 
-        return res.json({spots, page, size});
+        return res.json({Spots, page, size});
     } else {
 
-        return res.json({spots});
+        return res.json({Spots});
     }});
 
 
