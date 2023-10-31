@@ -148,7 +148,7 @@ router.get('/current', requireAuth, async (req,res) =>{
         "price",
         "createdAt",
         "updatedAt",
-        [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
+        [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgStarRating']]
     ,
     group:['Spot.id', 'previewImage.url'],
     raw:true}, 
