@@ -556,22 +556,15 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
         description: description, 
         price: price
     })
-   
-    return res.json({
-        id: spotToUpdate.id,
-            ownerId: ownerId, 
-            address: spotToUpdate.address, 
-            city: spotToUpdate.city, 
-            state: spotToUpdate.state, 
-            country: spotToUpdate.country, 
-            lat: spotToUpdate.lat, 
-            lng: spotToUpdate.lng, 
-            name: spotToUpdate.name, 
-            description: spotToUpdate.description, 
-            price: spotToUpdate.price,
-            createdAt:spotToUpdate.createdAt,
-            updatedAt: spotToUpdate.updatedAt
-    });
+
+    updatedSpot = spotToUpdate.dataValues;
+    
+    const timestampArr = [updatedSpot.createdAt, updatedSpot.updatedAt];
+    let newTimestamps = reformatTimes(timestampArr, "getAllSpots");
+    updatedSpot.createdAt = newTimestamps[0];
+    updatedSpot.updatedAt = newTimestamps[1];
+
+    return res.json(updatedSpot);
     
 })
 
