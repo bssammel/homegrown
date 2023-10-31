@@ -150,7 +150,7 @@ router.get('/current', requireAuth, async (req,res) =>{
         "updatedAt",
         [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
     ,
-    group:['Spot.id'],
+    group:['Spot.id', 'previewImage.url'],
     raw:true}, 
     );
     return res.json({Spots});
@@ -285,6 +285,7 @@ const verifyDates = (newStart, newEnd, existingStart, existingEnd) => {
 }
 
 //!Create Booking based on spotId
+//TODO: Passing in Dev
 router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
     const where = {};
     where.spotId = req.params.spotId;
@@ -329,10 +330,19 @@ router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
     if(timeDifference <= 0 ){
             const err = new Error('Bad Request');
             err.errors = { endDate: 'endDate cannot be on or before startDate' };
-            err.status = 403;
+            err.status = 400;
             return next(err);
     }//great, the body is valid, what about those dates though, do they interfere with an already booked time?
    
+    const parsedCurrDate = Date.now();
+    const timeDiffCurr = parsedStartDate - parsedCurrDate;
+    if(timeDiffCurr < 0){
+        const err = new Error('Bad Request');
+        err.errors = { message: 'Cannot book past dates' };
+        err.status = 400;
+        return next(err);
+    }
+
     where.spotId = bookedSpotId;
     const existingBookingDates = await Booking.findAll({
         where,
@@ -346,6 +356,8 @@ router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
         parsedRetrievedStart = Date.parse(retrievedStart);
         retrievedEnd = datePairObj.dataValues.endDate;
         parsedRetrievedEnd = Date.parse(retrievedEnd);
+
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Calling verifyDates
 
         const verifiedDate = verifyDates(parsedStartDate, parsedEndDate, parsedRetrievedStart, parsedRetrievedEnd);
 
@@ -363,7 +375,7 @@ router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
 
 //!Get Bookings based on spotId
 // TODO:
-router.get('/:spotId/bookings',requireAuth, async (req,res,next) =>{
+router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
     const where = {};
     where.spotId = req.params.spotId;
     const desiredSpot = await Spot.findByPk(req.params.spotId);
