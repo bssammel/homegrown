@@ -694,9 +694,16 @@ router.post('/', requireAuth, validateSpotCreation, async (req,res, next) =>{
         createdAt:spot.createdAt,
         updatedAt: spot.updatedAt
     };
-    return res.status(201).json({
-        spot: newSpot
-    });
+
+    //! reformat times
+    // for (let i = 0; i < newSpot.length; i++) {
+        const timestampArr = [newSpot.createdAt, newSpot.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "createASpot");
+        newSpot.createdAt = newTimestamps[0];
+        newSpot.updatedAt = newTimestamps[1];
+    // } 
+    
+    return res.status(201).json(newSpot);
  });
 
 
