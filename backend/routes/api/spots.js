@@ -153,6 +153,15 @@ router.get('/current', requireAuth, async (req,res) =>{
     group:['Spot.id', 'previewImage.url'],
     raw:true}, 
     );
+
+    // console.log(Spots, "line 618")
+    for (let i = 0; i < Spots.length; i++) {
+        const spot = Spots[i];
+        spot["previewImage"] = spot["previewImage.url"];
+        delete spot["previewImage.url"];
+    }
+    //if it works, it works
+
     return res.json({Spots});
 })
 
