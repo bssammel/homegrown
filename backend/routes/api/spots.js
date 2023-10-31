@@ -1,6 +1,7 @@
 //first line
 const { User, Spot, SpotImage, Review, ReviewImage, Booking, sequelize} = require('../../db/models');
-const {requireAuth} = require('../../utils/auth.js')
+const {requireAuth} = require('../../utils/auth.js');
+const { reformatTimes } = require('../../utils/date-time');
 
 const express = require('express');
 
@@ -148,7 +149,7 @@ router.get('/current', requireAuth, async (req,res) =>{
         "price",
         "createdAt",
         "updatedAt",
-        [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgStarRating']]
+        [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
     ,
     group:['Spot.id', 'previewImage.url'],
     raw:true}, 
@@ -478,16 +479,16 @@ router.get('/:spotId', async (req,res,next) =>{
     })
     const numReviews = aggregates.numReviews[0].dataValues.numReviews;
 
-    aggregates.avgRating = await Review.findAll({
+    aggregates.avgStarRating = await Review.findAll({
         where: {
             spotId: req.params.spotId
         },
-        attributes: [[sequelize.fn("AVG", sequelize.col("Review.stars")), 'avgRating'],]
+        attributes: [[sequelize.fn("AVG", sequelize.col("Review.stars")), 'avgStarRating'],]
     })
-    const avgRating = aggregates.avgRating[0].dataValues.avgRating;
+    const avgStarRating = aggregates.avgStarRating[0].dataValues.avgStarRating;
 
     desiredSpot[0].dataValues.numReviews = numReviews;
-    desiredSpot[0].dataValues.avgRating = avgRating;
+    desiredSpot[0].dataValues.avgStarRating = avgStarRating;
 
     return res.json(desiredSpot);
 });
@@ -633,6 +634,15 @@ router.get('/', validateQueryParam, async (req, res) =>{
     }
     //if it works, it works
 
+    //! reformat times
+    for (let i = 0; i < Spots.length; i++) {
+        const spot = Spots[i];
+        const timestampArr = [spot.createdAt, spot.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "getAllSpots");
+        spot.createdAt = newTimestamps[0];
+        spot.updatedAt = newTimestamps[1];
+        // [spot.createdAt, spot.updateAt] = newTimestamps;
+    }      
 
     if (req.query) {
         let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
