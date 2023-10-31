@@ -447,7 +447,8 @@ router.get('/:spotId', async (req,res,next) =>{
             as: "Owner",
             attributes: ['id','firstName', 'lastName']
         },
-        { model: SpotImage,}
+        { model: SpotImage,
+        attributes: ['id','url','preview']}
     ],
     attributes:[
         "id",
@@ -624,7 +625,7 @@ router.get('/', validateQueryParam, async (req, res) =>{
         raw:true},       
     );
 
-    console.log(spots, "line 618")
+    // console.log(spots, "line 618")
     for (let i = 0; i < spots.length; i++) {
         const spot = spots[i];
         spot["previewImage"] = spot["previewImage.url"];
