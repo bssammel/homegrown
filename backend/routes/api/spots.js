@@ -498,7 +498,20 @@ router.get('/:spotId', async (req,res,next) =>{
     desiredSpot[0].dataValues.numReviews = numReviews;
     desiredSpot[0].dataValues.avgStarRating = avgStarRating;
 
-    return res.json(desiredSpot);
+    const desiredSpotSequel = desiredSpot[0].dataValues;
+    
+    // for (let i = 0; i < Spots.length; i++) {
+        // const spot = Spots[i];
+        const timestampArr = [desiredSpotSequel.createdAt, desiredSpotSequel.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "getAllSpots");
+        console.log(newTimestamps[0]);
+        // delete desiredSpotSequel["createdAt"];
+        // console.log("I should be deleted  ",desiredSpotSequel.createdAt);
+        desiredSpotSequel.createdAt = newTimestamps[0];
+        desiredSpotSequel.updatedAt = newTimestamps[1];
+    //}  
+
+    return res.json(desiredSpotSequel);
 });
 
 //! Edit a Spot 

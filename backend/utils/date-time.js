@@ -11,13 +11,16 @@ const reformatTimes = function (timestampArr, functionName){
         // }
         // if(timestamp.length === 24 && functionName === )
         if (typeof timestamp === 'string' || timestamp instanceof String) {
+            console.log("Timestamp is a string");
             timestamp = timestamp.replace(/\D/g, '');
             console.log(timestamp);
             if(timestamp.length > 14) timestamp = timestamp.slice(0,14);
             timestamp = timestamp.slice(0,4) + "-" + timestamp.slice(4,6) + "-" + timestamp.slice(6,8) + " " + timestamp.slice(8,10) + ":" + timestamp.slice(10,12) + ":"  + timestamp.slice(12,14);
         } else {
+            console.log("Timestamp is ----NOT---- a string");
             //year
             timestampYear = timestamp.getFullYear();
+            console.log(timestampYear);
             //month
             timestampMonth = timestamp.getMonth()+1;
             if(timestampMonth < 10) timestampMonth = "0" + timestampMonth;
@@ -35,15 +38,15 @@ const reformatTimes = function (timestampArr, functionName){
             if(timestampSeconds < 10) timestampSeconds = "0" + timestampSeconds;
 
             timestamp = timestampYear + "-" + timestampMonth + "-" + timestampDate + " " + timestampHours + ":" + timestampMinutes + ":"  + timestampSeconds;
+            console.log(timestamp);
         }
-
-
         newTimestamps.push(timestamp);
     }
     return newTimestamps;
 }
 
 /*
+simon, if you do not remember to key into the object entirely I will fight you, thanks - past simon
     // for (let i = 0; i < Spots.length; i++) {
         // const spot = Spots[i];
         const timestampArr = [spot.createdAt, spot.updatedAt];
