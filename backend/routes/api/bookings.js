@@ -32,8 +32,8 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     // * Authorize User
     if (userId !== ownerId && userId !== guestId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     } else if (userId === ownerId || userId === guestId){
@@ -136,8 +136,8 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     const bookingUser = bookingToUpdate.userId;
     if (currentUserId !== bookingUser){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }

@@ -28,8 +28,8 @@ router.delete('/:imageId', requireAuth, async (req,res,next) => {
     // * Authorize User
     if (userId !== ownerId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }

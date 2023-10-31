@@ -74,8 +74,8 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
     const reviewUserId = reviewWithNewImage.userId;
     if(userId !== reviewUserId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }
@@ -124,8 +124,8 @@ router.put('/:reviewId', requireAuth, validateReviewCreation, async(req, res, ne
     const reviewUserId = desiredReview.userId;
     if(currentUserId !== reviewUserId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }
@@ -166,8 +166,8 @@ router.delete('/:reviewId', requireAuth, async(req, res, next) => {
     const reviewUserId = reviewToDelete.userId;
     if(currentUserId !== reviewUserId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }

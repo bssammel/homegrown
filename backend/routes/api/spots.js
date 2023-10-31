@@ -187,8 +187,8 @@ router.post('/:spotId/images', requireAuth, async (req,res,next) =>{
     const ownerId = spotWithNewImage.ownerId;
     if(userId !== ownerId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }
@@ -324,8 +324,8 @@ router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
     if (currentUserId === spotOwnerId){
         // console.log("I am the owner!!!")
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     
@@ -514,8 +514,8 @@ router.put('/:spotId', requireAuth, validateSpotCreation, async (req,res,next) =
     const ownerId = spotToUpdate.ownerId;
     if(userId !== ownerId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }
@@ -572,8 +572,8 @@ router.delete('/:spotId', requireAuth, async (req,res,next) =>{
     const ownerId = spotToDelete.ownerId;
     if(userId !== ownerId){
         const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: 'Forbidden' };
+        // err.title = 'Forbidden';
+        // err.errors = { message: 'Forbidden' };
         err.status = 403;
         return next(err);
     }
