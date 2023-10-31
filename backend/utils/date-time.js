@@ -43,6 +43,14 @@ const reformatTimes = function (timestampArr, functionName){
     return newTimestamps;
 }
 
-
+/*
+    // for (let i = 0; i < Spots.length; i++) {
+        // const spot = Spots[i];
+        const timestampArr = [spot.createdAt, spot.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "getAllSpots");
+        spot.createdAt = newTimestamps[0];
+        spot.updatedAt = newTimestamps[1];
+    //}  
+*/
 
 module.exports = { reformatTimes };
