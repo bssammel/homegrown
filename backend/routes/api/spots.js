@@ -163,6 +163,14 @@ router.get('/current', requireAuth, async (req,res) =>{
     }
     //if it works, it works
 
+    for (let i = 0; i < Spots.length; i++) {
+        const spot = Spots[i];
+        const timestampArr = [spot.createdAt, spot.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "getAllSpots");
+        spot.createdAt = newTimestamps[0];
+        spot.updatedAt = newTimestamps[1];
+    }  
+
     return res.json({Spots});
 })
 
