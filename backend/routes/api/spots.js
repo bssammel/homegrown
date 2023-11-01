@@ -241,7 +241,17 @@ router.post('/:spotId/reviews',requireAuth, validateReviewCreation, async (req,r
         spotId: Number(req.params.spotId), userId:userId, review:review, stars: stars
     });
 
-    return res.status(201).json({id:newReview.id, userId: newReview.userId, spotId: newReview.spotId, review: newReview.review, stars:  newReview.stars,  createdAt: newReview.createdAt, updatedAt:newReview.updatedAt});
+
+    const finalNewReview = newReview.dataValues;
+        // for (let i = 0; i < Spots.length; i++) {
+        // const spot = Spots[i];
+        const timestampArr = [finalNewReview.createdAt, finalNewReview.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "createNewReview");
+        finalNewReview.createdAt = newTimestamps[0];
+        finalNewReview.updatedAt = newTimestamps[1];
+    //}  
+
+    return res.status(201).json(finalNewReview);
 })
 
 //! Get Reviews for spot by spotId

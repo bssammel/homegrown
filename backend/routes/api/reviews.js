@@ -57,39 +57,22 @@ router.get('/current', requireAuth, async (req,res) =>{
         ],
     });
 
-    // console.log(Reviews, "line 618")
-    // for (let i = 0; i < Reviews.length; i++) {
-    //     const review = Reviews[i];
-    //     // console.log("line 58", review.previewImage)
-    //     console.log("59", review.dataValues.Spot["previewImage"][0]["dataValues"]["url"])
-    //     console.log("60", review.dataValues.Spot["previewImage"][0]["url"]);
-    //     const strPreviewImage = review.dataValues.Spot["previewImage"][0]["dataValues"]["url"].toString();
-    //     console.log("62", strPreviewImage)
-    //     console.log("62", review.dataValues.Spot["previewImage"])
-    //     delete review.dataValues.Spot["previewImage"];
-    //     console.log("64", review.dataValues.Spot["previewImage"])
-    //     review.dataValues["Spot"]["previewImage"] = strPreviewImage;
-    //     console.log("66", review.dataValues.Spot["previewImage"])
-
-    //     delete review["previewImage.url"];
-    // }
-    //if it works, it works
-
     for (let i = 0; i < Reviews.length; i++) {
         const reviewObj = Reviews[i];
         const spotIdForPI = reviewObj.dataValues.spotId;
-        console.log("76", spotIdForPI);
+        // console.log("76", spotIdForPI);
         const where2 = {};
         where2.spotId = spotIdForPI;
-        where2.preview = true;
-        // where2: {spotId = spotIdForPI, preview: true},
-        // const previewImageObj = await SpotImage.findAll({
-        //     where,
-        //     attributes: ['url']
-        // });
-        // console.log("84", previewImageObj)
-        
+        where2.preview = true;       
     }
+
+for (let i = 0; i < Reviews.length; i++) {
+    const review = Reviews[i];
+    const timestampArr = [review.dataValues.createdAt, review.dataValues.updatedAt];
+    let newTimestamps = reformatTimes(timestampArr, "getCurrentReviews");
+    review.dataValues.createdAt = newTimestamps[0];
+    review.dataValues.updatedAt = newTimestamps[1];
+}  
 
     return res.json({Reviews});
 })
