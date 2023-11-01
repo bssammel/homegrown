@@ -213,6 +213,15 @@ console.log(updatedBooking)
 // console.log(newEndDate)
     console.log("###################################");
 
+    const timestampArr = [updatedBooking.dataValues.createdAt, updatedBooking.dataValues.updatedAt, updatedBooking.dataValues.startDate, updatedBooking.dataValues.endDate];
+    let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
+    updatedBooking.dataValues.createdAt = newTimestamps[0];
+    updatedBooking.dataValues.updatedAt = newTimestamps[1];
+    // console.log(newTimestamps);
+    // console.log(" new time stamp array above")
+    updatedBooking.dataValues.startDate = newTimestamps[2].slice(0,10);
+    updatedBooking.dataValues.endDate = newTimestamps[3].slice(0,10);
+
     return res.json(updatedBooking);
 });
 
