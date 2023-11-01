@@ -421,12 +421,15 @@ router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
         return next(err);
     } 
 
+    let isOwner;
+
     const {user} = req;
     const currentUserId = user.id;
     const spotOwnerId = desiredSpot.ownerId;
     // console.log(`spotOwnerId: ${spotOwnerId}, currentUserId : ${currentUserId}`);
     if(currentUserId !== spotOwnerId){
-        console.log("I am the guest!!!")
+        // console.log("I am the guest!!!")
+        isOwner = false;
         const Bookings = await Booking.findAll({
             where,
             attributes: [
@@ -439,6 +442,7 @@ router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
         return res.json({Bookings});
     } else if (currentUserId === spotOwnerId){//
         // console.log("I am the owner!!!")/
+        isOwner = true;
         const Bookings = await Booking.findAll({
             where,
             include: [
@@ -448,6 +452,26 @@ router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
                 },
             ],
         });
+
+        for (let i = 0; i < Bookings.length; i++) {
+            const booking = Bookings[i];
+            // console.log("booking", booking)
+            if(isOwner){
+                const timestampArr = [booking.dataValues.createdAt, booking.dataValues.updatedAt, booking.dataValues.startDate, booking.dataValues.endDate];
+                let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
+                booking.dataValues.createdAt = newTimestamps[0];
+                booking.dataValues.updatedAt = newTimestamps[1];
+                console.log(newTimestamps);
+                console.log(" new time stamp array above")
+                booking.dataValues.startDate = newTimestamps[2].slice(0,10);
+                booking.dataValues.endDate = newTimestamps[3].slice(0,10);
+            } else if (!isOwner){
+                const timestampArr = [booking.startDate, booking.endDate];
+                let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
+                booking.startDate = newTimestamps[0].slice(0,10);
+                booking.endDate = newTimestamps[1].slice(0,10);
+            }
+        }  
     
         return res.json({Bookings});
     }

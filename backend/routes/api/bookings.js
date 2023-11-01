@@ -34,8 +34,8 @@ router.get('/current', requireAuth, async (req,res) =>{
         let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
         booking.createdAt = newTimestamps[0];
         booking.updatedAt = newTimestamps[1];
-        booking.startDate = newTimestamps[2].splice(0,9);
-        booking.endDate = newTimestamps[3].splice(0,9);
+        booking.startDate = newTimestamps[2].slice(0,10);
+        booking.endDate = newTimestamps[3].slice(0,10);
     }  
 
     return res.json({Bookings});
