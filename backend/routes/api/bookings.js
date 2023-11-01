@@ -199,11 +199,6 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
         } 
     };
 
-//     console.log("###################################");
-// console.log(newStartDate)
-// console.log(newEndDate)
-//     console.log("###################################");
-
     const startDate = newStartDate;
     const endDate = newEndDate;
     const id = bookingId;
@@ -211,6 +206,12 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     const userId = bookingUser;
 
     const updatedBooking = await bookingToUpdate.update({id: id, spotId:spotId, userId:userId, startDate:newStartDate, endDate:newEndDate})
+
+    
+    console.log("###################################");
+console.log(updatedBooking)
+// console.log(newEndDate)
+    console.log("###################################");
 
     return res.json(updatedBooking);
 });

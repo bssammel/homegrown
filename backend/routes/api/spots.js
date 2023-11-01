@@ -428,7 +428,7 @@ router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
     const spotOwnerId = desiredSpot.ownerId;
     // console.log(`spotOwnerId: ${spotOwnerId}, currentUserId : ${currentUserId}`);
     if(currentUserId !== spotOwnerId){
-        // console.log("I am the guest!!!")
+        console.log("I am the guest!!!")
         isOwner = false;
         const Bookings = await Booking.findAll({
             where,
@@ -438,6 +438,26 @@ router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
                 "endDate"
             ],
         });
+
+        for (let i = 0; i < Bookings.length; i++) {
+            const booking = Bookings[i];
+
+            if (isOwner === false){
+                console.log("This is the start of the console.logs");
+                console.log(booking)
+                console.log(booking.dataValues)
+                console.log(booking.dataValues.startDate);
+                console.log(booking.dataValues.endDate);
+                const timestampArr = [booking.dataValues.startDate, booking.dataValues.endDate];
+                console.log(timestampArr);
+
+                let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
+                console.log(newTimestamps);
+
+                booking.dataValues.startDate = newTimestamps[0].slice(0,10);
+                booking.dataValues.endDate = newTimestamps[1].slice(0,10);
+            }
+        } 
     
         return res.json({Bookings});
     } else if (currentUserId === spotOwnerId){//
@@ -461,15 +481,10 @@ router.get('/:spotId/bookings', requireAuth, async (req,res,next) =>{
                 let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
                 booking.dataValues.createdAt = newTimestamps[0];
                 booking.dataValues.updatedAt = newTimestamps[1];
-                console.log(newTimestamps);
-                console.log(" new time stamp array above")
+                // console.log(newTimestamps);
+                // console.log(" new time stamp array above")
                 booking.dataValues.startDate = newTimestamps[2].slice(0,10);
                 booking.dataValues.endDate = newTimestamps[3].slice(0,10);
-            } else if (!isOwner){
-                const timestampArr = [booking.startDate, booking.endDate];
-                let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
-                booking.startDate = newTimestamps[0].slice(0,10);
-                booking.endDate = newTimestamps[1].slice(0,10);
             }
         }  
     
