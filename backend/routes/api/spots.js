@@ -280,6 +280,14 @@ router.get('/:spotId/reviews', async (req,res,next) =>{
         ],
     });
 
+    for (let i = 0; i < Reviews.length; i++) {
+        const review = Reviews[i];
+        const timestampArr = [review.dataValues.createdAt, review.dataValues.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "getCurrentReviews");
+        review.dataValues.createdAt = newTimestamps[0];
+        review.dataValues.updatedAt = newTimestamps[1];
+    }  
+
     return res.json({Reviews});
 })
 
