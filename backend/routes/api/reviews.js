@@ -159,6 +159,14 @@ router.put('/:reviewId', requireAuth, validateReviewCreation, async(req, res, ne
         stars: stars
     })
     
+    // for (let i = 0; i < Reviews.length; i++) {
+    //     const review = Reviews[i];
+        const timestampArr = [desiredReview.dataValues.createdAt, desiredReview.dataValues.updatedAt];
+        let newTimestamps = reformatTimes(timestampArr, "getCurrentReviews");
+        desiredReview.dataValues.createdAt = newTimestamps[0];
+        desiredReview.dataValues.updatedAt = newTimestamps[1];
+    // }  
+
     return res.json({id: desiredReview.id,
         userId: desiredReview.userId,
         spotId: desiredReview.spotId,

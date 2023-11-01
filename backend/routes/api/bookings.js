@@ -7,6 +7,40 @@ const express = require('express');
 
 const router = express.Router();
 
+//! Get bookings made by current user
+// TODO: -----
+router.get('/current', requireAuth, async (req,res) =>{
+    const {user} = req;
+    const userId = user.id;
+    const where = {};
+    where.userId = userId;
+    const Bookings = await Booking.findAll({
+        where,
+        include: [
+            {
+                model: Spot,
+                include : { model: SpotImage,
+                    as: 'previewImage',
+                    where: {preview: true},
+                    attributes: ['url'],},
+                attributes: ['id','ownerId','address', 'city','state', 'country', 'lat', 'lng','name','price', ]
+            },
+        ],
+    });
+
+    for (let i = 0; i < Bookings.length; i++) {
+        const booking = Bookings[i];
+        const timestampArr = [booking.createdAt, booking.updatedAt, booking.startDate, booking.endDate];
+        let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
+        booking.createdAt = newTimestamps[0];
+        booking.updatedAt = newTimestamps[1];
+        booking.startDate = newTimestamps[2].splice(0,9);
+        booking.endDate = newTimestamps[3].splice(0,9);
+    }  
+
+    return res.json({Bookings});
+})
+
 //! Delete bookings made my owner of spot or guest
 // TODO: Nothing, complete
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
@@ -55,29 +89,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             });
         }
     }
-})
-
-//! Get bookings made by current user
-// TODO: -----
-router.get('/current', requireAuth, async (req,res) =>{
-    const {user} = req;
-    const userId = user.id;
-    const where = {};
-    where.userId = userId;
-    const Bookings = await Booking.findAll({
-        where,
-        include: [
-            {
-                model: Spot,
-                include : { model: SpotImage,
-                    as: 'previewImage',
-                    where: {preview: true},
-                    attributes: ['url'],},
-                attributes: ['id','ownerId','address', 'city','state', 'country', 'lat', 'lng','name','price', ]
-            },
-        ],
-    });
-    return res.json({Bookings});
 })
 
 //! Verify Dates for bookings
