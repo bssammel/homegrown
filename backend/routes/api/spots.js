@@ -334,7 +334,7 @@ router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
     } 
 
     const conflictingErr = () => {
-        const err = new Error('Sorry, this spot is already booked for the specific dates');
+        const err = new Error('Sorry, this spot is already booked for the specified dates');
         err.errors = { startDate: 'Start date conflicts with an existing booking', endDate: 'End date conflicts with an existing booking'};
         err.status = 403;
         return next(err);
@@ -405,6 +405,15 @@ router.post('/:spotId/bookings',requireAuth, async (req,res,next) =>{
     const endDate = bookingEndDate;
 
     const newBooking = await Booking.create({spotId, userId, startDate, endDate})
+
+    const timestampArr = [newBooking.dataValues.createdAt, newBooking.dataValues.updatedAt, newBooking.dataValues.startDate, newBooking.dataValues.endDate];
+    let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
+    newBooking.dataValues.createdAt = newTimestamps[0];
+    newBooking.dataValues.updatedAt = newTimestamps[1];
+    // console.log(newTimestamps);
+    // console.log(" new time stamp array above")
+    newBooking.dataValues.startDate = newTimestamps[2].slice(0,10);
+    newBooking.dataValues.endDate = newTimestamps[3].slice(0,10);
 
     return res.json(newBooking);
 });

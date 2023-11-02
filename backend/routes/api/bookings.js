@@ -30,12 +30,12 @@ router.get('/current', requireAuth, async (req,res) =>{
 
     for (let i = 0; i < Bookings.length; i++) {
         const booking = Bookings[i];
-        const timestampArr = [booking.createdAt, booking.updatedAt, booking.startDate, booking.endDate];
+        const timestampArr = [booking.dataValues.createdAt, booking.dataValues.updatedAt, booking.dataValues.startDate, booking.dataValues.endDate];
         let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
-        booking.createdAt = newTimestamps[0];
-        booking.updatedAt = newTimestamps[1];
-        booking.startDate = newTimestamps[2].slice(0,10);
-        booking.endDate = newTimestamps[3].slice(0,10);
+        booking.dataValues.createdAt = newTimestamps[0];
+        booking.dataValues.updatedAt = newTimestamps[1];
+        booking.dataValues.startDate = newTimestamps[2].slice(0,10);
+        booking.dataValues.endDate = newTimestamps[3].slice(0,10);
     }  
 
     return res.json({Bookings});
@@ -135,7 +135,7 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     } 
 
     const conflictingErr = () => {
-        const err = new Error('Sorry, this spot is already booked for the specific dates');
+        const err = new Error('Sorry, this spot is already booked for the specified dates');
         err.errors = { startDate: 'Start date conflicts with an existing booking', endDate: 'End date conflicts with an existing booking'};
         err.status = 403;
         return next(err);
@@ -168,7 +168,7 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     if(timeDifference <= 0 ){
         const err = new Error('Bad Request');
         err.errors = { endDate: 'endDate cannot be on or before startDate' };
-        err.status = 403;
+        err.status = 400;
         return next(err);
     }//great, the body is valid, what about those dates though, do they interfere with an already booked time?
    
@@ -183,14 +183,20 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
         const datePairObj = existingBookingDates[i];
 
 
+        console.log("##############################")
+        console.log(datePairObj);
+        console.log(datePairObj.dataValues);
+        console.log(datePairObj.dataValues.startDate);
+        console.log(datePairObj.dataValues.endDate);
+        console.log("##############################")
+
+
         retrievedStart = datePairObj.dataValues.startDate;
-        retrievedStartYikes = retrievedStart.slice(0,9);
-        parsedRetrievedStart = Date.parse(retrievedStartYikes);
+        parsedRetrievedStart = Date.parse(retrievedStart);
 
         
         retrievedEnd = datePairObj.dataValues.endDate;
-        retrievedEndYikes = retrievedEnd.slice(0,9);
-        parsedRetrievedEnd = Date.parse(retrievedEndYikes);
+        parsedRetrievedEnd = Date.parse(retrievedEnd);
 
         const verifiedDate = verifyDates(parsedNewStartDate, parsedNewEndDate, parsedRetrievedStart, parsedRetrievedEnd);
 
@@ -199,8 +205,8 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
         } 
     };
 
-    const startDate = newStartDate;
-    const endDate = newEndDate;
+    // const startDate = newStartDate;
+    // const endDate = newEndDate;
     const id = bookingId;
     const spotId = bookedSpotId;
     const userId = bookingUser;
