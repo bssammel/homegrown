@@ -36,7 +36,10 @@ router.get('/current', requireAuth, async (req,res) =>{
         booking.dataValues.updatedAt = newTimestamps[1];
         booking.dataValues.startDate = newTimestamps[2].slice(0,10);
         booking.dataValues.endDate = newTimestamps[3].slice(0,10);
+        booking.dataValues.Spot.dataValues.previewImage = booking.dataValues.Spot.dataValues.previewImage[0].url;
     }  
+
+    
 
     return res.json({Bookings});
 })
@@ -75,9 +78,14 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     } else if (userId === ownerId || userId === guestId){
         //* get startDate
         const bookingStartDate = bookingToDelete.startDate;
+        console.log("########################")
+        console.log(bookingStartDate);
         const parsedStartDate = Date.parse(bookingStartDate);
+        console.log(parsedStartDate);
         const currentTime = Date.now();
-        const timeDifference = currentTime - parsedStartDate; //if negative, means startDate is in future, pos = past
+        console.log(currentTime);
+        const timeDifference = currentTime - parsedStartDate;
+        console.log(timeDifference); //if negative, means startDate is in future, pos = past
         if(timeDifference > 0){
             const err = new Error('Bookings that have been started can\'t be deleted');
             err.status = 403;

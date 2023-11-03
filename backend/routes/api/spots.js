@@ -74,14 +74,14 @@ handleValidationErrors
 
 //! query parameter validations
 const validateQueryParam = [
-    // check('page')
-    //     .exists({checkFalsy: true})
-    //     .isInt({ min: 1 })
-    //     .withMessage('Page must be greater than or equal to 1'),
-    // check('size')
-    //     .exists({checkFalsy: true})
-    //     .isInt({ min: 1 })
-    //     .withMessage('Size must be greater than or equal to 1'),
+    check('page')
+        // .exists({checkFalsy: true})
+        .isInt({ min: 1 })
+        .withMessage('Page must be greater than or equal to 1'),
+    check('size')
+        // .exists({checkFalsy: true})
+        .isInt({ min: 1 })
+        .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
         .optional()
         .isDecimal()
@@ -729,6 +729,27 @@ router.get('/', validateQueryParam, async (req, res) =>{
 
         const query = {};
 
+        console.log("req.query.page: ", req.query.page)
+        console.log("req.query.size: ", req.query.size)
+        let pageExists;
+        let sizeExists;
+
+        if(req.query.page){
+            console.log("page found")
+            pageExists = true;
+        } else {
+            console.log("page not found")
+            pageExists = false;
+        }
+
+        if(req.query.size){
+            console.log("size found")
+            sizeExists = true;
+        } else {
+            console.log("size not found")
+            sizeExists = false;
+        }
+
         page = page ? Number(page) : 1;
         size = size ? Number(size) : 20;
 
@@ -742,6 +763,22 @@ router.get('/', validateQueryParam, async (req, res) =>{
         
         query.limit = size;
         query.offset = size * (page - 1);
+
+
+        if(!pageExists && !sizeExists){ 
+            console.log("No page or size")
+            return res.json({Spots});
+        }
+
+        if(!pageExists) {
+            console.log("No page only")
+            return res.json({Spots, size});
+        }
+
+        if(!sizeExists) {
+            console.log("No size only")
+            return res.json({Spots, page});
+        }
 
         return res.json({Spots, page, size});
     } else {
