@@ -854,7 +854,7 @@ router.get('/', validateQueryParam, async (req, res) =>{
             
             // avgRatingAnswer =
 
-            spot.avgRating = avgRatingNum;
+            spot.avgRating = Math.round(avgRatingNum * 100) / 100;
         }
 
 
