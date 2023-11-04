@@ -179,6 +179,15 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
         err.status = 400;
         return next(err);
     }//great, the body is valid, what about those dates though, do they interfere with an already booked time?
+
+    const parsedCurrDate = Date.now();
+    const timeDiffCurr = parsedNewStartDate - parsedCurrDate;
+    if(timeDiffCurr < 0){
+        const err = new Error('Bad Request');
+        err.errors = { message: 'Cannot book past dates' };
+        err.status = 400;
+        return next(err);
+    }
    
     const where = {};
     where.spotId = bookedSpotId;
@@ -191,12 +200,12 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
         const datePairObj = existingBookingDates[i];
 
 
-        console.log("##############################")
-        console.log(datePairObj);
-        console.log(datePairObj.dataValues);
-        console.log(datePairObj.dataValues.startDate);
-        console.log(datePairObj.dataValues.endDate);
-        console.log("##############################")
+        // console.log("##############################")
+        // console.log(datePairObj);
+        // console.log(datePairObj.dataValues);
+        // console.log(datePairObj.dataValues.startDate);
+        // console.log(datePairObj.dataValues.endDate);
+        // console.log("##############################")
 
 
         retrievedStart = datePairObj.dataValues.startDate;
@@ -222,10 +231,10 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     const updatedBooking = await bookingToUpdate.update({id: id, spotId:spotId, userId:userId, startDate:newStartDate, endDate:newEndDate})
 
     
-    console.log("###################################");
-console.log(updatedBooking)
-// console.log(newEndDate)
-    console.log("###################################");
+//     console.log("###################################");
+// console.log(updatedBooking)
+// // console.log(newEndDate)
+//     console.log("###################################");
 
     const timestampArr = [updatedBooking.dataValues.createdAt, updatedBooking.dataValues.updatedAt, updatedBooking.dataValues.startDate, updatedBooking.dataValues.endDate];
     let newTimestamps = reformatTimes(timestampArr, "getCurrentBookings");
