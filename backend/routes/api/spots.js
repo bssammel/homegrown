@@ -542,7 +542,7 @@ router.get('/:spotId', async (req,res,next) =>{
         "createdAt",
         "updatedAt",
     ],
-    group:['Spot.id'],
+    group:['Spot.id', 'Owner.id'],
     });
 
 
