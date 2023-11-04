@@ -675,40 +675,62 @@ router.delete('/:spotId', requireAuth, async (req,res,next) =>{
 //! Get all spots
 router.get('/', validateQueryParam, async (req, res) =>{
 
-    // * 1- create array of Spot Objects --Done
-    const Spots = await Spot.findAll(
-        {include: [
-            {//avgRating
-                model: Review,
-                attributes: []
-            },
-            { model: SpotImage,
-                as: 'previewImage',
-                where: {preview: true},
-                attributes: ['url'],}
-        ],
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-        attributes:[
-            "id",
-            "ownerId",
-            "address",
-            "city",
-            "state",
-            "country",
-            "lat",
-            "lng",
-            "name",
-            "description",
-            "price",
-            "createdAt",
-            "updatedAt",
-            [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
-        ,
-        group:['Spot.id', 'previewImage.url'],
-        raw:true},       
-    );
+    let pageExists;
+    let sizeExists;
 
-    // console.log(spots, "line 618")
+    if(req.query.page){
+        console.log("page found")
+        pageExists = true;
+    } else {
+        console.log("page not found")
+        pageExists = false;
+    }
+
+    if(req.query.size){
+        console.log("size found")
+        sizeExists = true;
+    } else {
+        console.log("size not found")
+        sizeExists = false;
+    }
+
+    //! no params version
+    if(!sizeExists && !pageExists){
+        const Spots = await Spot.findAll(
+            {include: [
+                {//avgRating
+                    model: Review,
+                    attributes: []
+                },
+                { model: SpotImage,
+                    as: 'previewImage',
+                    where: {preview: true},
+                    attributes: ['url'],}
+            ],
+    
+            attributes:[
+                "id",
+                "ownerId",
+                "address",
+                "city",
+                "state",
+                "country",
+                "lat",
+                "lng",
+                "name",
+                "description",
+                "price",
+                "createdAt",
+                "updatedAt",
+                [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
+            ,
+            group:['Spot.id', 'previewImage.url'],
+            raw:true},       
+        );
+
+        // console.log(spots, "line 618")
     for (let i = 0; i < Spots.length; i++) {
         const spot = Spots[i];
         spot["previewImage"] = spot["previewImage.url"];
@@ -726,32 +748,11 @@ router.get('/', validateQueryParam, async (req, res) =>{
         // [spot.createdAt, spot.updateAt] = newTimestamps;
     }      
 
-    if (req.query) {
-        let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+    return res.json({Spots});
+    
+    } else {//!!!!!!!!!!!!!!!!!!!!end of no params
 
         const query = {};
-
-        // console.log("req.query.page: ", req.query.page)
-        // console.log("req.query.size: ", req.query.size)
-        let pageExists;
-        let sizeExists;
-
-        if(req.query.page){
-            console.log("page found")
-            pageExists = true;
-        } else {
-            console.log("page not found")
-            pageExists = false;
-        }
-
-        if(req.query.size){
-            console.log("size found")
-            sizeExists = true;
-        } else {
-            console.log("size not found")
-            sizeExists = false;
-        }
-
         page = page ? Number(page) : 1;
         size = size ? Number(size) : 20;
 
@@ -766,28 +767,144 @@ router.get('/', validateQueryParam, async (req, res) =>{
         query.limit = size;
         query.offset = size * (page - 1);
 
-
-        if(!pageExists && !sizeExists){ 
-            console.log("No page or size")
-            return res.json({Spots});
+        const where = {};
+        //set up latitude reqs
+        if (minLat || maxLat){
+            if(!minLat) minLat = -90;
+            if(!maxLat) maxLat = 90
+            where.lat = { [Op.between]: [minLat, maxLat]}
         }
 
-        if(!pageExists) {
-            console.log("No page only")
-            return res.json({Spots, size});
+        //set up longitude reqs
+        if(minLng || maxLng) {
+            if(minLng === undefined) minLng = -180;
+            if(maxLng === undefined) maxLng = 180;
+            where.lng = { [Op.between]: [minLng, maxLng]}
+            //console.log(where.lng);
+        }
+        
+        //set up price reqs
+        if(minPrice || maxPrice) {
+            if(!minPrice) minPrice = 0;
+            if(!maxPrice) maxPrice = Number.MAX_VALUE
+            where.price = { [Op.between]: [minPrice, maxPrice]}
         }
 
-        if(!sizeExists) {
-            console.log("No size only")
-            return res.json({Spots, page});
+
+        // * 1- create array of Spot Objects --Done
+        const Spots = await Spot.findAll(
+            {
+                where,
+                ...query,
+                // include: [
+                //     {//avgRating
+                //         model: Review,
+                //         attributes: []
+                //     },
+                //     { model: SpotImage,
+                //         as: 'previewImage',
+                //         where: {preview: true},
+                //         attributes: ['url'],}
+                // ],
+
+                attributes:[
+                    "id",
+                    "ownerId",
+                    "address",
+                    "city",
+                    "state",
+                    "country",
+                    "lat",
+                    "lng",
+                    "name",
+                    "description",
+                    "price",
+                    "createdAt",
+                    "updatedAt",
+                    // [sequelize.fn("AVG", sequelize.col("Reviews.stars")),'avgRating']
+                ]
+                ,
+                // group:['Spot.id'],
+                raw:true
+        },       
+        );
+
+        //add averages
+        for (let i = 0; i < Spots.length; i++) {
+            const spot = Spots[i];
+            
+            // const numOfReviewsObj = await Review.findAll({
+            //     where: {
+            //         spotId: req.params.spotId
+            //     },
+            //     attributes: [[sequelize.fn("COUNT", sequelize.col("Review.id")), 'numReviews']]
+            // })
+
+            // const numOfReviewInt = numOfReviewsObj[0].dataValues.numReviews;
+
+            avgRating = await Review.findAll({
+                where: {
+                    spotId: spot.id
+                },
+                attributes: [[sequelize.fn("AVG", sequelize.col("Review.stars")), 'avgStarRating'],]
+            })
+            const avgRatingNum = avgRating[0].dataValues.avgStarRating;
+
+            // const Reviews = await Review.findAll()
+            
+            // avgRatingAnswer =
+
+            spot.avgRating = avgRatingNum;
         }
 
+
+        // console.log(spots, "line 618")
+        for (let i = 0; i < Spots.length; i++) {
+            const spot = Spots[i];
+
+
+            previewImageObj = await SpotImage.findAll({
+                where: {preview: true},
+                attributes: ['url']
+            })
+
+            spot["previewImage"] = previewImageObj[0].dataValues.url;
+            // delete spot["previewImage.url"];
+        }
+        //if it works, it works
+
+        //! reformat times
+        for (let i = 0; i < Spots.length; i++) {
+            const spot = Spots[i];
+            const timestampArr = [spot.createdAt, spot.updatedAt];
+            let newTimestamps = reformatTimes(timestampArr, "getAllSpots");
+            spot.createdAt = newTimestamps[0];
+            spot.updatedAt = newTimestamps[1];
+            // [spot.createdAt, spot.updateAt] = newTimestamps;
+        }   
+        
         return res.json({Spots, page, size});
-    } else {
 
-        return res.json({Spots});
-    }});
-
+    }
+    // if (req.query) {
+    //     // console.log("req.query.page: ", req.query.page)
+    //     // console.log("req.query.size: ", req.query.size)
+    //     if(!pageExists && !sizeExists){ 
+    //         console.log("No page or size")
+    //         return res.json({Spots});
+    //     }
+    //     if(!pageExists) {
+    //         console.log("No page only")
+    //         return res.json({Spots, size});
+    //     }
+    //     if(!sizeExists) {
+    //         console.log("No size only")
+    //         return res.json({Spots, page});
+    //     }
+    //     return res.json({Spots, page, size});
+    // } else {
+    // }
+});
 
 
 //! add spot 
