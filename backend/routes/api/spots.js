@@ -542,7 +542,7 @@ router.get('/:spotId', async (req,res,next) =>{
         "createdAt",
         "updatedAt",
     ],
-    group:['Spot.id', 'Owner.id'],
+    group:['Spot.id', 'Owner.id', 'Spotimages.id'],
     });
 
 
@@ -737,6 +737,8 @@ router.get('/', validateQueryParam, async (req, res) =>{
         delete spot["previewImage.url"];
     }
     //if it works, it works
+
+    spot.avgRating = Math.round(spot.avgRating * 100) / 100;
 
     //! reformat times
     for (let i = 0; i < Spots.length; i++) {
