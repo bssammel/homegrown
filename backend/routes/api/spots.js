@@ -738,7 +738,10 @@ router.get('/', validateQueryParam, async (req, res) =>{
     }
     //if it works, it works
 
-    spot.avgRating = Math.round(spot.avgRating * 100) / 100;
+    for (let i = 0; i < Spots.length; i++) {
+        const spot = Spots[i];
+        spot.avgRating = Math.round(spot.avgRating * 100) / 100;
+    }
 
     //! reformat times
     for (let i = 0; i < Spots.length; i++) {
