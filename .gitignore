@@ -4,3 +4,5 @@ build
 .DS_Store
 *.db
 backend/routes/api/test-routes.js
+backend/routes/api/getalluntouched.js
+backend/routes/api/getallspots.js

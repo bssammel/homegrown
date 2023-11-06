@@ -22,9 +22,24 @@ const getPreviewImageURL = async function(spotId){
     if(!desiredSpot[0].dataValues.SpotImages[0]){
         previewImageURL = null;
     } else {
-        previewImageURL = desiredSpot[0].dataValues.SpotImages[0].dataValues.url;
-    }
+        for (let j = 0; j < desiredSpot[0].dataValues.SpotImages.length; j++) {
+            const spotImgObj = desiredSpot[0].dataValues.SpotImages[j];
+            console.log("spotImgObj");
+            console.log(spotImgObj);
+            console.log("spotImgObj.dataValues.preview: ",spotImgObj.dataValues.preview);
 
+
+            if(spotImgObj.dataValues.preview === true){
+                console.log("the preview value on the current spot image object is TRUE");
+                previewImageURL = spotImgObj.dataValues.url;
+                return previewImageURL;
+            }else if(spotImgObj.dataValues.preview === false) {
+                console.log("the preview value on the current spot image object is FALSE");
+                previewImageURL = null;
+            }
+            previewImageURL = null;
+        }
+    }
     return previewImageURL;
 }
 
