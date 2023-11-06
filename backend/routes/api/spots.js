@@ -2,6 +2,7 @@
 const { User, Spot, SpotImage, Review, ReviewImage, Booking, sequelize} = require('../../db/models');
 const {requireAuth} = require('../../utils/auth.js');
 const { reformatTimes } = require('../../utils/date-time');
+const { getPreviewImageURL } = require('../../utils/previewImage');
 
 const express = require('express');
 
@@ -131,10 +132,10 @@ router.get('/current', requireAuth, async (req,res) =>{
             model: Review,
             attributes: []
         },
-        { model: SpotImage,
-            as: 'previewImage',
-            where: {preview: true},
-            attributes: ['url'],}
+        // { model: SpotImage,
+        //     as: 'previewImage',
+        //     where: {preview: true},
+        //     attributes: ['url'],}
     ],
 
     attributes:[
@@ -153,14 +154,18 @@ router.get('/current', requireAuth, async (req,res) =>{
         "updatedAt",
         [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
     ,
-    group:['Spot.id', 'previewImage.url'],
+    // group:['Spot.id', 'previewImage.url'],
+    group:['Spot.id'],
     raw:true}, 
     );
 
     // console.log(Spots, "line 618")
     for (let i = 0; i < Spots.length; i++) {
         const spot = Spots[i];
-        spot["previewImage"] = spot["previewImage.url"];
+        // console.log("previewImage at 164 spots.js: ", getPreviewImageURL(spot.id))
+        // console.log( typeof getPreviewImageURL(spot.id))
+        spot.previewImage = await getPreviewImageURL(spot.id);
+        // spot["previewImage"] = spot["previewImage.url"];
         delete spot["previewImage.url"];
     }
     //if it works, it works
@@ -704,10 +709,10 @@ router.get('/', validateQueryParam, async (req, res) =>{
                     model: Review,
                     attributes: []
                 },
-                { model: SpotImage,
-                    as: 'previewImage',
-                    where: {preview: true},
-                    attributes: ['url'],}
+                // { model: SpotImage,
+                //     as: 'previewImage',
+                //     where: {preview: true},
+                //     attributes: ['url'],}
             ],
     
             attributes:[
@@ -726,14 +731,16 @@ router.get('/', validateQueryParam, async (req, res) =>{
                 "updatedAt",
                 [sequelize.fn("AVG", sequelize.col("Reviews.stars")), 'avgRating']]
             ,
-            group:['Spot.id', 'previewImage.url'],
+            // group:['Spot.id', 'previewImage.url'],
+            group:['Spot.id'],
             raw:true},       
         );
 
         // console.log(spots, "line 618")
     for (let i = 0; i < Spots.length; i++) {
         const spot = Spots[i];
-        spot["previewImage"] = spot["previewImage.url"];
+        spot.previewImage = await getPreviewImageURL(spot.id);
+        // spot["previewImage"] = spot["previewImage.url"];
         delete spot["previewImage.url"];
     }
     //if it works, it works
