@@ -184,7 +184,7 @@ router.put('/:bookingId', requireAuth, async (req,res,next) =>{
     const timeDiffCurr = parsedNewStartDate - parsedCurrDate;
     if(timeDiffCurr < 0){
         const err = new Error('Bad Request');
-        err.errors = { message: 'Cannot book past dates' };
+        err.errors = { message: 'Past bookings cannot be modified' };
         err.status = 400;
         return next(err);
     }
