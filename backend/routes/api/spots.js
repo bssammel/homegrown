@@ -873,15 +873,9 @@ router.get('/', validateQueryParam, async (req, res) =>{
         // console.log(spots, "line 618")
         for (let i = 0; i < Spots.length; i++) {
             const spot = Spots[i];
-
-
-            previewImageObj = await SpotImage.findAll({
-                where: {preview: true},
-                attributes: ['url']
-            })
-
-            spot["previewImage"] = previewImageObj[0].dataValues.url;
-            // delete spot["previewImage.url"];
+            spot.previewImage = await getPreviewImageURL(spot.id);
+            // spot["previewImage"] = spot["previewImage.url"];
+            delete spot["previewImage.url"];
         }
         //if it works, it works
 
