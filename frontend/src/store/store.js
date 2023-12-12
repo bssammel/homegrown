@@ -1,8 +1,9 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import {thunk} from 'redux-thunk';
+import sessionReducer from './session';
 
 const rootReducer = combineReducers({
-
+  session: sessionReducer
 });
 
 let enhancer; //special version of createStore that wraps another layer around redux store to allow for the enhaned store to change how a store behaves
