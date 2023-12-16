@@ -1,10 +1,15 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import {thunk} from 'redux-thunk';
 import sessionReducer from './session';
+import spotsReducer from './spots';
 
+console.log(1)
 const rootReducer = combineReducers({
-  session: sessionReducer
+  session: sessionReducer,
+  spot : spotsReducer,
+  
 });
+console.log(2)
 
 let enhancer; //special version of createStore that wraps another layer around redux store to allow for the enhaned store to change how a store behaves
 if (import.meta.env.MODE === 'production') {//in production this enhancer will apply the thunk middleware only
@@ -18,6 +23,7 @@ if (import.meta.env.MODE === 'production') {//in production this enhancer will a
 }
 
 const configureStore = (preloadedState) => {
+  console.log(3)
     return createStore(rootReducer, preloadedState, enhancer);
   };
 
