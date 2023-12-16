@@ -20,7 +20,7 @@ module.exports = {
         lat: 90.0000000,
         lng: -180.0000000,
         name: "Oak Grove Tiny Home",
-        description: "Perfect space to grown native wildflowers",
+        description: "Perfect space to grow native wildflowers",
         price: 10,
       },
       {

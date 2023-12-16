@@ -16,11 +16,11 @@ const SpotList = () => {
     }, [dispatch]);
 
     // console.log("oh look a spot");
-    spotList[0].forEach((spot)=> {
-        console.log("oh look a spot");
-        console.log(spot)
-        console.log("do you see it");
-    })
+    // spotList[0].forEach((spot)=> {
+    //     console.log("oh look a spot");
+    //     console.log(spot)
+    //     console.log("do you see it");
+    // })
     return(
         <>
         <h1>Grow Spots</h1>
