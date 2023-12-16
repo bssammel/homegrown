@@ -30,6 +30,7 @@ const SpotList = () => {
             <div key = {spot.id}>
         <p>This is {spot.name} for spot with {spot.id}. It is in {spot.city}, {spot.state}. With an average rating of {spot.avgRating} and a weekly price of {spot.price}, it is described as "{spot.description}". The image is below: </p>
         <img src={spot.previewImage} alt="" />
+        
         </div>
         ) 
         

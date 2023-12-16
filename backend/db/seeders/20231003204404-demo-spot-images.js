@@ -12,22 +12,22 @@ module.exports = {
   async up (queryInterface, Sequelize) {
   await SpotImage.bulkCreate([ {
     spotId:1,
-    url:'imageUrlForOakGroveTinyHome',
+    url:'https://gardeningsolutions.ifas.ufl.edu/images/plants/flowers/yellow_wildflowers_field.jpg',
     preview:true
    },
    {
     spotId:2,
-    url:'imageUrlForLakesideCommunityGarden',
+    url:'https://enjoyburlington.com/wp-content/uploads/sites/10/2015/06/Starr-farm-venuecrop.jpg',
     preview:true
    },
    {
     spotId:3,
-    url:'imageUrlForSlopingBackyard1',
+    url:'https://www.icloud.com/5220c404-6225-43fe-b9a5-41956640db08',
     preview:true
    },
    {
     spotId:3,
-    url:'imageUrlForSlopingBackyard2',
+    url:'https://www.icloud.com/158c08c8-4221-4fe8-91b3-747699ffa4e4',
     preview:false
    },
   ],{validate: true});
