@@ -1,1 +1,12 @@
 /* TODO: Add sitewide styles */
+body{
+    background-color: #f7f4d7;
+}
+p{
+    font-family: 'Space Grotesk';
+    color: #264233;
+}
+h1, h2 {
+    font-family: 'Alice';
+    color:#264233;
+}

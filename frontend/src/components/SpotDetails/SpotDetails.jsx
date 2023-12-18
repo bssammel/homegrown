@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotDetails } from "../../store/spotDetails";
@@ -9,16 +9,19 @@ const SpotDetails = () => {
   //     state => state.spot.entries.find(singleSpot => singleSpot.id === spotId )
   // )
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const spotDetails = useSelector((state) => state.spotDetails.spotDetails);
   console.log("hey this is supposed to be the spotDetails obj");
-  console.log(spotDetails.spotDetails);
+  console.log(spotDetails);
 
   useEffect(() => {
     console.log("this is the useEffect in spotdetailsjsx");
 
-    dispatch(getSpotDetails(parseInt(spotId)));
+    dispatch(getSpotDetails(parseInt(spotId))).then(() => setIsLoading(false));
   }, [dispatch, spotId]);
-
+  //   if (isLoading) {
+  //     return <h1>Loading...</h1>;
+  //   } else {
   return (
     <>
       <h1>{spotDetails.name}</h1>
