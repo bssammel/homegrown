@@ -5,7 +5,7 @@ const LOAD_SPOT_DETAILS = "spots/loadDetails";
 
 //this is the action creator for loadSpots, this is triggered in the thunk dispatch
 export const loadSpots = (spots) => {
-  // console.log(5)
+  console.log(5);
   return {
     type: LOAD_SPOTS,
     spots, //payload same as spots: spots
@@ -14,7 +14,7 @@ export const loadSpots = (spots) => {
 
 //this is the action creator for loadSpotDetails, this is triggered in the thunk dispatch
 export const loadSpotDetails = (detailedSpot) => {
-  // console.log("loadSpotDetails function in spots.js")
+  console.log("loadSpotDetails function in spots.js");
   return {
     type: LOAD_SPOT_DETAILS,
     detailedSpot,
@@ -24,7 +24,7 @@ export const loadSpotDetails = (detailedSpot) => {
 // this is the fetch for spots, it is within a thunk action creator
 
 export const getAllSpots = () => async (dispatch) => {
-  // console.log(4)
+  console.log("The getAllSpots function in spots.js is running");
   const res = await csrfFetch("/api/spots");
   if (res.ok) {
     const spots = await res.json();
@@ -36,6 +36,7 @@ export const getAllSpots = () => async (dispatch) => {
 export const getSpotDetails = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`);
   if (res.ok) {
+    console.log("The getSpotDetails function in spots.js is running");
     const spotDetails = await res.json();
     dispatch(loadSpotDetails(spotDetails));
   }

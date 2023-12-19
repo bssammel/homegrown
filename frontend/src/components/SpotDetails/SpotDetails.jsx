@@ -1,23 +1,29 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import {getSpotDetails} from "../../store/spotDetails";
 import { getSpotDetails } from "../../store/spots";
 
 const SpotDetails = () => {
-  const { spotId } = useParams();
+  const { id } = useParams();
+  console.log(id);
   //   const navigate = useNavigate();
-  //   const [goToSpot, setGoToSpot] = useState(spotId);
+  //   const [goToSpot, setGoToSpot] = useState(id);
 
   const spotDetails = useSelector((state) =>
-    state.spots ? state.spots[spotId] : null
+    state.spot ? state.spot[id] : null
   );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSpotDetails(spotId));
-  }, [dispatch, spotId]);
+    dispatch(getSpotDetails(id));
+  }, [dispatch, id]);
+
+  if (!spotDetails) {
+    console.log("spotDetails is null");
+    return <h1>spotDetails is null</h1>;
+  }
 
   return (
     <>
