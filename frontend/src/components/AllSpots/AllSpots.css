@@ -1,0 +1,13 @@
+body {
+  display: grid;
+  grid-template-columns: 8% repeat(3, 28%) 8%;
+}
+
+.spots-grid {
+  margin: auto;
+  display: grid;
+  grid-column: span 3/5;
+}
+
+.single-spot {
+}
