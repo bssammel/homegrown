@@ -9,7 +9,7 @@ const SpotDetails = () => {
   //     state => state.spot.entries.find(singleSpot => singleSpot.id === spotId )
   // )
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
+  //   const [isLoading, setIsLoading] = useState(true);
   const spotDetails = useSelector((state) => state.spotDetails.spotDetails);
   console.log("hey this is supposed to be the spotDetails obj");
   console.log(spotDetails);
@@ -17,7 +17,7 @@ const SpotDetails = () => {
   useEffect(() => {
     console.log("this is the useEffect in spotdetailsjsx");
 
-    dispatch(getSpotDetails(parseInt(spotId))).then(() => setIsLoading(false));
+    dispatch(getSpotDetails(parseInt(spotId)));
   }, [dispatch, spotId]);
   //   if (isLoading) {
   //     return <h1>Loading...</h1>;
