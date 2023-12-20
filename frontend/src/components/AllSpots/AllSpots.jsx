@@ -22,6 +22,9 @@ const SpotList = () => {
     dispatch(getAllSpots());
   }, [dispatch]);
 
+  if (!spotList[0]) {
+    return <h1>Looking for spots in your area!</h1>;
+  }
   return (
     <>
       <h1>Grow Spots</h1>

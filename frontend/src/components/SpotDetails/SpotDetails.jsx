@@ -17,7 +17,9 @@ const SpotDetails = () => {
 
   console.log("line 18 in spot details.jsx");
 
-  const reviewObj = useSelector((state) => state.reviews);
+  const reviewObj = useSelector((state) =>
+    state.reviews ? state.reviews : null
+  );
   console.log("this is supposed to be review Obj");
   console.log(reviewObj);
   const reviewList = Object.values(reviewObj)[0];
@@ -25,7 +27,7 @@ const SpotDetails = () => {
   console.log(reviewList);
   console.log(typeof reviewList);
   console.log(`reviewList is an array: ${Array.isArray(reviewList)}`);
-  console.log(`reviewList is ${reviewList.length} items long`);
+  // console.log(`reviewList is ${reviewList.length} items long`);
 
   const dispatch = useDispatch();
 
@@ -35,7 +37,11 @@ const SpotDetails = () => {
 
   if (!spotDetails) {
     console.log("spotDetails is null");
-    return <h1>spotDetails is null</h1>;
+    return <h1>Getting those details for you!</h1>;
+  }
+
+  if (!reviewList) {
+    return <h1>Loading some reviews for you!</h1>;
   }
 
   return (
@@ -54,8 +60,9 @@ const SpotDetails = () => {
         {reviewList.map((review) => (
           <div key={review.id}>
             <p>
-              This Review was written by {review.User.firstName} and reads the
-              following :{review.review}. It was written in
+              This Review was written by
+              {/* {review.User.firstName} */}
+              and reads the following :{review.review}. It was written in
             </p>
           </div>
         ))}
