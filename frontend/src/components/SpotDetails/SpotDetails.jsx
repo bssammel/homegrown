@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import {getSpotDetails} from "../../store/spotDetails";
 import { getSpotDetails } from "../../store/spots";
+import { getSpotReviews } from "../../store/reviews";
 
 const SpotDetails = () => {
   const { id } = useParams();
@@ -14,10 +15,22 @@ const SpotDetails = () => {
     state.spot ? state.spot[id] : null
   );
 
+  console.log("line 18 in spot details.jsx");
+
+  const reviewObj = useSelector((state) => state.reviews);
+  console.log("this is supposed to be review Obj");
+  console.log(reviewObj);
+  const reviewList = Object.values(reviewObj)[0];
+  console.log("This is supposed toe be the reviewList");
+  console.log(reviewList);
+  console.log(typeof reviewList);
+  console.log(`reviewList is an array: ${Array.isArray(reviewList)}`);
+  console.log(`reviewList is ${reviewList.length} items long`);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSpotDetails(id));
+    dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id]);
 
   if (!spotDetails) {
@@ -27,14 +40,26 @@ const SpotDetails = () => {
 
   return (
     <>
-      <h1>{spotDetails.name}</h1>
-      <p className="location">
-        {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
-      </p>
-      <h2 className="hostDetails">
-        Hosted by: {spotDetails.Owner.firstName} {spotDetails.Owner.lastName}
-      </h2>
-      <p className="description">{spotDetails.description}</p>
+      <section className="spot-details">
+        <h1>{spotDetails.name}</h1>
+        <p className="location">
+          {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
+        </p>
+        <h2 className="hostDetails">
+          Hosted by: {spotDetails.Owner.firstName} {spotDetails.Owner.lastName}
+        </h2>
+        <p className="description">{spotDetails.description}</p>
+      </section>
+      <section className="spot-reviews">
+        {reviewList.map((review) => (
+          <div key={review.id}>
+            <p>
+              This Review was written by {review.User.firstName} and reads the
+              following :{review.review}. It was written in
+            </p>
+          </div>
+        ))}
+      </section>
     </>
   );
 };
