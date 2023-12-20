@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+console.log("the reviews.js file is running");
 
 const LOAD_SPOT_REVIEWS = "reviews/loadReviews";
 
@@ -20,6 +21,7 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
 const reviewsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_SPOT_REVIEWS: {
+      console.log("Load spot reviews is running");
       const newState = {};
       const reviewArr = Object.values(action.reviews);
       reviewArr.forEach((review) => {
@@ -27,8 +29,10 @@ const reviewsReducer = (state = {}, action) => {
       });
       return newState;
     }
-    default:
+    default: {
+      console.log("The default state is running");
       return state;
+    }
   }
 };
 

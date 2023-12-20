@@ -30,7 +30,13 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
+    dispatch(getSpotDetails(id))
+      // .then(
+      //   console.log(
+      //     "The useEffect is going to dispatch the getSpotReviews action"
+      //   )
+      // )
+      .then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id]);
 
   if (!spotDetails) {
@@ -55,7 +61,7 @@ const SpotDetails = () => {
           <div key={review.id}>
             <p>
               This Review was written by {review.User.firstName} and reads the
-              following :{review.review}. It was written in
+              following :{review.review}
             </p>
           </div>
         ))}
