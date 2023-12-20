@@ -23,7 +23,7 @@ const SpotDetails = () => {
   console.log("this is supposed to be review Obj");
   console.log(reviewObj);
   const reviewList = Object.values(reviewObj)[0];
-  console.log("This is supposed toe be the reviewList");
+  console.log("This is supposed to be the reviewList");
   console.log(reviewList);
   console.log(typeof reviewList);
   console.log(`reviewList is an array: ${Array.isArray(reviewList)}`);
