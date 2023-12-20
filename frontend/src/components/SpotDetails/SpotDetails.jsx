@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import {getSpotDetails} from "../../store/spotDetails";
 import { getSpotDetails } from "../../store/spots";
 import { getSpotReviews } from "../../store/reviews";
+import dateTimeModifier from "../../helpers/dateTimeModifier";
 
 const SpotDetails = () => {
   const { id } = useParams();
@@ -68,6 +69,9 @@ const SpotDetails = () => {
             <p>
               This Review was written by {review.User.firstName} and reads the
               following :{review.review}. It was written in
+              {" " + dateTimeModifier(review.createdAt, "Month Year")}. This
+              user gave this garden spot a rating of {review.stars} stars out of
+              5.
             </p>
           </div>
         ))}

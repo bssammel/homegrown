@@ -1,5 +1,8 @@
 const findMonth = function (monthStr) {
+  monthStr = parseInt(monthStr);
   let monthWord;
+  console.log(`Month digits: ${monthStr}`);
+
   if (monthStr === 1) {
     monthWord = "January";
   } else if (monthStr === 2) {
@@ -31,7 +34,7 @@ const dateTimeModifier = function (timeStampStr, returnFormat) {
   const monthWord = findMonth(timeStampStr.slice(5, 7));
   const year = timeStampStr.slice(0, 4);
   if (returnFormat === "Month Year") {
-    return monthWord + year;
+    return monthWord + " " + year;
   }
 };
 
