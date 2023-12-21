@@ -1,11 +1,20 @@
 import { csrfFetch } from "./csrf";
 
+//? These are all the action types used! They are listed in CRUD order from least specific to most specific
+const CREATE_SPOT = "spots/createSpot";
 const LOAD_SPOTS = "spots/loadSpots";
 const LOAD_SPOT_DETAILS = "spots/loadDetails";
 
+//?These are all the action creators listed in CRUD order from least specific to most specific
+export const createSpot = (newSpot) => {
+  return {
+    type: CREATE_SPOT,
+    newSpot,
+  };
+};
 //this is the action creator for loadSpots, this is triggered in the thunk dispatch
 export const loadSpots = (spots) => {
-  console.log(5);
+  //   console.log(5);
   return {
     type: LOAD_SPOTS,
     spots, //payload same as spots: spots
@@ -19,6 +28,22 @@ export const loadSpotDetails = (detailedSpot) => {
     type: LOAD_SPOT_DETAILS,
     detailedSpot,
   };
+};
+
+//?These are all the thunk action creators! Listed in CRUD order!
+export const createNewSpot = (newSpotData) => async (dispatch) => {
+  const res = await csrfFetch(`api/spots`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newSpotData),
+  });
+  if (res.ok) {
+    const createdSpot = await res.json();
+    dispatch(createSpot(createdSpot));
+    return createdSpot;
+  }
 };
 
 // this is the fetch for spots, it is within a thunk action creator
@@ -49,6 +74,9 @@ export const getSpotDetails = (spotId) => async (dispatch) => {
 const spotsReducer = (state = {}, action) => {
   // console.log(6)
   switch (action.type) {
+    case CREATE_SPOT: {
+      return { ...state, [action.newSpot.id]: action.newSpot };
+    }
     case LOAD_SPOTS: {
       const newState = {};
       const spotObj = Object.values(action.spots);
