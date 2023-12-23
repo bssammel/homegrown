@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createNewSpot } from "../../store/spots";
 
 const NewSpotForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
@@ -34,40 +36,41 @@ const NewSpotForm = () => {
 
     setErrors({});
 
+    // if(!latitude)  = 1;
+
     const formData = {
-      streetAddress,
+      address: streetAddress,
       city,
       state,
       country,
-      latitude,
-      longitude,
+      lat: latitude,
+      lng: longitude,
       description,
       name,
       price,
     };
 
-    let newlyCreatedSpot;
-    //cut out if you see this  :(
-    try {
-      newlyCreatedSpot = await dispatch(createNewSpot(formData));
+    if (!formData.lat) formData.lat = 1;
+    if (!formData.lng) formData.lng = 2;
 
-      //iff newlyCreatedSpot.id navigate to new id
-      if (newlyCreatedSpot.errors) {
-        setErrors(newlyCreatedSpot.errors);
-        //use error obj on form jsx to conditionally render errors using p tag
-      }
-    } catch (error) {
-      // if ()
+    let newlyCreatedSpot;
+
+    newlyCreatedSpot = await dispatch(createNewSpot(formData));
+
+    //if newlyCreatedSpot.id navigate to new id
+    if (newlyCreatedSpot.id) {
+      navigate(`/spots/${newlyCreatedSpot.id}`);
+    }
+    if (newlyCreatedSpot.errors) {
+      setErrors(newlyCreatedSpot.errors);
+      //use error obj on form jsx to conditionally render errors using p tag
     }
   };
 
   return (
     <section>
       <h1>Create a New Spot</h1>
-      <form
-        className="create-spot-form"
-        // onSubmit={}
-      >
+      <form className="create-spot-form" onSubmit={handleSubmit}>
         <section className="spot-location-form">
           <h2>Where is your place located?</h2>
           <h3>
@@ -153,11 +156,17 @@ const NewSpotForm = () => {
           </h3>
           <input
             type="number"
-            value={name}
-            onChange={handleName}
+            value={price}
+            onChange={handlePrice}
             placeholder="Price per season (USD)"
             required
           />
+        </section>
+        <section className="spot-form-buttons">
+          <button type="submit">Create new Spot</button>
+          {/* <button type="button" onClick={handleCancelClick}>
+            Cancel
+          </button> */}
         </section>
       </form>
     </section>
