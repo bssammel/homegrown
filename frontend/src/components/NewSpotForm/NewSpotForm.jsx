@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createNewSpot } from "../../store/spots";
 
@@ -11,22 +11,22 @@ const NewSpotForm = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+  // const [latitude, setLatitude] = useState("");
+  // const [longitude, setLongitude] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
 
   const [errors, setErrors] = useState({});
 
-  const spots = useSelector((state) => state.spots);
+  // const spots = useSelector((state) => state.spots);
 
   const handleStreetAddress = (e) => setStreetAddress(e.target.value);
   const handleCity = (e) => setCity(e.target.value);
   const handleState = (e) => setState(e.target.value);
   const handleCountry = (e) => setCountry(e.target.value);
-  const handleLatitude = (e) => setLatitude(e.target.value);
-  const handleLongitude = (e) => setLongitude(e.target.value);
+  // const handleLatitude = (e) => setLatitude(e.target.value);
+  // const handleLongitude = (e) => setLongitude(e.target.value);
   const handleDescription = (e) => setDescription(e.target.value);
   const handleName = (e) => setName(e.target.value);
   const handlePrice = (e) => setPrice(e.target.value);
@@ -43,8 +43,10 @@ const NewSpotForm = () => {
       city,
       state,
       country,
-      lat: latitude,
-      lng: longitude,
+      // lat: latitude,
+      lat: 1,
+      // lng: longitude,
+      lng: 2,
       description,
       name,
       price,
@@ -137,8 +139,8 @@ const NewSpotForm = () => {
         <section className="spot-name-form">
           <h2>Create a title for your spot</h2>
           <h3>
-            Catch guests' attention with a spot title that highlights what makes
-            your place special.
+            Catch guests{`&apos;`} attention with a spot title that highlights
+            what makes your place special.
           </h3>
           <input
             type="text"
