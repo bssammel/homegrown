@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSpotDetails } from "../../store/spots";
 import { getSpotReviews } from "../../store/reviews";
 import dateTimeModifier from "../../helpers/dateTimeModifier";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import NewReviewModal from "../NewReviewModal/NewReviewModal";
 
 const SpotDetails = () => {
   const { id } = useParams();
@@ -12,22 +14,27 @@ const SpotDetails = () => {
   //   const navigate = useNavigate();
   //   const [goToSpot, setGoToSpot] = useState(id);
 
+  const sessionUser = useSelector((state) => state.session.user);
+
   const spotDetails = useSelector((state) =>
     state.spot ? state.spot[id] : null
   );
 
-  console.log("line 18 in spot details.jsx");
+  // console.log("line 18 in spot details.jsx");
 
   const reviewObj = useSelector((state) =>
     state.reviews ? state.reviews : null
   );
-  console.log("this is supposed to be review Obj");
-  console.log(reviewObj);
+  // console.log("this is supposed to be review Obj");
+  // console.log(reviewObj);
   const reviewList = Object.values(reviewObj)[0];
-  console.log("This is supposed to be the reviewList");
-  console.log(reviewList);
-  console.log(typeof reviewList);
-  console.log(`reviewList is an array: ${Array.isArray(reviewList)}`);
+
+  let reviewListLength;
+  if (reviewList && reviewList.length) reviewListLength = reviewList.length;
+  // console.log("This is supposed to be the reviewList");
+  // console.log(reviewList);
+  // console.log(typeof reviewList);
+  // console.log(`reviewList is an array: ${Array.isArray(reviewList)}`);
   // console.log(`reviewList is ${reviewList.length} items long`);
 
   const dispatch = useDispatch();
@@ -40,7 +47,7 @@ const SpotDetails = () => {
       //   )
       // )
       .then(() => dispatch(getSpotReviews(id)));
-  }, [dispatch, id]);
+  }, [dispatch, id, reviewListLength]);
 
   if (!spotDetails) {
     console.log("spotDetails is null");
@@ -63,19 +70,29 @@ const SpotDetails = () => {
         </h2>
         <p className="description">{spotDetails.description}</p>
       </section>
-      <section className="spot-reviews">
-        {reviewList.map((review) => (
-          <div key={review.id}>
-            <p>
-              This Review was written by {review.User.firstName} and reads the
-              following :{review.review}. It was written in
-              {" " + dateTimeModifier(review.createdAt, "Month Year")}. This
-              user gave this garden spot a rating of {review.stars} stars out of
-              5.
+      {Array.isArray(reviewList) && (
+        <section className="spot-reviews">
+          {reviewList.map((review) => (
+            <div key={review.id}>
+              <p>
+                This Review was written by {review.User.firstName} and reads the
+                following :{review.review}. It was written in
+                {" " + dateTimeModifier(review.createdAt, "Month Year")}. This
+                user gave this garden spot a rating of {review.stars} stars out
+                of 5.
+              </p>
+            </div>
+          ))}
+          {sessionUser && sessionUser.id !== spotDetails.Owner.id && (
+            <p id="new-review-button">
+              <OpenModalButton
+                buttonText="Post Your Review"
+                modalComponent={<NewReviewModal />}
+              />
             </p>
-          </div>
-        ))}
-      </section>
+          )}
+        </section>
+      )}
     </>
   );
 };
