@@ -33,12 +33,17 @@ export const loadSpotDetails = (detailedSpot) => {
 //?These are all the thunk action creators! Listed in CRUD order!
 export const createNewSpot = (newSpotData) => async (dispatch) => {
   const res = await csrfFetch(`api/spots`, {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(newSpotData),
   });
+
+  if (!res.ok) {
+    return res;
+  }
+
   if (res.ok) {
     const createdSpot = await res.json();
     dispatch(createSpot(createdSpot));
