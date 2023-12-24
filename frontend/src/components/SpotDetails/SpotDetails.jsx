@@ -35,19 +35,37 @@ const SpotDetails = () => {
     reviewListLength = reviewList.length;
     reviewsBool = reviewListLength > 0;
   }
-
-  let ableToReview;
-  if (sessionUser !== null) {
-    if (sessionUser.Owner) {
-      if (sessionUser.id !== spotDetails.Owner.id) {
-        ableToReview = true;
-      }
-    } else {
-      reviewListLength++;
-    }
+  let ownerId;
+  if (spotDetails && spotDetails.Owner) {
+    ownerId = spotDetails.Owner.id;
   } else {
-    ableToReview = false;
+    ownerId = false;
   }
+
+  let noReviewTextBool;
+  let reviewPlaceholder;
+  if (!reviewsBool && !ownerId) {
+    //if the object is still loading
+    noReviewTextBool = false; //whether to show
+    reviewPlaceholder = "";
+  }
+
+  // let ableToReview;
+  // if (sessionUser !== null) {
+  //   console.log(sessionUser);
+  //   if (spotDetails.Owner) {
+  //     console.log(spotDetails.Owner);
+  //     if (sessionUser.id !== spotDetails.Owner.id) {
+  //       console.log(sessionUser.id);
+  //       console.log(spotDetails.Owner);
+  //       ableToReview = true;
+  //     }
+  //   } else {
+  //     reviewListLength++;
+  //   }
+  // } else {
+  //   ableToReview = false;
+  // }
 
   // console.log("This is supposed to be the reviewList");
   // console.log(reviewList);
@@ -58,25 +76,41 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSpotDetails(id))
-      // .then(
-      //   console.log(
-      //     "The useEffect is going to dispatch the getSpotReviews action"
-      //   )
-      // )
-      .then(() => dispatch(getSpotReviews(id)));
+    dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id, reviewListLength]);
 
   if (!spotDetails || !spotDetails.Owner) {
     console.log("spotDetails is null");
-    reviewListLength = 1;
+    reviewListLength = -1;
     return <h1>Getting those details for you!</h1>;
   }
 
-  if (!reviewList) {
+  if (!reviewList || !Array.isArray(reviewList)) {
     return <h1>Loading some reviews for you!</h1>;
   }
-  console.log(spotDetails);
+
+  const hasUserWrittenReview = function () {
+    if (Array.isArray(reviewList) && reviewList) {
+      let userWroteReviewBool = false;
+      reviewList.forEach((review) => {
+        console.log("loop ended");
+        console.log(review.userId);
+        console.log(sessionUser.id);
+        if (review.userId === sessionUser.id) userWroteReviewBool = true;
+        console.log(userWroteReviewBool);
+        console.log("loop ended");
+      });
+      return userWroteReviewBool;
+    }
+  };
+
+  let showNewReviewButton = false;
+  if (sessionUser) {
+    //logged in
+    if (sessionUser.id !== ownerId && !hasUserWrittenReview())
+      showNewReviewButton = true;
+  }
+
   return (
     <>
       <section className="spot-details">
@@ -90,8 +124,11 @@ const SpotDetails = () => {
         <p className="description">{spotDetails.description}</p>
       </section>
       {/* need to fix this, this h3 loaded with singedin user who did not own spot, i suspect due to nested logic above evaluating true at one point */}
-      {!reviewsBool && !ableToReview && (
+      {/* {!reviewsBool && !ownerId && (
         <h3>No reviews have been written for this spot yet!</h3>
+      )} */}
+      {Array.isArray(reviewList) && !reviewsBool && sessionUser && (
+        <h3>Be the first to post a review!</h3>
       )}
       {Array.isArray(reviewList) && reviewsBool && (
         <section className="spot-reviews">
@@ -106,15 +143,15 @@ const SpotDetails = () => {
               </p>
             </div>
           ))}
-          {sessionUser && sessionUser.id !== spotDetails.Owner.id && (
-            <p id="new-review-button">
-              <OpenModalButton
-                buttonText="Post Your Review"
-                modalComponent={<NewReviewModal />}
-              />
-            </p>
-          )}
         </section>
+      )}
+      {showNewReviewButton && (
+        <p id="new-review-button">
+          <OpenModalButton
+            buttonText="Post Your Review"
+            modalComponent={<NewReviewModal />}
+          />
+        </p>
       )}
     </>
   );
