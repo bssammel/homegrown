@@ -35,6 +35,20 @@ const SpotDetails = () => {
     reviewListLength = reviewList.length;
     reviewsBool = reviewListLength > 0;
   }
+
+  let ableToReview;
+  if (sessionUser !== null) {
+    if (sessionUser.Owner) {
+      if (sessionUser.id !== spotDetails.Owner.id) {
+        ableToReview = true;
+      }
+    } else {
+      reviewListLength++;
+    }
+  } else {
+    ableToReview = false;
+  }
+
   // console.log("This is supposed to be the reviewList");
   // console.log(reviewList);
   // console.log(typeof reviewList);
@@ -75,7 +89,7 @@ const SpotDetails = () => {
         </h2>
         <p className="description">{spotDetails.description}</p>
       </section>
-      {!reviewsBool && sessionUser.id === spotDetails.Owner.id && (
+      {!reviewsBool && !ableToReview && (
         <h3>No reviews have been written for this spot yet!</h3>
       )}
       {Array.isArray(reviewList) && reviewsBool && (
