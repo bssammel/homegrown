@@ -55,6 +55,7 @@ const SpotDetails = () => {
 
   if (!spotDetails || !spotDetails.Owner) {
     console.log("spotDetails is null");
+    reviewListLength = 1;
     return <h1>Getting those details for you!</h1>;
   }
 
