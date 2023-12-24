@@ -30,7 +30,11 @@ const SpotDetails = () => {
   const reviewList = Object.values(reviewObj)[0];
 
   let reviewListLength;
-  if (reviewList && reviewList.length) reviewListLength = reviewList.length;
+  let reviewsBool;
+  if (reviewList && reviewList.length) {
+    reviewListLength = reviewList.length;
+    reviewsBool = reviewListLength > 0;
+  }
   // console.log("This is supposed to be the reviewList");
   // console.log(reviewList);
   // console.log(typeof reviewList);
@@ -49,7 +53,7 @@ const SpotDetails = () => {
       .then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id, reviewListLength]);
 
-  if (!spotDetails) {
+  if (!spotDetails || !spotDetails.Owner) {
     console.log("spotDetails is null");
     return <h1>Getting those details for you!</h1>;
   }
@@ -57,7 +61,7 @@ const SpotDetails = () => {
   if (!reviewList) {
     return <h1>Loading some reviews for you!</h1>;
   }
-
+  console.log(spotDetails);
   return (
     <>
       <section className="spot-details">
@@ -70,7 +74,8 @@ const SpotDetails = () => {
         </h2>
         <p className="description">{spotDetails.description}</p>
       </section>
-      {Array.isArray(reviewList) && (
+      {!reviewsBool && <h3>Be the first the leave a review!</h3>}
+      {reviewsBool && (
         <section className="spot-reviews">
           {reviewList.map((review) => (
             <div key={review.id}>
