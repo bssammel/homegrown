@@ -89,6 +89,7 @@ const SpotDetails = () => {
         </h2>
         <p className="description">{spotDetails.description}</p>
       </section>
+      {/* need to fix this, this h3 loaded with singedin user who did not own spot, i suspect due to nested logic above evaluating true at one point */}
       {!reviewsBool && !ableToReview && (
         <h3>No reviews have been written for this spot yet!</h3>
       )}
