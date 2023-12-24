@@ -75,8 +75,10 @@ const SpotDetails = () => {
         </h2>
         <p className="description">{spotDetails.description}</p>
       </section>
-      {!reviewsBool && <h3>Be the first the leave a review!</h3>}
-      {reviewsBool && (
+      {!reviewsBool && sessionUser.id === spotDetails.Owner.id && (
+        <h3>No reviews have been written for this spot yet!</h3>
+      )}
+      {Array.isArray(reviewList) && reviewsBool && (
         <section className="spot-reviews">
           {reviewList.map((review) => (
             <div key={review.id}>
