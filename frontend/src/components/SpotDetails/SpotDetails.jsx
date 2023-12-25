@@ -105,11 +105,25 @@ const SpotDetails = () => {
   };
 
   let showNewReviewButton = false;
+  let showBeFirstReviewText = false;
   if (sessionUser) {
     //logged in
-    if (sessionUser.id !== ownerId && !hasUserWrittenReview())
-      showNewReviewButton = true;
+    if (sessionUser.id !== ownerId) {
+      if (!hasUserWrittenReview()) {
+        showNewReviewButton = true;
+      }
+      if (Array.isArray(reviewList) && !reviewsBool) {
+        showBeFirstReviewText = true;
+      }
+    }
   }
+
+  // if ( && sessionUser) {
+  //   //if reviews populated correctly and user is logged in
+  //   if (sessionUser.id === ownerId) {
+  //     showBeFirstReviewText = false; //if currently logged in user is owner;
+  //   }
+  // }
 
   return (
     <>
@@ -127,9 +141,7 @@ const SpotDetails = () => {
       {/* {!reviewsBool && !ownerId && (
         <h3>No reviews have been written for this spot yet!</h3>
       )} */}
-      {Array.isArray(reviewList) && !reviewsBool && sessionUser && (
-        <h3>Be the first to post a review!</h3>
-      )}
+      {showBeFirstReviewText && <h3>Be the first to post a review!</h3>}
       {Array.isArray(reviewList) && reviewsBool && (
         <section className="spot-reviews">
           {reviewList.map((review) => (
