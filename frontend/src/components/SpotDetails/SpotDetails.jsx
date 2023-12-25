@@ -42,13 +42,13 @@ const SpotDetails = () => {
     ownerId = false;
   }
 
-  let noReviewTextBool;
-  let reviewPlaceholder;
-  if (!reviewsBool && !ownerId) {
-    //if the object is still loading
-    noReviewTextBool = false; //whether to show
-    reviewPlaceholder = "";
-  }
+  // let noReviewTextBool;
+  // let reviewPlaceholder;
+  // if (!reviewsBool && !ownerId) {
+  //   // //if the object is still loading
+  //   // noReviewTextBool = false; //whether to show
+  //   // reviewPlaceholder = "";
+  // }
 
   // let ableToReview;
   // if (sessionUser !== null) {
