@@ -23,13 +23,26 @@ const ManageSpots = () => {
     Object.values(state.spot);
     console.log(state);
     console.log(state.spot);
-    return Object.values(state.spot);
+    return Object.values(state.spot)[0];
   });
 
   console.log("currentUserSpots");
   console.log(currentUserSpotsArr);
 
-  let numUserSpots = currentUserSpotsArr.length;
+  let numUserSpots;
+  let showUserSpots = false;
+
+  if (
+    Array.isArray(currentUserSpotsArr) &&
+    currentUserSpotsArr.length &&
+    sessionUser
+  ) {
+    numUserSpots = currentUserSpotsArr.length;
+    if (numUserSpots > 0) showUserSpots = true;
+  } else {
+    numUserSpots = -1;
+  }
+
   //dependency array  value for rerendering when a spot is deleted
 
   //   const updatedAtArrayFunc = function (userSpotsArr) {
@@ -59,13 +72,56 @@ const ManageSpots = () => {
 
   return (
     <>
+      <h1>Manage Spots</h1>
       <h1>This is where I would put the current spots if I had any!</h1>
-      {sessionUser && numUserSpots < 1 && (
-        <li className="nav-button" id="new-spot-button">
+      {/* 
+      {console.log("values to show create spot button")}
+      {console.log(numUserSpots)}
+      {console.log(sessionUser)} */}
+      {numUserSpots < 1 && sessionUser && (
+        <h1 className="nav-button" id="new-spot-button">
           <NavLink exact to="/spots/new">
             Create a New Spot
           </NavLink>
-        </li>
+        </h1>
+      )}
+      ;
+      {showUserSpots && (
+        <section className="spots-grid">
+          {currentUserSpotsArr.map((spot) => (
+            <NavLink
+              key={spot.id}
+              className="spotLink"
+              to={`/spots/${spot.id}`}
+            >
+              <div
+              //   key={spot.id}
+              //   className="single-spot"
+              // onClick={navigate(`/spots/${spot.id}`)}
+              >
+                <p>
+                  This is {spot.name} for spot with {spot.id}. It is in{" "}
+                  {spot.city}, {spot.state}. With an average rating of{" "}
+                  {spot.avgRating} and a weekly price of {spot.price}, it is
+                  described as {`"${spot.description}"`}. The image is below:{" "}
+                </p>
+                <img src={spot.previewImage} alt="" />
+              </div>
+              <ul>
+                <li className="user-spot-button" id="update-spot-button">
+                  <NavLink exact to="/spots/update">
+                    Update
+                  </NavLink>
+                </li>
+                <li className="user-spot-button" id="delete-spot-button">
+                  <NavLink exact to="/spots/update">
+                    Update
+                  </NavLink>
+                </li>
+              </ul>
+            </NavLink>
+          ))}
+        </section>
       )}
     </>
   );
