@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+console.log("the spot.js file is running");
 
 //? These are all the action types used! They are listed in CRUD order from least specific to most specific
 const CREATE_SPOT = "spots/createSpot";
@@ -32,6 +33,7 @@ export const loadSpotDetails = (detailedSpot) => {
 };
 
 export const loadUserSpots = (userSpots) => {
+  console.log("loadUserSpots function in spots.js");
   return {
     type: LOAD_USER_SPOTS,
     userSpots,
@@ -81,9 +83,14 @@ export const getSpotDetails = (spotId) => async (dispatch) => {
 };
 
 export const getCurrentUserSpots = () => async (dispatch) => {
-  const res = await csrfFetch(`api/spots/current`);
+  // console.log("The getCurrentUserSpots function in spots.js is running");
+  const res = await csrfFetch(`/api/spots/current`);
+  console.log(res);
   if (res.ok) {
+    // console.log("response was okay");
     const userSpots = await res.json();
+    // console.log("this is a line trying to figure out when an error is throwing" );
+    // console.log(userSpots);
     dispatch(loadUserSpots(userSpots));
   }
 };
@@ -109,8 +116,15 @@ const spotsReducer = (state = {}, action) => {
     }
     case LOAD_SPOT_DETAILS:
       return { ...state, [action.detailedSpot.id]: action.detailedSpot };
-    case LOAD_USER_SPOTS:
-      return { ...state, userSpots: action.userSpots };
+    case LOAD_USER_SPOTS: {
+      // return { ...state, [action.userSpots]: action.userSpots };
+      const newState = {};
+      const userSpotObj = Object.values(action.userSpots);
+      userSpotObj.forEach((userSpot) => {
+        newState[userSpot.id] = userSpot;
+      });
+      return newState;
+    }
     default:
       return state;
   }
