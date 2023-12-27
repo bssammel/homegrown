@@ -43,26 +43,6 @@ const ManageSpots = () => {
     numUserSpots = -1;
   }
 
-  //dependency array  value for rerendering when a spot is deleted
-
-  //   const updatedAtArrayFunc = function (userSpotsArr) {
-  //     const updatedAtArr = [];
-  //     for (let i = 0; i < numUserSpots; i++) {
-  //       const spot = userSpotsArr[i];
-  //       const updatedAtVal = spot.updatedAt;
-  //       console.log(updatedAtVal);
-  //       updatedAtArr.push(updatedAtVal);
-  //     }
-  //     return updatedAtArr;
-  //   };
-
-  //   const updatedAtArr = updatedAtArrayFunc(currentUserSpotsArr);
-  //considering potential issue with updated at and how objects work won't always come back the exact same order, but since that would just cause an additional rerender, I think it should be fine.
-
-  //Okay it was not fine, it was constantly re-rendering and constantly calling to the db.
-
-  //going to have to try it within the update form.
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -85,7 +65,7 @@ const ManageSpots = () => {
           </NavLink>
         </h1>
       )}
-      ;
+
       {showUserSpots && (
         <section className="spots-grid">
           {currentUserSpotsArr.map((spot) => (
@@ -109,15 +89,11 @@ const ManageSpots = () => {
               </div>
               <ul>
                 <li className="user-spot-button" id="update-spot-button">
-                  <NavLink exact to="/spots/update">
-                    Update
-                  </NavLink>
+                  <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
                 </li>
-                <li className="user-spot-button" id="delete-spot-button">
-                  <NavLink exact to="/spots/update">
-                    Update
-                  </NavLink>
-                </li>
+                {/* <li className="user-spot-button" id="delete-spot-button">
+                  <NavLink to={`/spots/${spot.id}/update`}>Update</NavLink>
+                </li> */}
               </ul>
             </NavLink>
           ))}

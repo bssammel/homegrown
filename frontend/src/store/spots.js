@@ -6,6 +6,7 @@ const CREATE_SPOT = "spots/createSpot";
 const LOAD_SPOTS = "spots/loadSpots";
 const LOAD_SPOT_DETAILS = "spots/loadDetails";
 const LOAD_USER_SPOTS = "spots/loadUserSpots";
+const EDIT_SPOT = "spots/editSpot";
 
 //?These are all the action creators listed in CRUD order from least specific to most specific
 export const createSpot = (newSpot) => {
@@ -37,6 +38,13 @@ export const loadUserSpots = (userSpots) => {
   return {
     type: LOAD_USER_SPOTS,
     userSpots,
+  };
+};
+
+export const editSpot = (editSpot) => {
+  return {
+    type: EDIT_SPOT,
+    editSpot,
   };
 };
 
@@ -95,6 +103,26 @@ export const getCurrentUserSpots = () => async (dispatch) => {
   }
 };
 
+export const editCurrentSpot = (editSpotData) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${editSpotData.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(editSpotData),
+  });
+
+  if (!res.ok) {
+    return res;
+  }
+
+  if (res.ok) {
+    const editedSpot = await res.json();
+    dispatch(editCurrentSpot(editedSpot));
+    return editedSpot;
+  }
+};
+
 //state object
 // const initialState = {};
 
@@ -125,27 +153,12 @@ const spotsReducer = (state = {}, action) => {
       });
       return newState;
     }
+    case EDIT_SPOT: {
+      return { ...state, [action.editSpot.id]: action.editSpot };
+    }
     default:
       return state;
   }
 };
-
-// export const spotDetailsReducer = (state = initialState, action) => {
-//   console.log("yo, this is supposed to be the spotDetailsReducer running");
-//   switch (action.type) {
-//     case LOAD_SPOT_DETAILS: {
-//       const newState = {};
-//       console.log("this is supposed to be the action");
-//       console.log(action);
-//       const spotDetailsObj = action.spotDetails;
-//       newState.spotDetails = spotDetailsObj;
-//       return newState;
-//     }
-//     default: {
-//       console.log("the default case in spotDetails is running");
-//       return state;
-//     }
-//   }
-// };
 
 export default spotsReducer;
