@@ -23,20 +23,26 @@ function DeleteSpotModal() {
 
   return (
     <>
-      <h1>Confirm Delete</h1>
-      <h3>Are you sure you want to remove this spot?</h3>
-      <div className="delete-buttons">
-        <button
-          className="delete-buttons"
-          id="yes-delete"
-          onClick={handleDelete}
-        >
-          {"Yes (Delete Spot)"}
-        </button>
-        <button className="delete-buttons" id="no-delete" onClick={closeModal}>
-          {"No (Keep Spot)"}
-        </button>
-      </div>
+      <section id="delete-modal">
+        <h1>Confirm Delete</h1>
+        <h3>Are you sure you want to remove this spot?</h3>
+        <div className="delete-buttons">
+          <button
+            className="delete-buttons"
+            id="yes-delete"
+            onClick={handleDelete}
+          >
+            {"Yes (Delete Spot)"}
+          </button>
+          <button
+            className="delete-buttons"
+            id="no-delete"
+            onClick={closeModal}
+          >
+            {"No (Keep Spot)"}
+          </button>
+        </div>
+      </section>
     </>
   );
 }

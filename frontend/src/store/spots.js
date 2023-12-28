@@ -138,8 +138,9 @@ export const deleteCurrentSpot = (spotId) => async (dispatch) => {
     method: "DELETE",
   });
   if (res.ok) {
-    // const deleteSpotMsg = await res.json();
+    const deleteSpotMsg = await res.json();
     dispatch(deleteSpot(spotId));
+    return deleteSpotMsg;
   }
   return res;
 };

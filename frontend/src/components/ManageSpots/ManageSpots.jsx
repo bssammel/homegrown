@@ -87,6 +87,7 @@ const ManageSpots = () => {
                 <li className="user-spot-button" id="delete-spot-button">
                   <OpenModalButton
                     buttonText="Delete"
+                    onButtonClick={}
                     modalComponent={DeleteSpotModal}
                   />
                 </li>
