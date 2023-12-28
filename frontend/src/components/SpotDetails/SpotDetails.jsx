@@ -76,6 +76,7 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log();
     dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id, reviewListLength]);
 

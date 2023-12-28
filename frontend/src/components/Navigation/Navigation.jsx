@@ -14,11 +14,18 @@ function Navigation({ isLoaded }) {
         </NavLink>
       </li>
       {sessionUser && (
-        <li className="nav-button" id="new-spot-button">
-          <NavLink exact to="/spots/new">
-            Create a New Spot
-          </NavLink>
-        </li>
+        <>
+          <li className="nav-button" id="new-spot-button">
+            <NavLink exact to="/spots/new">
+              Create a New Spot
+            </NavLink>
+          </li>
+          <li className="nav-button" id="manage-spots-button">
+            <NavLink exact to="/spots/current">
+              Manage Spots
+            </NavLink>
+          </li>
+        </>
       )}
       {isLoaded && (
         <li>
