@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getCurrentUserSpots } from "../../store/spots";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteSpotModal from "./DeleteSpotModal";
 
 const ManageSpots = () => {
   console.log("the Manage Spots is running");
@@ -83,9 +84,12 @@ const ManageSpots = () => {
                 <li className="user-spot-button" id="update-spot-button">
                   <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
                 </li>
-                {/* <li className="user-spot-button" id="delete-spot-button">
-                  <NavLink to={`/spots/${spot.id}/update`}>Update</NavLink>
-                </li> */}
+                <li className="user-spot-button" id="delete-spot-button">
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={DeleteSpotModal}
+                  />
+                </li>
               </ul>
             </NavLink>
           ))}
