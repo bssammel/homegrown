@@ -14,13 +14,36 @@ import { getSpotDetails, editCurrentSpot } from "../../store/spots";
 
 const UpdateSpot = () => {
   const { id } = useParams();
-  const spot = useSelector((state) => (state.spot ? state.spot[id] : null));
+  const spot = useSelector((state) => {
+    console.log("running here");
+    console.log(state.spot);
+    console.log(state.spot.undefined);
+    const spotArr = state.spot.undefined;
+    const currentSpot = function findMatch() {
+      for (let i = 0; i < spotArr.length; i++) {
+        const spotObj = spotArr[i];
+        if (spotObj.id === id) {
+          return spotObj;
+        }
+      }
+    };
+    currentSpot ? state.spot : null;
+    console.log(currentSpot);
+  });
+  //   const spotToEdit = dispatch(getSpotDetails(id));
+  //   console.log("spotToEdit");
+  //   console.log(spotToEdit);
   const sessionUser = useSelector((state) => state.session.user);
   console.log(sessionUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log(spot);
 
+  if (typeof spot === "object") {
+    console.log("spot is an object");
+  } else {
+    console.log("spot is not an object, it is ", typeof spot);
+  }
   const spotObjValArr = Object.values(spot);
   let spotObjValArrLength;
   if (!(spotObjValArr && spotObjValArr.length)) {
@@ -48,7 +71,6 @@ const UpdateSpot = () => {
   const handlePrice = (e) => setPrice(e.target.value);
 
   useEffect(() => {
-    console.log("hello is anyone there? I would like to speak to useEffects");
     dispatch(getSpotDetails(id));
   }, [dispatch, id, spotObjValArrLength]);
 

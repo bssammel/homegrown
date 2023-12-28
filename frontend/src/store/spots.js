@@ -42,6 +42,7 @@ export const loadUserSpots = (userSpots) => {
 };
 
 export const editSpot = (editSpot) => {
+  console.log("edit spot action");
   return {
     type: EDIT_SPOT,
     editSpot,
