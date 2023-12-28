@@ -16,6 +16,9 @@ const UpdateSpot = () => {
   console.log("spotDetails");
   console.log(spotDetails);
 
+  let forceUE = 0;
+  if (!spotDetails) forceUE++;
+
   // const sessionUser = useSelector((state) => state.session.user);
 
   const [streetAddress, setStreetAddress] = useState("");
@@ -46,7 +49,7 @@ const UpdateSpot = () => {
     setName(spotDetails?.name);
     setPrice(spotDetails?.price);
     //? do I want to place this within a helper function.
-  }, [dispatch, id]);
+  }, [dispatch, id, forceUE]);
 
   if (!spotDetails) {
     console.log("spotDetails is null");
