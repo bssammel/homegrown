@@ -7,6 +7,7 @@ const LOAD_SPOTS = "spots/loadSpots";
 const LOAD_SPOT_DETAILS = "spots/loadDetails";
 const LOAD_USER_SPOTS = "spots/loadUserSpots";
 const EDIT_SPOT = "spots/editSpot";
+const DELETE_SPOT = "spots/deleteSpot";
 
 //?These are all the action creators listed in CRUD order from least specific to most specific
 export const createSpot = (newSpot) => {
@@ -46,6 +47,14 @@ export const editSpot = (editSpot) => {
   return {
     type: EDIT_SPOT,
     editSpot,
+  };
+};
+
+export const deleteSpot = (spot) => {
+  console.log("delete spot action");
+  return {
+    type: DELETE_SPOT,
+    spot,
   };
 };
 
@@ -122,6 +131,17 @@ export const editCurrentSpot = (editSpotData) => async (dispatch) => {
     dispatch(editCurrentSpot(editedSpot));
     return editedSpot;
   }
+};
+
+export const deleteCurrentSpot = (spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE",
+  });
+  if (res.ok) {
+    // const deleteSpotMsg = await res.json();
+    dispatch(deleteSpot(spotId));
+  }
+  return res;
 };
 
 //state object

@@ -1,16 +1,8 @@
-//#TODO:add to App.jsx router
-//#TODO:create store/warehouse for getUserSpots within spots store
-//#TODO: imports for manage spots
-//TODO: set up function for manage spots
-//TODO: get all desired data out and displayed
-//TODO:
-//TODO:
-//TODO:
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getCurrentUserSpots } from "../../store/spots";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 
 const ManageSpots = () => {
   console.log("the Manage Spots is running");
