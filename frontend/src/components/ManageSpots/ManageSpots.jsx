@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getCurrentUserSpots } from "../../store/spots";
@@ -37,11 +37,16 @@ const ManageSpots = () => {
   }
 
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     console.log("The useEffect in ManageSpots.jsx is executing");
     dispatch(getCurrentUserSpots());
   }, [dispatch, numUserSpots]); //add length here for delete function, maybe need one for update too? hmmmmmmmm how could I tell what changes were implemented?-- oh, updatedAt, if the updatedAt value changes, then I know it was changed.
+
+  // handleClick (e) {
+  //   e.stopPropagation();
+  // };
 
   return (
     <>
@@ -69,7 +74,7 @@ const ManageSpots = () => {
             >
               <div
               //   key={spot.id}
-              //   className="single-spot"
+              //   className="sp"
               // onClick={navigate(`/spots/${spot.id}`)}
               >
                 <p>
@@ -84,11 +89,14 @@ const ManageSpots = () => {
                 <li className="user-spot-button" id="update-spot-button">
                   <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
                 </li>
-                <li className="user-spot-button" id="delete-spot-button">
+                <li
+                  className="user-spot-button"
+                  id={`delete-spot-button-${spot.id}`}
+                >
                   <OpenModalButton
                     buttonText="Delete"
-                    onButtonClick={}
-                    modalComponent={DeleteSpotModal}
+                    // onButtonClick={navigate("/spots/current")}
+                    modalComponent={<DeleteSpotModal state={{ id: spot.id }} />}
                   />
                 </li>
               </ul>

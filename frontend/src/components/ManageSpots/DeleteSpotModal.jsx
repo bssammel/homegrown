@@ -1,23 +1,22 @@
-import { useState } from "react";
+import React, { Component } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteCurrentSpot, getCurrentUserSpots } from "../../store/spots";
 
-function DeleteSpotModal() {
+function DeleteSpotModal(props) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { id } = useParams();
+  // const navigate = useNavigate();
+  const { id } = props.state;
   const { closeModal } = useModal();
 
   const handleDelete = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     const deleteSpotMsg = await dispatch(deleteCurrentSpot(id));
 
     if (deleteSpotMsg.message === "Successfully deleted") {
-      dispatch(getCurrentUserSpots())
-        .then(closeModal())
-        .then(navigate(`/spots/current`));
+      dispatch(getCurrentUserSpots()).then(closeModal());
+      // .then(navigate(`/spots/current`));
     }
   };
 
