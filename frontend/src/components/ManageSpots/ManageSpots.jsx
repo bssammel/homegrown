@@ -44,9 +44,10 @@ const ManageSpots = () => {
     dispatch(getCurrentUserSpots());
   }, [dispatch, numUserSpots]); //add length here for delete function, maybe need one for update too? hmmmmmmmm how could I tell what changes were implemented?-- oh, updatedAt, if the updatedAt value changes, then I know it was changed.
 
-  // handleClick (e) {
-  //   e.stopPropagation();
-  // };
+  const handleModalClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
 
   return (
     <>
@@ -92,6 +93,7 @@ const ManageSpots = () => {
                 <li
                   className="user-spot-button"
                   id={`delete-spot-button-${spot.id}`}
+                  onClick={handleModalClick}
                 >
                   <OpenModalButton
                     buttonText="Delete"

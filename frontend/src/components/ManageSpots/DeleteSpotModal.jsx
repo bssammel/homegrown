@@ -11,7 +11,7 @@ function DeleteSpotModal(props) {
   const { closeModal } = useModal();
 
   const handleDelete = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const deleteSpotMsg = await dispatch(deleteCurrentSpot(id));
 
     if (deleteSpotMsg.message === "Successfully deleted") {
