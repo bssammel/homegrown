@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
         <NavLink exact to="/">
           <img
             id="home-button"
-            src="https://imgur.com/a/1xYxLkV"
+            src="https://i.imgur.com/jRjQ42d.png"
             alt="Home Button"
             height="50"
             width="225"
