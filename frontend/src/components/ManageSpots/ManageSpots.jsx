@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { getCurrentUserSpots } from "../../store/spots";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteSpotModal from "./DeleteSpotModal";
+import "./ManageSpots.css";
 
 const ManageSpots = () => {
   console.log("the Manage Spots is running");
@@ -69,21 +70,19 @@ const ManageSpots = () => {
           {currentUserSpotsArr.map((spot) => (
             <NavLink
               key={spot.id}
-              className="spotLink"
+              className="single-spot"
               to={`/spots/${spot.id}`}
             >
-              <div
-              //   key={spot.id}
-              //   className="sp"
-              // onClick={navigate(`/spots/${spot.id}`)}
-              >
+              <div className="spot-data">
                 <p>
                   This is {spot.name} for spot with {spot.id}. It is in{" "}
                   {spot.city}, {spot.state}. With an average rating of{" "}
                   {spot.avgRating} and a weekly price of {spot.price}, it is
                   described as {`"${spot.description}"`}. The image is below:{" "}
                 </p>
-                <img src={spot.previewImage} alt="" />
+                <div className="image">
+                  <img className="spot-image" src={spot.previewImage} alt="" />
+                </div>
               </div>
               <ul>
                 <li className="user-spot-button" id="update-spot-button">

@@ -115,6 +115,17 @@ const SpotDetails = () => {
   //     showBeFirstReviewText = false; //if currently logged in user is owner;
   //   }
   // }
+  const hasReviews = function (spot) {
+    if (spot) {
+      if (spot.avgRating > 0) {
+        // console.log(`the current user is the author`);
+        return spot.avgRating;
+      } else {
+        // console.log(`The current user is not the author.`);
+        return "New";
+      }
+    } else return 0;
+  };
 
   return (
     <>
@@ -140,10 +151,22 @@ const SpotDetails = () => {
               )}
           </section>
         )}
-        <h2 className="hostDetails">
-          Hosted by: {spotDetails.Owner.firstName} {spotDetails.Owner.lastName}
-        </h2>
-        <p className="description">{spotDetails.description}</p>
+        <div className="bottom-container">
+          <div>
+            <h2 className="hostDetails">
+              Hosted by: {spotDetails.Owner.firstName}{" "}
+              {spotDetails.Owner.lastName}
+            </h2>
+            <p className="description">{spotDetails.description}</p>
+          </div>
+          <div className="reserve">
+            <div>
+              <p>${spotDetails.price} night</p>
+              <p id="star-rating">★ {hasReviews(spotDetails)}</p>
+            </div>
+            <button>Reserve</button>
+          </div>
+        </div>
       </section>
       {showBeFirstReviewText && <h3>Be the first to post a review!</h3>}
       {Array.isArray(reviewList) && reviewsBool && (
