@@ -18,6 +18,26 @@ module.exports = {
           preview: true,
         },
         {
+          spotId: 1,
+          url: "https://gardeningsolutions.ifas.ufl.edu/images/care/irrigation/irrigation_netaform.jpg",
+          preview: false,
+        },
+        {
+          spotId: 1,
+          url: "https://gardeningsolutions.ifas.ufl.edu/images/plants/vegetables/kitchen_garden.jpg",
+          preview: false,
+        },
+        {
+          spotId: 1,
+          url: "https://sfyl.ifas.ufl.edu/media/sfylifasufledu/sfyl-assets/lawn-amp-garden/images/Fifield-Garden.jpg",
+          preview: false,
+        },
+        {
+          spotId: 1,
+          url: "https://gardeningsolutions.ifas.ufl.edu/images/plants/vegetables/okra680.jpg",
+          preview: false,
+        },
+        {
           spotId: 2,
           url: "https://enjoyburlington.com/wp-content/uploads/sites/10/2015/06/Starr-farm-venuecrop.jpg",
           preview: true,

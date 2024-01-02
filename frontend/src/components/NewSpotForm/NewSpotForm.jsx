@@ -16,6 +16,11 @@ const NewSpotForm = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [imageOne, setImageOne] = useState("");
+  const [imageTwo, setImageTwo] = useState("");
+  const [imageThree, setImageThree] = useState("");
+  const [imageFour, setImageFour] = useState("");
+  const [imageFive, setImageFive] = useState("");
 
   const [errors, setErrors] = useState({});
 
@@ -30,6 +35,11 @@ const NewSpotForm = () => {
   const handleDescription = (e) => setDescription(e.target.value);
   const handleName = (e) => setName(e.target.value);
   const handlePrice = (e) => setPrice(e.target.value);
+  const handleImageOne = (e) => setImageOne(e.target.value);
+  const handleImageTwo = (e) => setImageTwo(e.target.value);
+  const handleImageThree = (e) => setImageThree(e.target.value);
+  const handleImageFour = (e) => setImageFour(e.target.value);
+  const handleImageFive = (e) => setImageFive(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,6 +60,11 @@ const NewSpotForm = () => {
       description,
       name,
       price,
+      imageOne,
+      imageTwo,
+      imageThree,
+      imageFour,
+      imageFive,
     };
 
     if (!formData.lat) formData.lat = 1;
@@ -161,6 +176,17 @@ const NewSpotForm = () => {
             value={price}
             onChange={handlePrice}
             placeholder="Price per season (USD)"
+            required
+          />
+        </section>
+        <section className="spot-images-form">
+          <h2>Liven up your spot with photos.</h2>
+          <h3>Submit a link to at least one photo to publish your spot</h3>
+          <input
+            type="text"
+            value={previewImage}
+            onChange={handleName}
+            placeholder="Name of your spot."
             required
           />
         </section>
