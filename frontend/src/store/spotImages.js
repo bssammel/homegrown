@@ -24,13 +24,13 @@ export const createNewSpotImage =
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newSpotImageData),
+      body: JSON.stringify(newImageData),
     });
     if (!res.ok) {
       return res;
     } else if (res.ok) {
       const createdSpotImage = await res.json();
-      dispatch(createSpotImage(createSpotImage));
+      dispatch(createImage(newImageData));
       return createdSpotImage;
     }
   };
