@@ -1,8 +1,28 @@
 body {
   background-color: #f7f4d7;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin: 2px 3px; */
+}
+
 label {
   font-family: "Space Grotesk";
   font-size: 15px;
   color: #264233;
+  margin: 2px 3px;
+}
+button {
+  text-align: center;
+}
+
+li {
+  font-size: 15px;
 }
