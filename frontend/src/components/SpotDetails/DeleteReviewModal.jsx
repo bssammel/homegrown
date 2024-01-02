@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+// import React, { Component } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { getSpotDetails } from "../../store/spots";
 import { deleteCurrentReview, getSpotReviews } from "../../store/reviews";
