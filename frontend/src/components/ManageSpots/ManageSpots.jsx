@@ -52,7 +52,6 @@ const ManageSpots = () => {
   return (
     <>
       <h1>Manage Spots</h1>
-      <h1>This is where I would put the current spots if I had any!</h1>
       {/* 
       {console.log("values to show create spot button")}
       {console.log(numUserSpots)}
