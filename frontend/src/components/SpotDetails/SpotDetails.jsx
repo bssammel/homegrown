@@ -7,6 +7,7 @@ import { getSpotReviews } from "../../store/reviews";
 import dateTimeModifier from "../../helpers/dateTimeModifier";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import NewReviewModal from "../NewReviewModal/NewReviewModal";
+import DeleteReviewModal from "./DeleteReviewModal";
 
 const SpotDetails = () => {
   const { id } = useParams();
@@ -167,7 +168,17 @@ const SpotDetails = () => {
                 user gave this garden spot a rating of {review.stars} stars out
                 of 5.
               </p>
-              {isCurrUserAuthor(review) && <p>This is a pretend button</p>}
+              {isCurrUserAuthor(review) && (
+                <OpenModalButton
+                  buttonText="Delete"
+                  // onButtonClick={navigate("/spots/current")}
+                  modalComponent={
+                    <DeleteReviewModal
+                      state={{ id: review.id, spotId: review.spotId }}
+                    />
+                  }
+                />
+              )}
             </div>
           ))}
         </section>

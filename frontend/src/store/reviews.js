@@ -3,6 +3,7 @@ console.log("the reviews.js file is running");
 
 const CREATE_REVIEW = "reviews/createReview";
 const LOAD_SPOT_REVIEWS = "reviews/loadReviews";
+const DELETE_REVIEW = "reviews/deleteReviews";
 
 export const createReview = (newReview) => {
   return {
@@ -15,6 +16,14 @@ export const loadSpotReviews = (reviews) => {
   return {
     type: LOAD_SPOT_REVIEWS,
     reviews,
+  };
+};
+
+export const deleteSpotReview = (review) => {
+  console.log("delete review action");
+  return {
+    type: DELETE_REVIEW,
+    review,
   };
 };
 
@@ -41,6 +50,17 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
     const spotReviews = await res.json();
     dispatch(loadSpotReviews(spotReviews));
   }
+};
+export const deleteCurrentReview = (reviewId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE",
+  });
+  if (res.ok) {
+    const deleteReviewMsg = await res.json();
+    dispatch(deleteSpotReview(reviewId));
+    return deleteReviewMsg;
+  }
+  return res;
 };
 
 const reviewsReducer = (state = {}, action) => {
