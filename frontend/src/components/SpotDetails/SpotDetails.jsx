@@ -19,6 +19,19 @@ const SpotDetails = () => {
   const spotDetails = useSelector((state) =>
     state.spot ? state.spot[id] : null
   );
+  const isCurrUserAuthor = function (review) {
+    if (sessionUser) {
+      console.log(`review user Id: , ${review.User.id}`);
+      console.log("session user Id: ", sessionUser.id);
+      if (review.User.id === sessionUser.id) {
+        console.log(`the current user is the author`);
+        return true;
+      } else {
+        console.log(`The current user is not the author.`);
+        return false;
+      }
+    } else return false;
+  };
 
   // console.log("line 18 in spot details.jsx");
 
@@ -154,6 +167,7 @@ const SpotDetails = () => {
                 user gave this garden spot a rating of {review.stars} stars out
                 of 5.
               </p>
+              {isCurrUserAuthor(review) && <p>This is a pretend button</p>}
             </div>
           ))}
         </section>
