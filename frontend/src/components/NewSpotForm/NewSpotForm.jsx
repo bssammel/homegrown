@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createNewSpot } from "../../store/spots";
+import { createNewSpotImage } from "../../store/spotImages";
 
 const NewSpotForm = () => {
   const dispatch = useDispatch();
@@ -60,12 +61,15 @@ const NewSpotForm = () => {
       description,
       name,
       price,
-      imageOne,
-      imageTwo,
-      imageThree,
-      imageFour,
-      imageFive,
     };
+
+    // const imageData = {
+    //   imageOne,
+    //   imageTwo,
+    //   imageThree,
+    //   imageFour,
+    //   imageFive,
+    // };
 
     if (!formData.lat) formData.lat = 1;
     if (!formData.lng) formData.lng = 2;
@@ -76,6 +80,31 @@ const NewSpotForm = () => {
 
     //if newlyCreatedSpot.id navigate to new id
     if (newlyCreatedSpot.id) {
+      //here I am doing image stuff
+      const imageArr = [imageOne, imageTwo, imageThree, imageFour, imageFive];
+      const filteredImageArr = imageArr.filter(
+        (imageURL) => imageURL.length > 0
+      );
+      for (let i = 0; i < filteredImageArr.length; i++) {
+        const imageURL = filteredImageArr[i];
+        let imageObj;
+        let createdImage;
+        if (i === 0) {
+          imageObj = {
+            url: imageURL,
+            preview: true,
+          };
+        } else {
+          imageObj = {
+            url: imageURL,
+            preview: false,
+          };
+        }
+        createdImage = await dispatch(
+          createNewSpotImage(imageObj, newlyCreatedSpot.id)
+        );
+        console.log(createdImage);
+      }
       navigate(`/spots/${newlyCreatedSpot.id}`);
     }
     if (newlyCreatedSpot.errors) {
