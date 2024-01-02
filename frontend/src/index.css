@@ -1,6 +1,9 @@
 /* TODO: Add sitewide styles */
 body {
   background-color: #f7f4d7;
+  box-sizing: border-box;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 p {
   font-family: "Space Grotesk";
