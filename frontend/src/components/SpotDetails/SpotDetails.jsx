@@ -34,13 +34,10 @@ const SpotDetails = () => {
     } else return false;
   };
 
-  // console.log("line 18 in spot details.jsx");
-
   const reviewObj = useSelector((state) =>
     state.reviews ? state.reviews : null
   );
-  // console.log("this is supposed to be review Obj");
-  // console.log(reviewObj);
+
   const reviewList = Object.values(reviewObj)[0];
 
   let reviewListLength;
@@ -55,37 +52,6 @@ const SpotDetails = () => {
   } else {
     ownerId = false;
   }
-
-  // let noReviewTextBool;
-  // let reviewPlaceholder;
-  // if (!reviewsBool && !ownerId) {
-  //   // //if the object is still loading
-  //   // noReviewTextBool = false; //whether to show
-  //   // reviewPlaceholder = "";
-  // }
-
-  // let ableToReview;
-  // if (sessionUser !== null) {
-  //   console.log(sessionUser);
-  //   if (spotDetails.Owner) {
-  //     console.log(spotDetails.Owner);
-  //     if (sessionUser.id !== spotDetails.Owner.id) {
-  //       console.log(sessionUser.id);
-  //       console.log(spotDetails.Owner);
-  //       ableToReview = true;
-  //     }
-  //   } else {
-  //     reviewListLength++;
-  //   }
-  // } else {
-  //   ableToReview = false;
-  // }
-
-  // console.log("This is supposed to be the reviewList");
-  // console.log(reviewList);
-  // console.log(typeof reviewList);
-  // console.log(`reviewList is an array: ${Array.isArray(reviewList)}`);
-  // console.log(`reviewList is ${reviewList.length} items long`);
 
   const dispatch = useDispatch();
 
