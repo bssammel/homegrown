@@ -154,8 +154,8 @@ const NewSpotForm = () => {
         <section className="spot-name-form">
           <h2>Create a title for your spot</h2>
           <h3>
-            Catch guests{`&apos;`} attention with a spot title that highlights
-            what makes your place special.
+            Catch guests{`'`} attention with a spot title that highlights what
+            makes your place special.
           </h3>
           <input
             type="text"
@@ -186,8 +186,32 @@ const NewSpotForm = () => {
             type="text"
             value={imageOne}
             onChange={handleImageOne}
-            placeholder="Name of your spot."
+            placeholder="Preview Image URL"
             required
+          />
+          <input
+            type="text"
+            value={imageTwo}
+            onChange={handleImageTwo}
+            placeholder="Image URL"
+          />
+          <input
+            type="text"
+            value={imageThree}
+            onChange={handleImageThree}
+            placeholder="Image URL"
+          />
+          <input
+            type="text"
+            value={imageFour}
+            onChange={handleImageFour}
+            placeholder="Image URL"
+          />
+          <input
+            type="text"
+            value={imageFive}
+            onChange={handleImageFive}
+            placeholder="Image URL"
           />
         </section>
         <section className="spot-form-buttons">
