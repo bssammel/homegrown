@@ -10,8 +10,8 @@ const SpotList = () => {
   const dispatch = useDispatch();
   //   const navigate = useNavigate();
   const spotList = useSelector((state) => Object.values(state.spot));
-  console.log(7);
-  console.log(spotList);
+  // console.log(7);
+  // console.log(spotList);
 
   //   function goToSpot(spotId) {
   //     dispatch(getSpotDetails(spotId));

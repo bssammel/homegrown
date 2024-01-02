@@ -1,2 +1,24 @@
-@media (max-width: 1000px) {
+.spot-details {
+  max-width: 1000px;
+}
+
+#spot-images {
+  display: flex;
+  flex-direction: row;
+  height: 400px;
+}
+img#previewImage {
+  height: 400px;
+  width: 400px;
+}
+
+.small-images {
+  display: flex;
+  flex-wrap: wrap;
+  /* margin: 0; */
+}
+.single-small-image {
+  width: 45%;
+  /* height: 30%; */
+  /* margin: 0; */
 }

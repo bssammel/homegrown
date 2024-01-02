@@ -8,6 +8,7 @@ import dateTimeModifier from "../../helpers/dateTimeModifier";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import NewReviewModal from "../NewReviewModal/NewReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
+import "./SpotDetails.css";
 
 const SpotDetails = () => {
   const { id } = useParams();
@@ -99,6 +100,15 @@ const SpotDetails = () => {
     }
   }
 
+  const previewImageObj = spotDetails.SpotImages.filter(
+    (image) => image.preview === true
+  )[0];
+  const nonPreviewImageArr = spotDetails.SpotImages.filter(
+    (image) => image.preview !== true
+  );
+  const nonPreviewImageArrLengthBool = nonPreviewImageArr.length > 0;
+  console.log(nonPreviewImageArrLengthBool);
+
   // if ( && sessionUser) {
   //   //if reviews populated correctly and user is logged in
   //   if (sessionUser.id === ownerId) {
@@ -109,19 +119,32 @@ const SpotDetails = () => {
   return (
     <>
       <section className="spot-details">
-        <h1>{spotDetails.name}</h1>
+        <h1 id="spot-name">{spotDetails.name}</h1>
         <p className="location">
           {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
         </p>
+        {Array.isArray(spotDetails.SpotImages) && (
+          <section id="spot-images">
+            <div id="previewImage">
+              <img src={previewImageObj.url} />
+            </div>
+            {Array.isArray(nonPreviewImageArr) &&
+              nonPreviewImageArrLengthBool && (
+                <section className="small-images">
+                  {nonPreviewImageArr.map((smallImgObj) => (
+                    <div key={smallImgObj.id} className="single-small-image">
+                      <img src={smallImgObj.url} />
+                    </div>
+                  ))}
+                </section>
+              )}
+          </section>
+        )}
         <h2 className="hostDetails">
           Hosted by: {spotDetails.Owner.firstName} {spotDetails.Owner.lastName}
         </h2>
         <p className="description">{spotDetails.description}</p>
       </section>
-      {/* need to fix this, this h3 loaded with singedin user who did not own spot, i suspect due to nested logic above evaluating true at one point */}
-      {/* {!reviewsBool && !ownerId && (
-        <h3>No reviews have been written for this spot yet!</h3>
-      )} */}
       {showBeFirstReviewText && <h3>Be the first to post a review!</h3>}
       {Array.isArray(reviewList) && reviewsBool && (
         <section className="spot-reviews">
