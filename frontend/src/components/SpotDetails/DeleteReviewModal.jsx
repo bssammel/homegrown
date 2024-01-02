@@ -12,7 +12,7 @@ function DeleteReviewModal(props) {
   const { closeModal } = useModal();
 
   const handleDelete = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const deleteSpotMsg = await dispatch(deleteCurrentReview(id));
 
     if (deleteSpotMsg.message === "Successfully deleted") {
