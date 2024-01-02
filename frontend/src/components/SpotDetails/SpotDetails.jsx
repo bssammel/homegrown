@@ -174,11 +174,12 @@ const SpotDetails = () => {
           {reviewList.map((review) => (
             <div key={review.id}>
               <p>
-                This Review was written by {review.User.firstName} and reads the
-                following :{review.review}. It was written in
-                {" " + dateTimeModifier(review.createdAt, "Month Year")}. This
-                user gave this garden spot a rating of {review.stars} stars out
-                of 5.
+                <h4>{review.User.firstName} </h4>
+                <h4>
+                  {" " + dateTimeModifier(review.createdAt, "Month Year")}:
+                </h4>{" "}
+                {review.review}. This user gave this garden spot a rating of{" "}
+                {review.stars} stars out of 5.
               </p>
               {isCurrUserAuthor(review) && (
                 <OpenModalButton
