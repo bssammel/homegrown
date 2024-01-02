@@ -57,7 +57,7 @@ export const createNewSpotImage =
 const spotImagesReducer = (state = {}, action) => {
   switch (action.type) {
     case CREATE_IMAGE: {
-      return { ...state, [action.newSpotImage.id]: action.newSpotImage };
+      return { ...state, [action.newImage.id]: action.newSpotImage };
     }
     // case LOAD_SPOT_REVIEWS: {
     //   // console.log("Load spot reviews is running");
