@@ -184,8 +184,8 @@ const NewSpotForm = () => {
           <h3>Submit a link to at least one photo to publish your spot</h3>
           <input
             type="text"
-            value={previewImage}
-            onChange={handleName}
+            value={imageOne}
+            onChange={handleImageOne}
             placeholder="Name of your spot."
             required
           />

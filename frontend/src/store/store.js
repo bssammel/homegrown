@@ -3,6 +3,7 @@ import { thunk } from "redux-thunk";
 import sessionReducer from "./session";
 import spotsReducer from "./spots";
 import reviewsReducer from "./reviews";
+import spotImagesReducer from "./spotImages";
 // import reviewsReducer from "./reviews";
 // import spotDetailsReducer from './spotDetails';
 
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   spot: spotsReducer,
   reviews: reviewsReducer,
   // spotDetails: spotsReducer,
+  spotImages: spotImagesReducer,
 });
 // console.log(2);
 
