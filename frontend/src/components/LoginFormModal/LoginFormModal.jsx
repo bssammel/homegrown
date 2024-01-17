@@ -8,8 +8,7 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
+  const { closeModal, setErrors, errors } = useModal();
 
   const handleSubmit = (e) => {
     console.log("handling that submission for ya");

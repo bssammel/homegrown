@@ -9,6 +9,7 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal";
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
