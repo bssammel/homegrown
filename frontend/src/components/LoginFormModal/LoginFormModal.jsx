@@ -12,18 +12,26 @@ function LoginFormModal() {
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
+    console.log("handling that submission for ya");
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal)
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          console.log("errors");
-          console.log(data.errors);
-          setErrors(data.errors);
-        }
-      });
+
+    return (
+      dispatch(sessionActions.login({ credential, password }))
+        // .then(console.log(errors))
+        .then(closeModal)
+        .catch(async (res) => {
+          const data = await res.json();
+          if (data && data.message) {
+            console.log(
+              " whoa there bud, looks like there are some errors with your log in"
+            );
+            // console.log(data.message);
+            setErrors(data.message);
+            // console.log(errors);
+          }
+        })
+    );
   };
 
   return (
@@ -40,7 +48,7 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.u && <p>The provided credentials were invalid.</p>}
+        {/* {errors. && <p>The provided credentials were invalid.</p>} */}
         <label>
           {/* Password */}
           <input
@@ -51,7 +59,11 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && <p>The provided credentials were invalid.</p>}
+        {errors && (
+          <p className="error-message">
+            The provided credentials were invalid.
+          </p>
+        )}
         <button
           type="submit"
           disabled={password.length < 6 || credential.length < 4}

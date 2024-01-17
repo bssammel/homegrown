@@ -19,3 +19,8 @@ li {
 div#modal-content {
   text-align: center;
 } */
+
+p.error-message {
+  font-family: "Space Grotesk";
+  color: #6b2e33;
+}
