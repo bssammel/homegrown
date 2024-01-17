@@ -26,3 +26,36 @@ button {
 li {
   font-size: 15px;
 }
+
+:disabled {
+  display: flex;
+
+  align-items: center;
+  background-color: #afc17a;
+  border: 2px solid #264233;
+  border-radius: 8px;
+  color: #264233;
+  cursor: pointer;
+  font-family: "Space Grotesk";
+  font-size: 15px;
+  margin: 3px 5px;
+  padding: 2px;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* :disabled {
+  good code for d
+  display: flex;
+
+  align-items: center;
+  background-color: #c43c48;
+  border: 2px solid #6b2e33;
+  border-radius: 8px;
+  color: #6b2e33;
+  cursor: pointer;
+  font-family: "Space Grotesk";
+  font-size: 15px;
+  margin: 3px 5px;
+  padding: 2px;
+} */
