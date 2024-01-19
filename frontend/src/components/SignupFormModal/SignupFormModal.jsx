@@ -16,6 +16,8 @@ function SignupFormModal() {
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
+    console.log("handling that submission for ya");
+
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
@@ -31,6 +33,10 @@ function SignupFormModal() {
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
+          console.log(
+            "whoa there bud, looks like there are some errors with your log in"
+          );
+          console.log(data);
           if (data?.errors) {
             setErrors(data.errors);
           }
@@ -55,7 +61,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className="error-message">{errors.email}</p>}
         <label>
           Username
           <input
@@ -65,7 +71,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className="error-message">{errors.username}</p>}
         <label>
           First Name
           <input
@@ -75,7 +81,9 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && (
+          <p className="error-message">{errors.firstName}</p>
+        )}
         <label>
           Last Name
           <input
@@ -85,7 +93,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
         <label>
           Password
           <input
@@ -95,7 +103,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="error-message">{errors.password}</p>}
         <label>
           Confirm Password
           <input
@@ -105,8 +113,22 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        {errors.confirmPassword && (
+          <p className="error-message">{errors.confirmPassword}</p>
+        )}
+        <button
+          type="submit"
+          disabled={
+            password.length < 6 ||
+            username.length < 4 ||
+            email.length < 3 ||
+            confirmPassword.length < 6 ||
+            lastName.length < 1 ||
+            firstName < 1
+          }
+        >
+          Sign Up
+        </button>
       </form>
     </>
   );

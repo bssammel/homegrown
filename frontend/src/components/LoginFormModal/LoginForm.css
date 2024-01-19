@@ -27,7 +27,7 @@ li {
   font-size: 15px;
 }
 
-:disabled {
+/* :disabled {
   display: flex;
 
   align-items: center;
@@ -40,9 +40,9 @@ li {
   font-size: 15px;
   margin: 3px 5px;
   padding: 2px;
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
-}
+} */
 
 /* :disabled {
   good code for d

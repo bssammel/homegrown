@@ -24,3 +24,20 @@ p.error-message {
   font-family: "Space Grotesk";
   color: #6b2e33;
 }
+
+:disabled {
+  display: flex;
+
+  align-items: center;
+  background-color: #afc17a;
+  border: 2px solid #264233;
+  border-radius: 8px;
+  color: #264233;
+  cursor: pointer;
+  font-family: "Space Grotesk";
+  font-size: 15px;
+  margin: 3px 5px;
+  padding: 2px;
+  opacity: 0.35;
+  cursor: not-allowed;
+}
