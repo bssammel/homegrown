@@ -116,6 +116,11 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p className="error-message">{errors.confirmPassword}</p>
         )}
+        {confirmPassword !== password && (
+          <p className="error-message">
+            It looks like your passwords do not match, please check again.
+          </p>
+        )}
         <button
           type="submit"
           disabled={
@@ -124,7 +129,8 @@ function SignupFormModal() {
             email.length < 3 ||
             confirmPassword.length < 6 ||
             lastName.length < 1 ||
-            firstName < 1
+            firstName < 1 ||
+            confirmPassword !== password
           }
         >
           Sign Up
