@@ -60,19 +60,33 @@ export const deleteSpot = (spot) => {
 
 //?These are all the thunk action creators! Listed in CRUD order!
 export const createNewSpot = (newSpotData) => async (dispatch) => {
-  const res = await csrfFetch(`/api/spots`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newSpotData),
-  });
-
-  if (!res.ok) {
-    return res;
+  console.log("hello I am here on line 63 in store/spots.js");
+  console.log(newSpotData);
+  let res;
+  try {
+    res = await csrfFetch(`/api/spots`, {
+      method: "POST",
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      body: JSON.stringify(newSpotData),
+    });
+  } catch {
+    const errors = await res.json();
+    console.log("errors for createNewSpot");
+    console.log(errors);
+    return errors;
   }
 
-  if (res.ok) {
+  console.log("res for createNewSpot");
+  console.log(res);
+  const newRes = res.json();
+
+  // if (newRes.message) {
+
+  // }
+
+  if (!newRes.message) {
     const createdSpot = await res.json();
     dispatch(createSpot(createdSpot));
     return createdSpot;

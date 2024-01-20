@@ -77,6 +77,7 @@ const NewSpotForm = () => {
     let newlyCreatedSpot;
 
     newlyCreatedSpot = await dispatch(createNewSpot(formData));
+    console.log("newlyCreatedSpot from newSpotForm", newlyCreatedSpot);
 
     //if newlyCreatedSpot.id navigate to new id
     if (newlyCreatedSpot.id) {
@@ -130,7 +131,7 @@ const NewSpotForm = () => {
               value={streetAddress}
               onChange={handleStreetAddress}
               placeholder="2110 Blue Ridge Road"
-              required
+              // required
             />
             {errors.address && <p>{errors.address}</p>}
             {/* conditional rendering above for address errors message */}
@@ -142,7 +143,7 @@ const NewSpotForm = () => {
               value={city}
               onChange={handleCity}
               placeholder="Raleigh"
-              required
+              // required
             />
           </label>
           <label>
@@ -152,7 +153,7 @@ const NewSpotForm = () => {
               value={state}
               onChange={handleState}
               placeholder="North Carolina"
-              required
+              // required
             />
           </label>
           <label>
@@ -162,7 +163,7 @@ const NewSpotForm = () => {
               value={country}
               onChange={handleCountry}
               placeholder="United States of America"
-              required
+              // required
             />
           </label>
         </section>
@@ -177,7 +178,7 @@ const NewSpotForm = () => {
             value={description}
             onChange={handleDescription}
             placeholder="Please write at least 30 characters."
-            required
+            // required
           />
         </section>
         <section className="spot-name-form">
@@ -191,7 +192,7 @@ const NewSpotForm = () => {
             value={name}
             onChange={handleName}
             placeholder="Name of your spot."
-            required
+            // required
           />
         </section>
         <section className="spot-price-form">
@@ -205,7 +206,7 @@ const NewSpotForm = () => {
             value={price}
             onChange={handlePrice}
             placeholder="Price per season (USD)"
-            required
+            // required
           />
         </section>
         <section className="spot-images-form">
@@ -216,7 +217,7 @@ const NewSpotForm = () => {
             value={imageOne}
             onChange={handleImageOne}
             placeholder="Preview Image URL"
-            required
+            // required
           />
           <input
             type="text"
