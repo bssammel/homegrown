@@ -11,12 +11,40 @@ function LoginFormModal() {
   const { closeModal, setErrors, errors } = useModal();
 
   const handleSubmit = (e) => {
-    console.log("handling that submission for ya");
+    // console.log("handling that submission for ya");
     e.preventDefault();
     setErrors({});
 
     return (
       dispatch(sessionActions.login({ credential, password }))
+        // .then(console.log(errors))
+        .then(closeModal)
+        .catch(async (res) => {
+          const data = await res.json();
+          if (data && data.message) {
+            console.log(
+              " whoa there bud, looks like there are some errors with your log in"
+            );
+            // console.log(data.message);
+            setErrors(data.message);
+            // console.log(errors);
+          }
+        })
+    );
+  };
+
+  const handleDemoUser = (e) => {
+    // console.log("handling that submission for ya");
+    e.preventDefault();
+    setErrors({});
+
+    return (
+      dispatch(
+        sessionActions.login({
+          credential: "TesterMcTesterson",
+          password: "superSecurePass",
+        })
+      )
         // .then(console.log(errors))
         .then(closeModal)
         .catch(async (res) => {
@@ -68,6 +96,9 @@ function LoginFormModal() {
           disabled={password.length < 6 || credential.length < 4}
         >
           Log In
+        </button>
+        <button type="button" onClick={handleDemoUser}>
+          Log In As Demo User
         </button>
       </form>
     </>
