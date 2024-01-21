@@ -74,9 +74,9 @@ app.use((err, _req, res, _next) => {
   console.log("line 77 in app.js backend");
   res.json({
     // title: err.title || 'Server Error',
-    // message: err.title,
-    // errors: err.errors,
-    message: "This is a new message",
+    message: err.message,
+    errors: err.errors,
+    // message: "This is a new message",
     // stack: isProduction ? null : err.stack
   });
 });

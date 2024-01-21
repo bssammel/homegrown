@@ -62,35 +62,16 @@ export const deleteSpot = (spot) => {
 export const createNewSpot = (newSpotData) => async (dispatch) => {
   console.log("hello I am here on line 63 in store/spots.js");
   console.log(newSpotData);
-  let res;
-  try {
-    res = await csrfFetch(`/api/spots`, {
-      method: "POST",
-      // headers: {
-      //   "Content-Type": "application/json",
-      // },
-      body: JSON.stringify(newSpotData),
-    });
-  } catch {
-    const errors = await res.json();
-    console.log("errors for createNewSpot");
-    console.log(errors);
-    return errors;
+
+  const res = await csrfFetch(`/api/spots`, {
+    method: "POST",
+    body: JSON.stringify(newSpotData),
+  });
+  let data = await res.json();
+  if (res.ok) {
+    dispatch(createSpot(data));
   }
-
-  console.log("res for createNewSpot");
-  console.log(res);
-  const newRes = res.json();
-
-  // if (newRes.message) {
-
-  // }
-
-  if (!newRes.message) {
-    const createdSpot = await res.json();
-    dispatch(createSpot(createdSpot));
-    return createdSpot;
-  }
+  return data;
 };
 
 // this is the fetch for spots, it is within a thunk action creator
