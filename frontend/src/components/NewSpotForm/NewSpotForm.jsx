@@ -76,7 +76,16 @@ const NewSpotForm = () => {
 
     let newlyCreatedSpot;
 
-    newlyCreatedSpot = await dispatch(createNewSpot(formData));
+    newlyCreatedSpot = await dispatch(createNewSpot(formData)).catch(
+      async (res) => {
+        const data = res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+        console.log("line 84 and 85");
+        console.log(data, errors);
+      }
+    );
     console.log("newlyCreatedSpot from newSpotForm", newlyCreatedSpot);
 
     //if newlyCreatedSpot.id navigate to new id
@@ -133,7 +142,9 @@ const NewSpotForm = () => {
               placeholder="2110 Blue Ridge Road"
               // required
             />
-            {errors.address && <p>{errors.address}</p>}
+            {errors.address && (
+              <p className="error-message">{errors.address}</p>
+            )}
             {/* conditional rendering above for address errors message */}
           </label>
           <label>
@@ -145,6 +156,7 @@ const NewSpotForm = () => {
               placeholder="Raleigh"
               // required
             />
+            {errors.city && <p className="error-message">{errors.city}</p>}
           </label>
           <label>
             State
@@ -155,6 +167,7 @@ const NewSpotForm = () => {
               placeholder="North Carolina"
               // required
             />
+            {errors.state && <p className="error-message">{errors.state}</p>}
           </label>
           <label>
             Country
@@ -165,6 +178,9 @@ const NewSpotForm = () => {
               placeholder="United States of America"
               // required
             />
+            {errors.country && (
+              <p className="error-message">{errors.country}</p>
+            )}
           </label>
         </section>
         <section className="spot-description-form">
@@ -180,6 +196,9 @@ const NewSpotForm = () => {
             placeholder="Please write at least 30 characters."
             // required
           />
+          {errors.description && (
+            <p className="error-message">{errors.description}</p>
+          )}
         </section>
         <section className="spot-name-form">
           <h2>Create a title for your spot</h2>
@@ -194,6 +213,7 @@ const NewSpotForm = () => {
             placeholder="Name of your spot."
             // required
           />
+          {errors.name && <p className="error-message">{errors.name}</p>}
         </section>
         <section className="spot-price-form">
           <h2>Set a base price for your spot</h2>
@@ -208,6 +228,7 @@ const NewSpotForm = () => {
             placeholder="Price per season (USD)"
             // required
           />
+          {errors.price && <p className="error-message">{errors.price}</p>}
         </section>
         <section className="spot-images-form">
           <h2>Liven up your spot with photos.</h2>
@@ -219,6 +240,11 @@ const NewSpotForm = () => {
             placeholder="Preview Image URL"
             // required
           />
+          {imageOne.length < 1 && (
+            <p className="error-message">
+              {"At least one image is needed for your spot."}
+            </p>
+          )}
           <input
             type="text"
             value={imageTwo}
