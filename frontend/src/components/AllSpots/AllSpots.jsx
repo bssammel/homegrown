@@ -30,7 +30,8 @@ const SpotList = () => {
     if (spot) {
       if (spot.avgRating > 0) {
         // console.log(`the current user is the author`);
-        return spot.avgRating;
+        const formattedRating = spot.avgRating.toFixed(2);
+        return formattedRating;
       } else {
         // console.log(`The current user is not the author.`);
         return "New";
