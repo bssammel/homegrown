@@ -14,69 +14,85 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
+    console.log("toggleMenu is running");
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
+    console.log(showMenu);
   };
 
   useEffect(() => {
+    console.log(
+      "useEffect running where show menu state is either false or true"
+    );
+    console.log(showMenu);
     if (!showMenu) return;
+    console.log("useEffect still running where show menu state is only true");
+    // const closeMenu = (e) => {
+    //   console.log("close menu running");
+    //   if (!ulRef.current.contains(e.target)) {
+    //     console.log("close menu setting false");
+    //     setShowMenu(false);
+    //   }
+    // };
 
-    const closeMenu = (e) => {
-      if (!ulRef.current.contains(e.target)) {
-        setShowMenu(false);
-      }
-    };
+    // document.addEventListener("click", closeMenu);
 
-    document.addEventListener("click", closeMenu);
+    // return () => document.removeEventListener("click");
+  }, []);
 
-    return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu]);
-
-  const closeMenu = () => setShowMenu(false);
+  // const closeMenu = () => setShowMenu(false);
 
   const logout = (e) => {
     e.preventDefault();
-    dispatch(sessionActions.logout()).then(closeMenu()).then(navigate(`/`));
-    closeMenu();
+    dispatch(sessionActions.logout())
+      .then(setShowMenu(false))
+      .then(navigate(`/`));
+    setShowMenu(false);
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  // const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  console.log("Current show menu state: " + showMenu);
 
   return (
     <>
       <button onClick={toggleMenu}>
         <i className="fas fa-user-circle" />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
-        {user ? (
-          <>
-            <li>Hello {user.firstName}</li>
-            <li>{user.username}</li>
+      {showMenu && (
+        <ul
+          className={"profile-dropdown" + (showMenu ? "" : " hidden")}
+          ref={ulRef}
+        >
+          {user ? (
+            <>
+              <li>Hello {user.firstName}</li>
+              <li>{user.username}</li>
 
-            <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <OpenModalButton
-                buttonText="Log In"
-                onButtonClick={closeMenu}
-                modalComponent={<LoginFormModal />}
-              />
-            </li>
-            <li>
-              <OpenModalButton
-                buttonText="Sign Up"
-                onButtonClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
-            </li>
-          </>
-        )}
-      </ul>
+              <li>{user.email}</li>
+              <li>
+                <button onClick={logout}>Log Out</button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <OpenModalButton
+                  buttonText="Log In"
+                  onButtonClick={toggleMenu}
+                  modalComponent={<LoginFormModal />}
+                />
+              </li>
+              <li>
+                <OpenModalButton
+                  buttonText="Sign Up"
+                  onButtonClick={toggleMenu}
+                  modalComponent={<SignupFormModal />}
+                />
+              </li>
+            </>
+          )}
+        </ul>
+      )}
     </>
   );
 }
