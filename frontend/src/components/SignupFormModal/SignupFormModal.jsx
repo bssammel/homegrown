@@ -61,7 +61,9 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p className="error-message">{errors.email}</p>}
+        {errors.email && (
+          <p className="error-message">{"The provided email is invalid"}</p>
+        )}
         <label>
           Username
           <input
@@ -72,6 +74,11 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && <p className="error-message">{errors.username}</p>}
+        {username.length < 4 && (
+          <p className="error-message">
+            {"Your username must be at least 4 characters."}
+          </p>
+        )}
         <label>
           First Name
           <input
@@ -104,6 +111,11 @@ function SignupFormModal() {
           />
         </label>
         {errors.password && <p className="error-message">{errors.password}</p>}
+        {password.length < 4 && (
+          <p className="error-message">
+            {"Your password must be at least 6 characters."}
+          </p>
+        )}
         <label>
           Confirm Password
           <input
