@@ -69,7 +69,7 @@ function NewReviewModal() {
             required
           />
         </label>
-        {review.length < 10 && (
+        {review.length < 10 && (stars !== "" || stars !== null) && (
           <p className="error-message">
             {"At least 10 characters are needed to submit a review."}
           </p>
@@ -87,6 +87,11 @@ function NewReviewModal() {
           />
         </label>
         {/* {console.log("#################### Stars: " + stars)} */}
+        {(stars !== "" || stars !== null) && (
+          <p className="error-message">
+            {"Please leave a star rating to accompany your review."}
+          </p>
+        )}
         {errors.stars && <p className="error-message">{errors.stars}</p>}
         <button
           type="submit"
