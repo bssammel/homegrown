@@ -52,6 +52,10 @@ function NewReviewModal() {
     }
   };
 
+  const helperDisableStars = function (stars) {
+    console.log("#################### Stars: " + stars);
+  };
+
   return (
     <>
       <h1>How was your stay?</h1>
@@ -65,7 +69,12 @@ function NewReviewModal() {
             required
           />
         </label>
-        {errors.review && <p>{errors.review}</p>}
+        {review.length < 10 && (
+          <p className="error-message">
+            {"At least 10 characters are needed to submit a review."}
+          </p>
+        )}
+        {errors.review && <p className="error-message">{errors.review}</p>}
         <label>
           Stars
           <input
@@ -77,8 +86,14 @@ function NewReviewModal() {
             required
           />
         </label>
-        {errors.stars && <p>{errors.stars}</p>}
-        <button type="submit">Submit your Review</button>
+        {/* {console.log("#################### Stars: " + stars)} */}
+        {errors.stars && <p className="error-message">{errors.stars}</p>}
+        <button
+          type="submit"
+          disabled={review.length < 10 || stars === "" || stars === null}
+        >
+          Submit your Review
+        </button>
       </form>
     </>
   );

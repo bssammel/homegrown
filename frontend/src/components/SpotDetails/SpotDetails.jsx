@@ -124,12 +124,12 @@ const SpotDetails = () => {
       if (spot.avgStarRating > 0) {
         // console.log(`spor `);
         let formattedRating = spot.avgStarRating.toFixed(2);
-        if (useCase === "header") {
-          if (reviewCount > 0) {
-            formattedRating = formattedRating + " • " + reviewCount + " Review";
-            if (reviewCount > 1) formattedRating = formattedRating + "s";
-          }
+
+        if (reviewCount > 0) {
+          formattedRating = formattedRating + " • " + reviewCount + " Review";
+          if (reviewCount > 1) formattedRating = formattedRating + "s";
         }
+
         return formattedRating;
       } else {
         // console.log(`The current user is not the author.`);
@@ -233,11 +233,10 @@ const SpotDetails = () => {
               <div key={review.id}>
                 <p>
                   <h4>{review.User.firstName} </h4>
-                  <h4>
-                    {" " + dateTimeModifier(review.createdAt, "Month Year")}:
-                  </h4>{" "}
-                  {review.review}. This user gave this garden spot a rating of{" "}
-                  {review.stars} stars out of 5.
+                  <h4 className="month-year-review">
+                    {dateTimeModifier(review.createdAt, "Month Year")}:
+                  </h4>
+                  {review.review}
                 </p>
                 {isCurrUserAuthor(review) && (
                   <OpenModalButton
