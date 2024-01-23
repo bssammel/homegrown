@@ -127,6 +127,10 @@ const SpotDetails = () => {
     } else return 0;
   };
 
+  // const comingSoonAlert = function () {
+  //   alert()
+  // }
+
   return (
     <>
       <section className="spot-details">
@@ -164,7 +168,13 @@ const SpotDetails = () => {
               <p>${spotDetails.price} night</p>
               <p id="star-rating">★ {hasReviews(spotDetails)}</p>
             </div>
-            <button>Reserve</button>
+            <button
+              onClick={() => {
+                alert("Feature Coming Soon");
+              }}
+            >
+              Reserve
+            </button>
           </div>
         </div>
       </section>
