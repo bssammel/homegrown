@@ -315,6 +315,8 @@ router.get("/:spotId/reviews", async (req, res, next) => {
     review.dataValues.updatedAt = newTimestamps[1];
   }
 
+  Reviews.reverse();
+
   return res.json({ Reviews });
 });
 

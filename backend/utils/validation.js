@@ -16,8 +16,8 @@ const handleValidationErrors = (req, _res, next) => {
     err.errors = errors;
     err.status = 400;
     err.title = "Bad Request.";
-    console.log("err here", err);
-    console.log("count 1 here", count);
+    // console.log("err here", err);
+    // console.log("count 1 here", count);
     next(err);
   } else {
     console.log("count 2 here", count);

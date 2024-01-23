@@ -115,13 +115,21 @@ const SpotDetails = () => {
   //     showBeFirstReviewText = false; //if currently logged in user is owner;
   //   }
   // }
-  const hasReviews = function (spot) {
+  let reviewCount = spotDetails.numReviews;
+
+  const hasReviews = function (spot, useCase) {
     if (spot) {
-      // console.log("line 120 of spot details");
-      // console.log(spot);
+      console.log("line 120 of spot details");
+      console.log(spot);
       if (spot.avgStarRating > 0) {
         // console.log(`spor `);
-        const formattedRating = spot.avgStarRating.toFixed(2);
+        let formattedRating = spot.avgStarRating.toFixed(2);
+        if (useCase === "header") {
+          if (reviewCount > 0) {
+            formattedRating = formattedRating + " • " + reviewCount + " Review";
+            if (reviewCount > 1) formattedRating = formattedRating + "s";
+          }
+        }
         return formattedRating;
       } else {
         // console.log(`The current user is not the author.`);
@@ -129,6 +137,26 @@ const SpotDetails = () => {
       }
     } else return 0;
   };
+
+  // let sortedReviewList;
+
+  // const sortReviewsCreated = function (rawReviewList) {
+  //   // sortedReviewList = rawReviewList.sort((reviewA, reviewB) => {
+  //   //   console.log("reviewA");
+  //   //   console.log(reviewA);
+  //   //   console.log("reviewB");
+  //   //   console.log(reviewB);
+  //   //   reviewA.createdAt.getTime() - reviewB.createdAt.getTime();
+  //   // });
+
+  //   console.log("rawReviewList");
+  //   console.log(rawReviewList);
+  //   sortedReviewList = rawReviewList.toReversed();
+  //   console.log("sortedReviewList");
+  //   console.log(sortedReviewList);
+
+  //   return sortedReviewList;
+  // };
 
   // const comingSoonAlert = function () {
   //   alert()
@@ -181,42 +209,52 @@ const SpotDetails = () => {
           </div>
         </div>
       </section>
-      {showBeFirstReviewText && <h3>Be the first to post a review!</h3>}
-      {Array.isArray(reviewList) && reviewsBool && (
-        <section className="spot-reviews">
-          {reviewList.map((review) => (
-            <div key={review.id}>
-              <p>
-                <h4>{review.User.firstName} </h4>
-                <h4>
-                  {" " + dateTimeModifier(review.createdAt, "Month Year")}:
-                </h4>{" "}
-                {review.review}. This user gave this garden spot a rating of{" "}
-                {review.stars} stars out of 5.
-              </p>
-              {isCurrUserAuthor(review) && (
-                <OpenModalButton
-                  buttonText="Delete"
-                  // onButtonClick={navigate("/spots/current")}
-                  modalComponent={
-                    <DeleteReviewModal
-                      state={{ id: review.id, spotId: review.spotId }}
-                    />
-                  }
-                />
-              )}
-            </div>
-          ))}
-        </section>
-      )}
-      {showNewReviewButton && (
-        <p id="new-review-button">
-          <OpenModalButton
-            buttonText="Post Your Review"
-            modalComponent={<NewReviewModal />}
-          />
-        </p>
-      )}
+
+      {}
+      <section className="spot-review-section">
+        {/* this should really just be a separate component. */}
+        <h2>★ {hasReviews(spotDetails, "header")}</h2>
+        {showNewReviewButton && (
+          <p id="new-review-button">
+            <OpenModalButton
+              buttonText="Post Your Review"
+              modalComponent={<NewReviewModal />}
+            />
+          </p>
+        )}
+        {showBeFirstReviewText && <h3>Be the first to post a review!</h3>}
+        {Array.isArray(reviewList) && reviewsBool && (
+          <div id="reviews">
+            {/* {(sortedReviewList = sortReviewsCreated(reviewList))} */}
+            {/* Comment: Goal here is to display reviews in chronological order by release. Best  */}
+            {console.log("reviewList")}
+            {console.log(reviewList)}
+            {reviewList.map((review) => (
+              <div key={review.id}>
+                <p>
+                  <h4>{review.User.firstName} </h4>
+                  <h4>
+                    {" " + dateTimeModifier(review.createdAt, "Month Year")}:
+                  </h4>{" "}
+                  {review.review}. This user gave this garden spot a rating of{" "}
+                  {review.stars} stars out of 5.
+                </p>
+                {isCurrUserAuthor(review) && (
+                  <OpenModalButton
+                    buttonText="Delete"
+                    // onButtonClick={navigate("/spots/current")}
+                    modalComponent={
+                      <DeleteReviewModal
+                        state={{ id: review.id, spotId: review.spotId }}
+                      />
+                    }
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </>
   );
 };
