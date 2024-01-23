@@ -19,27 +19,35 @@ function Navigation({ isLoaded }) {
           />
         </NavLink>
       </h1>
-      <ul>
+      <div className="user-nav">
         {sessionUser && (
-          <>
-            <li className="nav-button" id="new-spot-button">
-              <NavLink exact to="/spots/new">
+          <div id="spot-management">
+            <p className="nav-button" id="new-spot-button">
+              <NavLink exact to="/spots/new" style={{ textDecoration: "none" }}>
                 Create a New Spot
               </NavLink>
-            </li>
-            <li className="nav-button" id="manage-spots-button">
-              <NavLink exact to="/spots/current">
+            </p>
+            <p className="nav-button" id="manage-spots-button">
+              <NavLink
+                exact
+                to="/spots/current"
+                style={{ textDecoration: "none" }}
+              >
                 Manage Spots
               </NavLink>
-            </li>
-          </>
+            </p>
+          </div>
         )}
-        {isLoaded && (
-          <li>
-            <ProfileButton user={sessionUser} />
-          </li>
-        )}
-      </ul>
+        <div className="profile-button">
+          <ul>
+            {isLoaded && (
+              <li className="remove-bullet">
+                <ProfileButton user={sessionUser} />
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
     </nav>
   );
 }

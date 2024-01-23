@@ -27,17 +27,17 @@ function ProfileButton({ user }) {
     console.log(showMenu);
     if (!showMenu) return;
     console.log("useEffect still running where show menu state is only true");
-    // const closeMenu = (e) => {
-    //   console.log("close menu running");
-    //   if (!ulRef.current.contains(e.target)) {
-    //     console.log("close menu setting false");
-    //     setShowMenu(false);
-    //   }
-    // };
+    const closeMenu = (e) => {
+      console.log("close menu running");
+      if (!ulRef.current.contains(e.target)) {
+        console.log("close menu setting false");
+        setShowMenu(false);
+      }
+    };
 
-    // document.addEventListener("click", closeMenu);
+    document.addEventListener("click", closeMenu);
 
-    // return () => document.removeEventListener("click");
+    return () => document.removeEventListener("click");
   }, []);
 
   // const closeMenu = () => setShowMenu(false);
@@ -55,7 +55,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
+      <button onClick={toggleMenu} id="user-dropdown-button">
         <i className="fas fa-user-circle" />
       </button>
       {showMenu && (
@@ -75,14 +75,14 @@ function ProfileButton({ user }) {
             </>
           ) : (
             <>
-              <li>
+              <li className="remove-bullet">
                 <OpenModalButton
                   buttonText="Log In"
                   onButtonClick={toggleMenu}
                   modalComponent={<LoginFormModal />}
                 />
               </li>
-              <li>
+              <li className="remove-bullet">
                 <OpenModalButton
                   buttonText="Sign Up"
                   onButtonClick={toggleMenu}
