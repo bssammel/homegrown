@@ -12,7 +12,7 @@ import "./SpotDetails.css";
 
 const SpotDetails = () => {
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
   //   const navigate = useNavigate();
   //   const [goToSpot, setGoToSpot] = useState(id);
 
@@ -23,10 +23,10 @@ const SpotDetails = () => {
   );
   const isCurrUserAuthor = function (review) {
     if (sessionUser) {
-      console.log(`review user Id: , ${review.User.id}`);
-      console.log("session user Id: ", sessionUser.id);
+      // console.log(`review user Id: , ${review.User.id}`);
+      // console.log("session user Id: ", sessionUser.id);
       if (review.User.id === sessionUser.id) {
-        console.log(`the current user is the author`);
+        // console.log(`the current user is the author`);
         return true;
       } else {
         console.log(`The current user is not the author.`);
@@ -57,12 +57,12 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log();
+    // console.log();
     dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id, reviewListLength]);
 
   if (!spotDetails || !spotDetails.Owner) {
-    console.log("spotDetails is null");
+    // console.log("spotDetails is null");
     reviewListLength = -1;
     return <h1>Getting those details for you!</h1>;
   }
@@ -75,12 +75,12 @@ const SpotDetails = () => {
     if (Array.isArray(reviewList) && reviewList) {
       let userWroteReviewBool = false;
       reviewList.forEach((review) => {
-        console.log("loop ended");
-        console.log(review.userId);
-        console.log(sessionUser.id);
+        // console.log("loop ended");
+        // console.log(review.userId);
+        // console.log(sessionUser.id);
         if (review.userId === sessionUser.id) userWroteReviewBool = true;
-        console.log(userWroteReviewBool);
-        console.log("loop ended");
+        // console.log(userWroteReviewBool);
+        // console.log("loop ended");
       });
       return userWroteReviewBool;
     }
@@ -107,7 +107,7 @@ const SpotDetails = () => {
     (image) => image.preview !== true
   );
   const nonPreviewImageArrLengthBool = nonPreviewImageArr.length > 0;
-  console.log(nonPreviewImageArrLengthBool);
+  // console.log(nonPreviewImageArrLengthBool);
 
   // if ( && sessionUser) {
   //   //if reviews populated correctly and user is logged in
@@ -117,9 +117,12 @@ const SpotDetails = () => {
   // }
   const hasReviews = function (spot) {
     if (spot) {
-      if (spot.avgRating > 0) {
-        // console.log(`the current user is the author`);
-        return spot.avgRating;
+      // console.log("line 120 of spot details");
+      // console.log(spot);
+      if (spot.avgStarRating > 0) {
+        // console.log(`spor `);
+        const formattedRating = spot.avgStarRating.toFixed(2);
+        return formattedRating;
       } else {
         // console.log(`The current user is not the author.`);
         return "New";
