@@ -117,7 +117,7 @@ const SpotDetails = () => {
   // }
   let reviewCount = spotDetails.numReviews;
 
-  const hasReviews = function (spot, useCase) {
+  const hasReviews = function (spot) {
     if (spot) {
       console.log("line 120 of spot details");
       console.log(spot);

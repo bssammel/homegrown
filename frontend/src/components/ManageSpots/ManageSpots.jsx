@@ -85,11 +85,11 @@ const ManageSpots = () => {
                 </div>
               </div>
               <ul>
-                <li className="user-spot-button" id="update-spot-button">
+                <li className="user-spot-button button" id="update-spot-button">
                   <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
                 </li>
                 <li
-                  className="user-spot-button"
+                  className="user-spot-button remove-bullet"
                   id={`delete-spot-button-${spot.id}`}
                   onClick={handleModalClick}
                 >
