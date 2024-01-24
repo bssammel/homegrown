@@ -216,6 +216,7 @@ const NewSpotForm = () => {
             placeholder="Please write at least 30 characters."
             required
           />
+          <br />
           {description.length < 1 && (
             <p className="error-message">
               {"Description needs 30 or more characters."}
@@ -238,6 +239,7 @@ const NewSpotForm = () => {
             placeholder="Name of your spot."
             required
           />
+          <br />
           {name.length < 1 && (
             <p className="error-message">{"Name is required."}</p>
           )}
@@ -256,6 +258,7 @@ const NewSpotForm = () => {
             placeholder="Price per season (USD)"
             required
           />
+          <br />
           {price.length < 1 && (
             <p className="error-message">
               {"Price is required and must be a number."}
@@ -276,29 +279,34 @@ const NewSpotForm = () => {
             placeholder="Preview Image URL"
             required
           />
+          <br />
           {imageOne.length < 1 && (
             <p className="error-message">
               {"At least one image is needed for your spot."}
             </p>
           )}
+          <br />
           <input
             type="text"
             value={imageTwo}
             onChange={handleImageTwo}
             placeholder="Image URL"
           />
+          <br />
           <input
             type="text"
             value={imageThree}
             onChange={handleImageThree}
             placeholder="Image URL"
           />
+          <br />
           <input
             type="text"
             value={imageFour}
             onChange={handleImageFour}
             placeholder="Image URL"
           />
+          <br />
           <input
             type="text"
             value={imageFive}

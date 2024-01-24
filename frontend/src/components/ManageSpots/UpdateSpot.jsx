@@ -106,6 +106,10 @@ const UpdateSpot = () => {
               placeholder="2110 Blue Ridge Road"
               required
             />
+            <br />
+            {streetAddress.length < 1 && (
+              <p className="error-message">{"Street Address is required."}</p>
+            )}
             {errors.address && <p>{errors.address}</p>}
           </label>
           <label>
@@ -117,6 +121,10 @@ const UpdateSpot = () => {
               placeholder="Raleigh"
               required
             />
+            <br />
+            {city.length < 1 && (
+              <p className="error-message">{"City is required."}</p>
+            )}
           </label>
           <label>
             State
@@ -127,6 +135,10 @@ const UpdateSpot = () => {
               placeholder="North Carolina"
               required
             />
+            <br />
+            {state.length < 1 && (
+              <p className="error-message">{"State is required."}</p>
+            )}
           </label>
           <label>
             Country
@@ -137,6 +149,10 @@ const UpdateSpot = () => {
               placeholder="United States of America"
               required
             />
+            <br />
+            {country.length < 1 && (
+              <p className="error-message">{"Country is required."}</p>
+            )}
           </label>
         </section>
         <section className="spot-description-form">
@@ -152,6 +168,12 @@ const UpdateSpot = () => {
             placeholder="Please write at least 30 characters."
             required
           />
+          <br />
+          {description.length < 1 && (
+            <p className="error-message">
+              {"Description needs 30 or more characters."}
+            </p>
+          )}
         </section>
         <section className="spot-name-form">
           <h2>Create a title for your spot</h2>
@@ -166,6 +188,10 @@ const UpdateSpot = () => {
             placeholder="Name of your spot."
             required
           />
+          <br />
+          {name.length < 1 && (
+            <p className="error-message">{"Name is required."}</p>
+          )}
         </section>
         <section className="spot-price-form">
           <h2>Set a base price for your spot</h2>
@@ -180,6 +206,15 @@ const UpdateSpot = () => {
             placeholder="Price per season (USD)"
             required
           />
+          <br />
+          {price.length < 1 && (
+            <p className="error-message">
+              {"Price is required and must be a number."}
+            </p>
+          )}
+          {price.toString().includes(".") && (
+            <p className="error-message">{"Price must be an integer."}</p>
+          )}
         </section>
         <section className="spot-form-buttons">
           <button type="submit">Update Your Spot</button>
