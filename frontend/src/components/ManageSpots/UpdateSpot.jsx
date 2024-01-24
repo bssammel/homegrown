@@ -71,8 +71,10 @@ const UpdateSpot = () => {
       lng: 2,
       description,
       name,
-      price,
+      price: Number(price.replace(`"`, "")),
     };
+
+    console.log(formData.price);
 
     const updatedSpot = await dispatch(editCurrentSpot(formData));
 

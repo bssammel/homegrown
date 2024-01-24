@@ -261,6 +261,9 @@ const NewSpotForm = () => {
               {"Price is required and must be a number."}
             </p>
           )}
+          {price.includes(".") && (
+            <p className="error-message">{"Price must be an integer."}</p>
+          )}
           {errors.price && <p className="error-message">{errors.price}</p>}
         </section>
         <section className="spot-images-form sub-form">
@@ -304,7 +307,22 @@ const NewSpotForm = () => {
           />
         </section>
         <section className="spot-form-buttons ">
-          <button type="submit">Create new Spot</button>
+          <button
+            type="submit"
+            disabled={
+              streetAddress.length < 1 ||
+              city.length < 1 ||
+              state.length < 1 ||
+              country.length < 1 ||
+              description.length < 1 ||
+              name.length < 1 ||
+              price.length < 1 ||
+              price.includes(".") ||
+              imageOne.length < 1
+            }
+          >
+            Create new Spot
+          </button>
           {/* <button type="button" onClick={handleCancelClick}>
             Cancel
           </button> */}
