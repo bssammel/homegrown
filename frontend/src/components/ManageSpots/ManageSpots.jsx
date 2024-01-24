@@ -52,20 +52,20 @@ const ManageSpots = () => {
 
   const hasReviews = function (spot) {
     if (spot) {
-      if (typeof spot.avgStarRating === "string") {
-        spot.avgStarRating = Number(spot.avgStarRating);
+      if (typeof spot.avgRating === "string") {
+        spot.avgRating = Number(spot.avgRating);
         console.log(
           "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
-          spot.avgStarRating,
+          spot.avgRating,
           "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
-            typeof spot.avgStarRating
+            typeof spot.avgRating
         );
       }
       console.log(
         "&&&&&&&&&&&&&&&&&&&&&&&&&&& what is going on with avg rating? here is spot.avgRating: ",
-        spot.avgStarRating,
+        spot.avgRating,
         "`\n`  &&&&&&&&&&&&&&&&&&&&&& spot rating type: " +
-          typeof spot.avgStarRating
+          typeof spot.avgRating
       );
       if (spot.avgRating > 0 && typeof spot.avgRating === "number") {
         // console.log(`the current user is the author`);
