@@ -52,7 +52,7 @@ const ManageSpots = () => {
 
   const hasReviews = function (spot) {
     if (spot) {
-      if (spot.avgRating > 0) {
+      if (spot.avgRating > 0 && typeof spot.avgRating === "number") {
         // console.log(`the current user is the author`);
         const formattedRating = spot.avgRating.toFixed(2);
         return formattedRating;
