@@ -119,14 +119,14 @@ const SpotDetails = () => {
 
   const hasReviews = function (spot) {
     if (spot) {
-      console.log("line 120 of spot details");
-      console.log(spot);
-      console.log(
-        "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
-        spot.avgStarRating,
-        "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
-          typeof spot.avgStarRating
-      );
+      // console.log("line 120 of spot details");
+      // console.log(spot);
+      // console.log(
+      //   "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
+      //   spot.avgStarRating,
+      //   "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
+      //     typeof spot.avgStarRating
+      // );
       if (typeof spot.avgStarRating === "string") {
         spot.avgStarRating = Number(spot.avgStarRating);
       }
