@@ -52,9 +52,9 @@ function NewReviewModal() {
     }
   };
 
-  const helperDisableStars = function (stars) {
-    console.log("#################### Stars: " + stars);
-  };
+  // const helperDisableStars = function (stars) {
+  //   console.log("#################### Stars: " + stars);
+  // };
 
   return (
     <>
