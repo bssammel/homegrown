@@ -1,6 +1,57 @@
-# `<Homegrown>`
+# Homegrown
 
-## Description
+Welcome to the new way to community garden. Hosted at [homegrown.onrender.com](homegrown.onrender.com), this application is modeled after popular nightly rental applications. Rather than pricing by night, a garden plot would be priced by season.
+
+# Index
+
+[Application Stack](#application-stack) | [Install Instructions](#install-instructions) | [Implementation Notes](#implementation-notes) | [Demonstration](#demonstration) | [Future Implementations](#future-implementations) | [Database Schema Design](#database-schema-design) | [API Documentation](#api-documentation)
+
+## Application Stack
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1024px-HTML5_logo_and_wordmark.svg.png" alt="html 5 icon"  width="50" /> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/363px-CSS3_logo_and_wordmark.svg.png" alt="css 3 icon"  width="36" /> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/800px-JavaScript-logo.png" alt="javascript icon"  width="50" /> <img src="https://seeklogo.com/images/S/sequelize-logo-9A5075DB9F-seeklogo.com.png" alt="sequelize icon"  width="45" /> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1985px-Postgresql_elephant.svg.png" alt="postgresql icon"  width="50" /><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" alt="react icon"  width="50" /><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Redux.png" alt="redux icon"  width="70" /> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/2560px-Node.js_logo.svg.png" alt="node.js icon"  width="75" /> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/SQLite370.svg/2560px-SQLite370.svg.png" alt="sqlite icon"  width="95" />
+
+The backend of this project was first constructed before the frontend. The backend database framework used Sequelize so that SQLite could be used in development while PostGresQL is used in production. The backend router utilized the Express.js framework to create the RESTful API with Node.js.
+The front end of this application was made using React/Redux with HTML, CSS, and JS. The Google Fonts API was also used to style text. The logo for the site was made in Canva.
+
+## Install Instructions
+
+If you wish to run this application locally, here are the install notes.
+
+1. First you will need to clone this repository. <br> `git clone https://github.com/bssammel/homegrown.git`
+2. Next you will need to navigate to the backend directory, then install Node. <br> `npm install`
+3. You will also want to copy .env.example as a .env file, but with your key values. `cp .env.example .env`
+4. Within this terminal and run either of these command groups:
+   - Individual commands (must run in order): <br> `npx dotenv sequelize db:seed:undo:all` <br> `npx dotenv sequelize db:migrate:undo:all`<br> `npx dotenv sequelize db:migrate` <br> `npx dotenv sequelize db:seed:all`
+   - You can also elect to run `npm run rebuild` as that is a custom script within package.json to run all of the above commands in order. This is found at line 14 in in `backend/package.json`.<br> `npm run rebuild`
+5. While in the backend directory, you will start the application. <br> `npm run start`
+6. Open a new terminal in the frontend directory so that the backend is live and install dependencies there.<br> `npm install`
+7. In this frontend directory, then start the React frontend server.<br> `npm run dev`
+8. In a new frontend directory, run `npm run build` which will trigger vite to build. The original command for this is `vite build --watch`. The `--watch` flag will trigger a rebuild when changes are made to vite.config.js as well as any bundled files. This is found at line 8 in `frontend/package.json`. <br> `npm run build`
+9. If Vite does not automatically open a tab in your browser, navigate to `http://localhost:5173/`.
+10. You are all set to run Homegrown on your local machine!
+
+## Implementation Notes
+
+This project did not come without its hurdles. As my first full-stack application, those hurdles also mean that it is not cleanest code. While there are plans to rewrite major portions of code in a V2, here are the parts I am proud of.
+
+- Separating helper functions out from the file they are used in and importing those functions from the utils directory was a great step toward concise code and applying the single choice principle.
+- Familiarizing myself with sequelize was certainly rough, but finally getting the correct implementation and syntax for the average rating of a spot was thrilling.
+- When I was working on the logic for overlapping bookings I had to actually get a calendar out in front of my to sketch over and consider all the times. I hope to move this logic into its own util file in V2.
+- Additionally, at any point when manipulating or comparing dates, I would write comments in at each step to avoid confusing which was the later date versus earlier dates.
+
+## Demonstration
+
+## Future Implementations
+
+This is certainly a initial release that needs some refactoring done, but including and after that refactor, here are the planned improvements:
+
+- 2.0.0 - This release will primarily be a major refactor of code to remove extraneous comments, console.logs, and other code used in debugging. This release will also include refactoring of the database fetches so that they are all uniform. This will also include some refactoring of the bodies sent from the backend. As part of bootcamp project, there were specific specifications that led to inconsistencies in objects delivered from the backend. The great majority of the work for this release will be in the backend.
+- 2.1.0 - This release will be to include image edits on the Update Spot Form.
+- 2.2.0 - Add latitude and longitude to Update and Create Spot forms. This will also include implementation of the Google Maps API to display a map in each Spot Detail page.
+- 2.3.0 - Add bookings functionality so that users may book a garden plot.
+- 2.4.0 - Manage Reviews Page.
+- 2.5.0 - Allow garden plot owners to respond to reviews.
+- ... And more to come.
 
 ## Database Schema Design
 
