@@ -127,23 +127,27 @@ const SpotDetails = () => {
         "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
           typeof spot.avgStarRating
       );
-      if (spot.avgStarRating > 0) {
-        // console.log(`spor `);
-
-        // let formattedRating = spot.avgStarRating.toFixed(2);
-        let formattedRating = spot.avgStarRating;
-
-        if (reviewCount > 0) {
-          formattedRating = formattedRating + " • " + reviewCount + " Review";
-          if (reviewCount > 1) formattedRating = formattedRating + "s";
-        }
-
-        return formattedRating;
-      } else {
-        // console.log(`The current user is not the author.`);
-        return "New";
+      if (typeof spot.avgStarRating === "string") {
+        spot.avgStarRating = Number(spot.avgStarRating);
       }
-    } else return 0;
+    }
+    if (spot.avgStarRating > 0) {
+      // console.log(`spor `);
+
+      // let formattedRating = spot.avgStarRating.toFixed(2);
+      let formattedRating = spot.avgStarRating;
+
+      if (reviewCount > 0) {
+        formattedRating = formattedRating + " • " + reviewCount + " Review";
+        if (reviewCount > 1) formattedRating = formattedRating + "s";
+      }
+
+      return formattedRating;
+    } else {
+      // console.log(`The current user is not the author.`);
+      return "New";
+    }
+    // } else return 0;
   };
 
   // let sortedReviewList;
