@@ -71,7 +71,7 @@ const SpotList = () => {
                 <p id="star-rating">★ {hasReviews(spot)}</p>
               </div>
 
-              <p id="price">${spot.price} night</p>
+              <p id="price">${spot.price.toFixed(2)} night</p>
             </div>
           </NavLink>
         ))}

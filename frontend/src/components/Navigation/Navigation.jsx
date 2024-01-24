@@ -27,15 +27,6 @@ function Navigation({ isLoaded }) {
                 Create a New Spot
               </NavLink>
             </p>
-            <p className="nav-button" id="manage-spots-button">
-              <NavLink
-                exact
-                to="/spots/current"
-                style={{ textDecoration: "none" }}
-              >
-                Manage Spots
-              </NavLink>
-            </p>
           </div>
         )}
         <div className="profile-button">

@@ -196,7 +196,7 @@ const SpotDetails = () => {
           </div>
           <div className="reserve">
             <div>
-              <p>${spotDetails.price} night</p>
+              <p>${spotDetails.price.toFixed(2)} night</p>
               <p id="star-rating">★ {hasReviews(spotDetails)}</p>
             </div>
             <button
@@ -209,8 +209,7 @@ const SpotDetails = () => {
           </div>
         </div>
       </section>
-
-      {}
+      <hr />
       <section className="spot-review-section">
         {/* this should really just be a separate component. */}
         <h2>★ {hasReviews(spotDetails, "header")}</h2>

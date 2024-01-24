@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
@@ -60,15 +60,24 @@ function ProfileButton({ user }) {
       </button>
       {showMenu && (
         <ul
-          className={"profile-dropdown" + (showMenu ? "" : " hidden")}
+          className={
+            "profile-dropdown remove-bullet" + (showMenu ? "" : " hidden")
+          }
           ref={ulRef}
         >
           {user ? (
             <>
               <li>Hello {user.firstName}</li>
-              <li>{user.username}</li>
-
               <li>{user.email}</li>
+              <li className="nav-button" id="manage-spots-button">
+                <NavLink
+                  exact
+                  to="/spots/current"
+                  style={{ textDecoration: "none" }}
+                >
+                  Manage Spots
+                </NavLink>
+              </li>
               <li>
                 <button onClick={logout}>Log Out</button>
               </li>
