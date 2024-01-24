@@ -50,6 +50,19 @@ const ManageSpots = () => {
     e.preventDefault();
   };
 
+  const hasReviews = function (spot) {
+    if (spot) {
+      if (spot.avgRating > 0) {
+        // console.log(`the current user is the author`);
+        const formattedRating = spot.avgRating.toFixed(2);
+        return formattedRating;
+      } else {
+        // console.log(`The current user is not the author.`);
+        return "New";
+      }
+    } else return 0;
+  };
+
   return (
     <>
       <h1>Manage Spots</h1>
@@ -57,7 +70,7 @@ const ManageSpots = () => {
       {console.log("values to show create spot button")}
       {console.log(numUserSpots)}
       {console.log(sessionUser)} */}
-      {numUserSpots < 1 && sessionUser && (
+      {sessionUser && (
         <h1 className="nav-button" id="new-spot-button">
           <NavLink exact to="/spots/new">
             Create a New Spot
@@ -74,35 +87,41 @@ const ManageSpots = () => {
               to={`/spots/${spot.id}`}
             >
               <div className="spot-data">
-                <p>
-                  This is {spot.name} for spot with {spot.id}. It is in{" "}
-                  {spot.city}, {spot.state}. With an average rating of{" "}
-                  {spot.avgRating} and a weekly price of {spot.price}, it is
-                  described as {`"${spot.description}"`}. The image is below:{" "}
-                </p>
                 <div className="image">
                   <img className="spot-image" src={spot.previewImage} alt="" />
                 </div>
               </div>
-              <ul>
-                <li
-                  className="user-spot-button button remove-underline"
-                  id="update-spot-button"
-                >
-                  <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
-                </li>
-                <li
-                  className="user-spot-button remove-bullet"
-                  id={`delete-spot-button-${spot.id}`}
-                  onClick={handleModalClick}
-                >
-                  <OpenModalButton
-                    buttonText="Delete"
-                    // onButtonClick={navigate("/spots/current")}
-                    modalComponent={<DeleteSpotModal state={{ id: spot.id }} />}
-                  />
-                </li>
-              </ul>
+              <div className="details">
+                <div className="location-rating">
+                  <p id="city-state">
+                    {spot.city}, {spot.state}
+                  </p>
+                  <p id="star-rating">★ {hasReviews(spot)}</p>
+                </div>
+
+                <p id="price">${spot.price.toFixed(2)} night</p>
+                <ul>
+                  <li
+                    className="user-spot-button button remove-underline"
+                    id="update-spot-button"
+                  >
+                    <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
+                  </li>
+                  <li
+                    className="user-spot-button remove-bullet"
+                    id={`delete-spot-button-${spot.id}`}
+                    onClick={handleModalClick}
+                  >
+                    <OpenModalButton
+                      buttonText="Delete"
+                      // onButtonClick={navigate("/spots/current")}
+                      modalComponent={
+                        <DeleteSpotModal state={{ id: spot.id }} />
+                      }
+                    />
+                  </li>
+                </ul>
+              </div>
             </NavLink>
           ))}
         </section>
