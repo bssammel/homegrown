@@ -134,8 +134,8 @@ const SpotDetails = () => {
     if (spot.avgStarRating > 0) {
       // console.log(`spor `);
 
-      // let formattedRating = spot.avgStarRating.toFixed(2);
-      let formattedRating = spot.avgStarRating;
+      let formattedRating = spot.avgStarRating.toFixed(2);
+      // let formattedRating = spot.avgStarRating;
 
       if (reviewCount > 0) {
         formattedRating = formattedRating + " • " + reviewCount + " Review";
