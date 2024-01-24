@@ -135,6 +135,7 @@ const NewSpotForm = () => {
           </h3>
           <label>
             Street Address
+            <br />
             <input
               type="text"
               value={streetAddress}
@@ -142,6 +143,7 @@ const NewSpotForm = () => {
               placeholder="2110 Blue Ridge Road"
               // required
             />
+            <br />
             {errors.address && (
               <p className="error-message">{errors.address}</p>
             )}
@@ -149,6 +151,7 @@ const NewSpotForm = () => {
           </label>
           <label>
             City
+            <br />
             <input
               type="text"
               value={city}
@@ -156,10 +159,12 @@ const NewSpotForm = () => {
               placeholder="Raleigh"
               // required
             />
+            <br />
             {errors.city && <p className="error-message">{errors.city}</p>}
           </label>
           <label>
             State
+            <br />
             <input
               type="text"
               value={state}
@@ -167,10 +172,12 @@ const NewSpotForm = () => {
               placeholder="North Carolina"
               // required
             />
+            <br />
             {errors.state && <p className="error-message">{errors.state}</p>}
           </label>
           <label>
             Country
+            <br />
             <input
               type="text"
               value={country}
@@ -178,6 +185,7 @@ const NewSpotForm = () => {
               placeholder="United States of America"
               // required
             />
+            <br />
             {errors.country && (
               <p className="error-message">{errors.country}</p>
             )}
