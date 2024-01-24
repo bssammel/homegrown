@@ -54,7 +54,19 @@ const ManageSpots = () => {
     if (spot) {
       if (typeof spot.avgStarRating === "string") {
         spot.avgStarRating = Number(spot.avgStarRating);
+        console.log(
+          "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
+          spot.avgStarRating,
+          "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
+            typeof spot.avgStarRating
+        );
       }
+      console.log(
+        "&&&&&&&&&&&&&&&&&&&&&&&&&&& what is going on with avg rating? here is spot.avgRating: ",
+        spot.avgStarRating,
+        "`\n`  &&&&&&&&&&&&&&&&&&&&&& spot rating type: " +
+          typeof spot.avgStarRating
+      );
       if (spot.avgRating > 0 && typeof spot.avgRating === "number") {
         // console.log(`the current user is the author`);
         // const formattedRating = spot.avgRating.toFixed(2);
