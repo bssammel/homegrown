@@ -127,7 +127,7 @@ const NewSpotForm = () => {
     <section>
       <h1>Create a New Spot</h1>
       <form className="create-spot-form" onSubmit={handleSubmit}>
-        <section className="spot-location-form">
+        <section className="spot-location-form sub-form">
           <h2>Where is your place located?</h2>
           <h3>
             Guests will only get your exact address once they booked a
@@ -141,9 +141,12 @@ const NewSpotForm = () => {
               value={streetAddress}
               onChange={handleStreetAddress}
               placeholder="2110 Blue Ridge Road"
-              // required
+              required
             />
             <br />
+            {streetAddress.length < 1 && (
+              <p className="error-message">{"Street Address is required."}</p>
+            )}
             {errors.address && (
               <p className="error-message">{errors.address}</p>
             )}
@@ -157,9 +160,12 @@ const NewSpotForm = () => {
               value={city}
               onChange={handleCity}
               placeholder="Raleigh"
-              // required
+              required
             />
             <br />
+            {city.length < 1 && (
+              <p className="error-message">{"City is required."}</p>
+            )}
             {errors.city && <p className="error-message">{errors.city}</p>}
           </label>
           <label>
@@ -170,9 +176,12 @@ const NewSpotForm = () => {
               value={state}
               onChange={handleState}
               placeholder="North Carolina"
-              // required
+              required
             />
             <br />
+            {state.length < 1 && (
+              <p className="error-message">{"State is required."}</p>
+            )}
             {errors.state && <p className="error-message">{errors.state}</p>}
           </label>
           <label>
@@ -183,15 +192,18 @@ const NewSpotForm = () => {
               value={country}
               onChange={handleCountry}
               placeholder="United States of America"
-              // required
+              required
             />
             <br />
+            {country.length < 1 && (
+              <p className="error-message">{"Country is required."}</p>
+            )}
             {errors.country && (
               <p className="error-message">{errors.country}</p>
             )}
           </label>
         </section>
-        <section className="spot-description-form">
+        <section className="spot-description-form sub-form">
           <h2>Describe your place to guests.</h2>
           <h3>
             Mention the best features of your space, especially any special
@@ -202,13 +214,18 @@ const NewSpotForm = () => {
             value={description}
             onChange={handleDescription}
             placeholder="Please write at least 30 characters."
-            // required
+            required
           />
+          {description.length < 1 && (
+            <p className="error-message">
+              {"Description needs 30 or more characters."}
+            </p>
+          )}
           {errors.description && (
             <p className="error-message">{errors.description}</p>
           )}
         </section>
-        <section className="spot-name-form">
+        <section className="spot-name-form sub-form">
           <h2>Create a title for your spot</h2>
           <h3>
             Catch guests{`'`} attention with a spot title that highlights what
@@ -219,11 +236,14 @@ const NewSpotForm = () => {
             value={name}
             onChange={handleName}
             placeholder="Name of your spot."
-            // required
+            required
           />
+          {name.length < 1 && (
+            <p className="error-message">{"Name is required."}</p>
+          )}
           {errors.name && <p className="error-message">{errors.name}</p>}
         </section>
-        <section className="spot-price-form">
+        <section className="spot-price-form sub-form">
           <h2>Set a base price for your spot</h2>
           <h3>
             Competitive pricing can help your listing stand out and rank higher
@@ -234,11 +254,16 @@ const NewSpotForm = () => {
             value={price}
             onChange={handlePrice}
             placeholder="Price per season (USD)"
-            // required
+            required
           />
+          {price.length < 1 && (
+            <p className="error-message">
+              {"Price is required and must be a number."}
+            </p>
+          )}
           {errors.price && <p className="error-message">{errors.price}</p>}
         </section>
-        <section className="spot-images-form">
+        <section className="spot-images-form sub-form">
           <h2>Liven up your spot with photos.</h2>
           <h3>Submit a link to at least one photo to publish your spot</h3>
           <input
@@ -246,7 +271,7 @@ const NewSpotForm = () => {
             value={imageOne}
             onChange={handleImageOne}
             placeholder="Preview Image URL"
-            // required
+            required
           />
           {imageOne.length < 1 && (
             <p className="error-message">
@@ -278,7 +303,7 @@ const NewSpotForm = () => {
             placeholder="Image URL"
           />
         </section>
-        <section className="spot-form-buttons">
+        <section className="spot-form-buttons ">
           <button type="submit">Create new Spot</button>
           {/* <button type="button" onClick={handleCancelClick}>
             Cancel
