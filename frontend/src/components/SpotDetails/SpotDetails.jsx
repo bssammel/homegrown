@@ -121,14 +121,15 @@ const SpotDetails = () => {
     if (spot) {
       console.log("line 120 of spot details");
       console.log(spot);
+      console.log(
+        "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
+        spot.avgStarRating,
+        "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
+          spot.avgStarRating
+      );
       if (spot.avgStarRating > 0) {
         // console.log(`spor `);
-        console.log(
-          "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
-          spot.avgStarRating,
-          "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
-            spot.avgStarRating
-        );
+
         // let formattedRating = spot.avgStarRating.toFixed(2);
         let formattedRating = spot.avgStarRating;
 
