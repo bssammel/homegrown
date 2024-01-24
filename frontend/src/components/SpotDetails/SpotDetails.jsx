@@ -125,7 +125,7 @@ const SpotDetails = () => {
         "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
         spot.avgStarRating,
         "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
-          spot.avgStarRating
+          typeof spot.avgStarRating
       );
       if (spot.avgStarRating > 0) {
         // console.log(`spor `);
