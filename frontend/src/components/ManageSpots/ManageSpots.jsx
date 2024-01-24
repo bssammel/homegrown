@@ -64,7 +64,7 @@ const ManageSpots = () => {
         // console.log(`The current user is not the author.`);
         return "New";
       }
-    } else return 0;
+    } else numUserSpots++;
   };
 
   return (
