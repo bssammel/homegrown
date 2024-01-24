@@ -123,6 +123,12 @@ const SpotDetails = () => {
       console.log(spot);
       if (spot.avgStarRating > 0) {
         // console.log(`spor `);
+        console.log(
+          "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
+          spot.avgStarRating,
+          "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
+            spot.avgStarRating
+        );
         // let formattedRating = spot.avgStarRating.toFixed(2);
         let formattedRating = spot.avgStarRating;
 
