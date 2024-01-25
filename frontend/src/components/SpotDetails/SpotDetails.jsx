@@ -33,7 +33,8 @@ const SpotDetails = () => {
   const reviewObj = useSelector((state) =>
     state.reviews ? state.reviews : null
   );
-  console.log(`reviewObj`, reviewObj);
+  console.log(`reviewObj`);
+  console.log(reviewObj);
 
   const reviewList = Object.values(reviewObj)[0];
   console.log("rl1", reviewList);
