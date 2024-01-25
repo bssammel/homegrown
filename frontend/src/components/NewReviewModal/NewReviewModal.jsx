@@ -45,7 +45,7 @@ function NewReviewModal() {
 
     if (newlyCreatedReview.id) {
       console.log("successful submission");
-      dispatch(getSpotDetails(id))
+      await dispatch(getSpotDetails(id))
         .then(dispatch(getSpotReviews(id)))
         .then(closeModal());
     }
