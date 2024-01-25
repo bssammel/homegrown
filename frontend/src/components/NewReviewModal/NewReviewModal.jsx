@@ -82,7 +82,7 @@ function NewReviewModal() {
           />
         </label>
         {/* {console.log("#################### Stars: " + stars)} */}
-        {(stars !== "" || stars !== null) && (
+        {(stars === "" || stars === null) && (
           <p className="error-message">
             {"Please leave a star rating to accompany your review."}
           </p>
