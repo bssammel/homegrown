@@ -80,7 +80,11 @@ const UpdateSpot = () => {
 
     console.log(formData.price);
 
-    const updatedSpot = await dispatch(editCurrentSpot(formData));
+    const updateSpotDispatch = async (formData) => {
+      await dispatch(editCurrentSpot(formData));
+    };
+
+    const updatedSpot = updateSpotDispatch(formData);
 
     if (updatedSpot.id) {
       navigate(`/spots/${updatedSpot.id}`);
