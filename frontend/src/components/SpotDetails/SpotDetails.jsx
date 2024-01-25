@@ -41,10 +41,12 @@ const SpotDetails = () => {
   );
 
   const reviewList = Object.values(reviewObj)[0];
+  console.log("rl1", reviewList);
 
   let reviewListLength;
   let reviewsBool;
   if (reviewList && reviewList.length) {
+    console.log("there is a reviewList and length");
     reviewListLength = reviewList.length;
     reviewsBool = reviewListLength > 0;
   }
@@ -58,7 +60,7 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // console.log();
+    console.log("hitting useEffect");
     dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
   }, [dispatch, id, reviewListLength]);
 
@@ -69,18 +71,19 @@ const SpotDetails = () => {
   }
 
   if (!reviewList || !Array.isArray(reviewList)) {
+    console.log("hitting line 74", reviewList);
     if (!reviewList) {
-      console.log("reviewList is just non existent");
+      console.log("rl2", reviewList);
       // reviewListLength = -3;
       // navigate(`/spots/${id}`);
     }
     if (!Array.isArray(reviewList)) {
-      console.log("reviewList is not an array");
-      console.log(reviewList);
+      console.log("rl3", reviewList);
       // reviewListLength = -4;
       // navigate(`/spots/${id}`);
     }
     reviewListLength = -5;
+    console.log("rl4", reviewList);
     return <h1>Loading some reviews for you!</h1>;
   }
 
