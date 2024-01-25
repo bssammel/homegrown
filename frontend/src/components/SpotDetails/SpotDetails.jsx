@@ -70,9 +70,11 @@ const SpotDetails = () => {
   if (!reviewList || !Array.isArray(reviewList)) {
     if (!reviewList) {
       console.log("reviewList is just non existent");
+      reviewListLength++;
     }
     if (!Array.isArray(reviewList)) {
       console.log("reviewList is not an array");
+      reviewListLength++;
     }
     const timeoutFunc = function () {
       reviewListLength++;
