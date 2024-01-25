@@ -11,11 +11,8 @@ import NewReviewModal from "../NewReviewModal/NewReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import "./SpotDetails.css";
 
-const SpotDetails = (hail) => {
+const SpotDetails = () => {
   const { id } = useParams();
-  // console.log(id);
-  // const navigate = useNavigate();
-  //   const [goToSpot, setGoToSpot] = useState(id);
 
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -24,10 +21,7 @@ const SpotDetails = (hail) => {
   );
   const isCurrUserAuthor = function (review) {
     if (sessionUser) {
-      // console.log(`review user Id: , ${review.User.id}`);
-      // console.log("session user Id: ", sessionUser.id);
       if (review.User.id === sessionUser.id) {
-        // console.log(`the current user is the author`);
         return true;
       } else {
         console.log(`The current user is not the author.`);
@@ -39,6 +33,7 @@ const SpotDetails = (hail) => {
   const reviewObj = useSelector((state) =>
     state.reviews ? state.reviews : null
   );
+  console.log(`reviewObj`, reviewObj);
 
   const reviewList = Object.values(reviewObj)[0];
   console.log("rl1", reviewList);
@@ -67,16 +62,16 @@ const SpotDetails = (hail) => {
       );
     };
     runDispatches();
-  }, [hail]);
-
-  useEffect(() => {
-    console.log("hitting second useEffect");
-
-    const runReviewDispatch = async () => {
-      await dispatch(getSpotReviews(id));
-    };
-    runReviewDispatch();
   }, [dispatch, id, reviewListLength]);
+
+  // useEffect(() => {
+  //   console.log("hitting second useEffect");
+
+  //   const runReviewDispatch = async () => {
+  //     await dispatch(getSpotReviews(id));
+  //   };
+  //   runReviewDispatch();
+  // }, [hail]);
 
   if (!spotDetails || !spotDetails.Owner) {
     // console.log("spotDetails is null");
@@ -142,10 +137,7 @@ const SpotDetails = (hail) => {
       }
     }
     if (spot.avgStarRating > 0) {
-      // console.log(`spor `);
-
       let formattedRating = spot.avgStarRating.toFixed(2);
-      // let formattedRating = spot.avgStarRating;
 
       if (reviewCount > 0) {
         formattedRating = formattedRating + " • " + reviewCount + " Review";
@@ -154,13 +146,9 @@ const SpotDetails = (hail) => {
 
       return formattedRating;
     } else {
-      // console.log(`The current user is not the author.`);
       return "New";
     }
-    // } else return 0;
   };
-
-  // let sortedReviewList;
 
   // const sortReviewsCreated = function (rawReviewList) {
   //   // sortedReviewList = rawReviewList.sort((reviewA, reviewB) => {

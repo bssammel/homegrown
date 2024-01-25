@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { createNewReview } from "../../store/reviews";
 import { getSpotDetails } from "../../store/spots";
-import SpotDetails from "../SpotDetails/SpotDetails";
+// import SpotDetails from "../SpotDetails/SpotDetails";
 // import { getSpotReviews } from "../../store/reviews";
 
 function NewReviewModal() {
@@ -39,13 +39,13 @@ function NewReviewModal() {
     if (newlyCreatedReview.errors) {
       setErrors(newlyCreatedReview.errors);
     }
-    const passProps = () => {
-      return <SpotDetails hail={"mary"} />;
-    };
+    // const passProps = () => {
+    //   return <SpotDetails hail={"mary"} />;
+    // };
 
     if (newlyCreatedReview.id) {
       console.log("successful submission");
-      dispatch(getSpotDetails(id)).then(passProps()).then(closeModal());
+      dispatch(getSpotDetails(id)).then(closeModal());
     }
   };
 
