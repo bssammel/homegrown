@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import { createNewReview } from "../../store/reviews";
 import { getSpotDetails } from "../../store/spots";
 // import SpotDetails from "../SpotDetails/SpotDetails";
-// import { getSpotReviews } from "../../store/reviews";
+import { getSpotReviews } from "../../store/reviews";
 
 function NewReviewModal() {
   const dispatch = useDispatch();
@@ -45,7 +45,9 @@ function NewReviewModal() {
 
     if (newlyCreatedReview.id) {
       console.log("successful submission");
-      dispatch(getSpotDetails(id)).then(closeModal());
+      dispatch(getSpotDetails(id))
+        .then(dispatch(getSpotReviews(id)))
+        .then(closeModal());
     }
   };
 
