@@ -115,9 +115,9 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {/* {streetAddress && streetAddress.length < 1 && (
+            {streetAddress && streetAddress.length < 1 && (
               <p className="error-message">{"Street Address is required."}</p>
-            )} */}
+            )}
             {errors.address && <p>{errors.address}</p>}
           </label>
           <label>
@@ -130,9 +130,9 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {/* {city && city.length < 1 && (
+            {city && city.length < 1 && (
               <p className="error-message">{"City is required."}</p>
-            )} */}
+            )}
           </label>
           <label>
             State
@@ -144,9 +144,9 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {/* {state && state.length < 1 && (
+            {state && state.length < 1 && (
               <p className="error-message">{"State is required."}</p>
-            )} */}
+            )}
           </label>
           <label>
             Country
@@ -158,9 +158,9 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {/* {country && country.length < 1 && (
+            {country && country.length < 1 && (
               <p className="error-message">{"Country is required."}</p>
-            )} */}
+            )}
           </label>
         </section>
         <section className="spot-description-form">
@@ -177,11 +177,11 @@ const UpdateSpot = () => {
             required
           />
           <br />
-          {/* {description && description.length < 1 && (
+          {description && description.length < 1 && (
             <p className="error-message">
               {"Description needs 30 or more characters."}
             </p>
-          )} */}
+          )}
         </section>
         <section className="spot-name-form">
           <h2>Create a title for your spot</h2>
@@ -197,9 +197,9 @@ const UpdateSpot = () => {
             required
           />
           <br />
-          {/* {name && name.length < 1 && (
+          {name && name.length < 1 && (
             <p className="error-message">{"Name is required."}</p>
-          )} */}
+          )}
         </section>
         <section className="spot-price-form">
           <h2>Set a base price for your spot</h2>
@@ -215,17 +215,31 @@ const UpdateSpot = () => {
             required
           />
           <br />
-          {/* {price && price.length < 1 && (
+          {price && price.length < 1 && (
             <p className="error-message">
               {"Price is required and must be a number."}
             </p>
-          )} */}
+          )}
           {price && price.toString().includes(".") && (
             <p className="error-message">{"Price must be an integer."}</p>
           )}
         </section>
         <section className="spot-form-buttons">
-          <button type="submit">Update Your Spot</button>
+          <button
+            type="submit"
+            disabled={
+              streetAddress.length < 1 ||
+              city.length < 1 ||
+              state.length < 1 ||
+              country.length < 1 ||
+              description.length < 1 ||
+              name.length < 1 ||
+              price.length < 1 ||
+              price.includes(".")
+            }
+          >
+            Update Your Spot
+          </button>
           {/* <button type="button" onClick={handleCancelClick}>
             Cancel
           </button> */}
