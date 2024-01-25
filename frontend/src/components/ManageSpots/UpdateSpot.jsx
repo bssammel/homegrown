@@ -37,9 +37,13 @@ const UpdateSpot = () => {
   const handleName = (e) => setName(e.target.value);
   const handlePrice = (e) => setPrice(e.target.value);
 
+  const runDispatches = async () => {
+    await dispatch(getSpotDetails(id));
+  };
+
   useEffect(() => {
     console.log("Use Effect in progress");
-    dispatch(getSpotDetails(id));
+    runDispatches();
 
     setStreetAddress(spotDetails?.address);
     setCity(spotDetails?.city);
