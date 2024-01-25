@@ -71,18 +71,15 @@ const SpotDetails = () => {
   if (!reviewList || !Array.isArray(reviewList)) {
     if (!reviewList) {
       console.log("reviewList is just non existent");
-      reviewListLength = -3;
-      navigate(`/spots/${id}`);
+      // reviewListLength = -3;
+      // navigate(`/spots/${id}`);
     }
     if (!Array.isArray(reviewList)) {
       console.log("reviewList is not an array");
-      reviewListLength = -4;
-      navigate(`/spots/${id}`);
+      console.log(reviewList);
+      // reviewListLength = -4;
+      // navigate(`/spots/${id}`);
     }
-    // const timeoutFunc = function () {
-    //   reviewListLength = -1;
-    // };
-    // setTimeout(timeoutFunc, 200);
     reviewListLength = -5;
     return <h1>Loading some reviews for you!</h1>;
   }
@@ -91,12 +88,7 @@ const SpotDetails = () => {
     if (Array.isArray(reviewList) && reviewList) {
       let userWroteReviewBool = false;
       reviewList.forEach((review) => {
-        // console.log("loop ended");
-        // console.log(review.userId);
-        // console.log(sessionUser.id);
         if (review.userId === sessionUser.id) userWroteReviewBool = true;
-        // console.log(userWroteReviewBool);
-        // console.log("loop ended");
       });
       return userWroteReviewBool;
     }
@@ -123,26 +115,11 @@ const SpotDetails = () => {
     (image) => image.preview !== true
   );
   const nonPreviewImageArrLengthBool = nonPreviewImageArr.length > 0;
-  // console.log(nonPreviewImageArrLengthBool);
 
-  // if ( && sessionUser) {
-  //   //if reviews populated correctly and user is logged in
-  //   if (sessionUser.id === ownerId) {
-  //     showBeFirstReviewText = false; //if currently logged in user is owner;
-  //   }
-  // }
   let reviewCount = spotDetails.numReviews;
 
   const hasReviews = function (spot) {
     if (spot) {
-      // console.log("line 120 of spot details");
-      // console.log(spot);
-      // console.log(
-      //   "$$$$$$$$$$$$$$$$$$$$$$$$$$$ what is going on with avg rating? here is spot.avgRating: ",
-      //   spot.avgStarRating,
-      //   "`\n`  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ spot rating type: " +
-      //     typeof spot.avgStarRating
-      // );
       if (typeof spot.avgStarRating === "string") {
         spot.avgStarRating = Number(spot.avgStarRating);
       }
