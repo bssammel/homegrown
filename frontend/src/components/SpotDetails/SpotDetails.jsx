@@ -58,10 +58,15 @@ const SpotDetails = () => {
   }
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     console.log("hitting useEffect");
-    dispatch(getSpotDetails(id)).then(() => dispatch(getSpotReviews(id)));
+
+    const runDispatches = async () => {
+      await dispatch(getSpotDetails(id)).then(() =>
+        dispatch(getSpotReviews(id))
+      );
+    };
+    runDispatches();
   }, [dispatch, id, reviewListLength]);
 
   if (!spotDetails || !spotDetails.Owner) {
