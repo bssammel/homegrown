@@ -11,7 +11,7 @@ import NewReviewModal from "../NewReviewModal/NewReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import "./SpotDetails.css";
 
-const SpotDetails = () => {
+const SpotDetails = (hail) => {
   const { id } = useParams();
   // console.log(id);
   // const navigate = useNavigate();
@@ -59,7 +59,7 @@ const SpotDetails = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("hitting useEffect");
+    console.log("hitting first useEffect");
 
     const runDispatches = async () => {
       await dispatch(getSpotDetails(id)).then(() =>
@@ -67,6 +67,15 @@ const SpotDetails = () => {
       );
     };
     runDispatches();
+  }, [hail]);
+
+  useEffect(() => {
+    console.log("hitting second useEffect");
+
+    const runReviewDispatch = async () => {
+      await dispatch(getSpotReviews(id));
+    };
+    runReviewDispatch();
   }, [dispatch, id, reviewListLength]);
 
   if (!spotDetails || !spotDetails.Owner) {

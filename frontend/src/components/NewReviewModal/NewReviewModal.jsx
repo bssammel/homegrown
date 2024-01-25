@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { createNewReview } from "../../store/reviews";
 import { getSpotDetails } from "../../store/spots";
+import SpotDetails from "../SpotDetails/SpotDetails";
 // import { getSpotReviews } from "../../store/reviews";
 
 function NewReviewModal() {
@@ -32,28 +33,21 @@ function NewReviewModal() {
       stars,
     };
 
-    // console.log("This is supposed to be the review data obj");
-    // console.log(reviewData);
-
     let newlyCreatedReview;
-    // console.log("hey this should be the id: ", id);
     newlyCreatedReview = await dispatch(createNewReview(reviewData, id));
 
     if (newlyCreatedReview.errors) {
       setErrors(newlyCreatedReview.errors);
-      //use error obj on form jsx to conditionally render errors using p tag
     }
+    const passProps = () => {
+      return <SpotDetails hail={"mary"} />;
+    };
+
     if (newlyCreatedReview.id) {
       console.log("successful submission");
-      dispatch(getSpotDetails(id))
-        // .dispatch(getSpotReviews(id))
-        .then(closeModal());
+      dispatch(getSpotDetails(id)).then(passProps()).then(closeModal());
     }
   };
-
-  // const helperDisableStars = function (stars) {
-  //   console.log("#################### Stars: " + stars);
-  // };
 
   return (
     <>
