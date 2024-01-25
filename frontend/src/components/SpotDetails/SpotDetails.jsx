@@ -30,6 +30,7 @@ const SpotDetails = () => {
     } else return false;
   };
 
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!Use Selector for Reviews
   const reviewObj = useSelector((state) =>
     state.reviews ? state.reviews : null
   );
@@ -41,8 +42,8 @@ const SpotDetails = () => {
 
   let reviewListLength;
   let reviewsBool;
-  if (reviewList && reviewList.length) {
-    console.log("there is a reviewList and length");
+  if (reviewList && reviewList.length && Array.isArray(reviewList)) {
+    console.log("there is a reviewList that is an array and length");
     reviewListLength = reviewList.length;
     reviewsBool = reviewListLength > 0;
   }
