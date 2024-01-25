@@ -8,7 +8,6 @@ import { getSpotDetails } from "../../store/spots";
 
 function NewReviewModal() {
   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
   const [review, setReview] = useState("");
   const [stars, setStars] = useState("");
   const [errors, setErrors] = useState({});

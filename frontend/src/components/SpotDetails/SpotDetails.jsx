@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import {getSpotDetails} from "../../store/spotDetails";
@@ -13,7 +14,7 @@ import "./SpotDetails.css";
 const SpotDetails = () => {
   const { id } = useParams();
   // console.log(id);
-  //   const navigate = useNavigate();
+  // const navigate = useNavigate();
   //   const [goToSpot, setGoToSpot] = useState(id);
 
   const sessionUser = useSelector((state) => state.session.user);
@@ -76,10 +77,11 @@ const SpotDetails = () => {
       console.log("reviewList is not an array");
       reviewListLength = -1;
     }
-    const timeoutFunc = function () {
-      reviewListLength = -1;
-    };
-    setTimeout(timeoutFunc, 200);
+    // const timeoutFunc = function () {
+    //   reviewListLength = -1;
+    // };
+    // setTimeout(timeoutFunc, 200);
+    reviewListLength = -1;
     return <h1>Loading some reviews for you!</h1>;
   }
 
