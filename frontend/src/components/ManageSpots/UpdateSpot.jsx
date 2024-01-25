@@ -107,7 +107,7 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {streetAddress.length < 1 && (
+            {streetAddress && streetAddress.length < 1 && (
               <p className="error-message">{"Street Address is required."}</p>
             )}
             {errors.address && <p>{errors.address}</p>}
@@ -122,7 +122,7 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {city.length < 1 && (
+            {city && city.length < 1 && (
               <p className="error-message">{"City is required."}</p>
             )}
           </label>
@@ -136,7 +136,7 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {state.length < 1 && (
+            {state && state.length < 1 && (
               <p className="error-message">{"State is required."}</p>
             )}
           </label>
@@ -150,7 +150,7 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {country.length < 1 && (
+            {country && country.length < 1 && (
               <p className="error-message">{"Country is required."}</p>
             )}
           </label>
@@ -169,7 +169,7 @@ const UpdateSpot = () => {
             required
           />
           <br />
-          {description.length < 1 && (
+          {description && description.length < 1 && (
             <p className="error-message">
               {"Description needs 30 or more characters."}
             </p>
@@ -189,7 +189,7 @@ const UpdateSpot = () => {
             required
           />
           <br />
-          {name.length < 1 && (
+          {name && name.length < 1 && (
             <p className="error-message">{"Name is required."}</p>
           )}
         </section>
@@ -207,12 +207,12 @@ const UpdateSpot = () => {
             required
           />
           <br />
-          {price.length < 1 && (
+          {price && price.length < 1 && (
             <p className="error-message">
               {"Price is required and must be a number."}
             </p>
           )}
-          {price.toString().includes(".") && (
+          {price && price.toString().includes(".") && (
             <p className="error-message">{"Price must be an integer."}</p>
           )}
         </section>
