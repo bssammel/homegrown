@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-// import { useParams } from "react-router-dom";
+// import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import {getSpotDetails} from "../../store/spotDetails";
 import { getSpotDetails } from "../../store/spots";
@@ -14,7 +14,7 @@ import "./SpotDetails.css";
 const SpotDetails = () => {
   const { id } = useParams();
   // console.log(id);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   //   const [goToSpot, setGoToSpot] = useState(id);
 
   const sessionUser = useSelector((state) => state.session.user);
