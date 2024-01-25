@@ -115,9 +115,9 @@ const UpdateSpot = () => {
               required
             />
             <br />
-            {streetAddress && streetAddress.length < 1 && (
+            {/* {streetAddress && streetAddress.length < 1 && (
               <p className="error-message">{"Street Address is required."}</p>
-            )}
+            )} */}
             {errors.address && <p>{errors.address}</p>}
           </label>
           <label>
