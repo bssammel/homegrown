@@ -29,6 +29,8 @@
 .spot-image {
   width: 100%;
   height: 100%;
+  display: flex;
+  object-fit: cover;
 }
 .single-spot {
   border: 3px solid #264233;

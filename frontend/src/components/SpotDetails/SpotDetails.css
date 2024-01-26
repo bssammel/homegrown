@@ -1,25 +1,65 @@
-.spot-details,
-.spot-reviews {
-  max-width: 1000px;
-  margin: 0 auto;
+/* @media (max-width: 749px){
+  /* set it up so images */
+/* } */
+#spot-page {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(11, 1fr) minmax(50px, auto);
+  /* grid-template-areas:
+    " . header header header header header . "
+    " . images images images images images . "
+    " . images images images images images . "
+    " . images images images images images . "
+    " . images images images images images . "
+    " . images images images images images . "
+    " . info info info info reserve ."
+    " . info info info info reserve ."
+    " . reviews reviews reviews reviews reviews . "
+    " . reviews reviews reviews reviews reviews . "
+    " . reviews reviews reviews reviews reviews . "
+    " . reviews reviews reviews reviews reviews . "; */
+}
+
+div#spot-header {
+  /* grid-area: header; */
+  grid-column: 2/7;
+  grid-row: 1/2;
 }
 
 #spot-images {
+  grid-area: images;
   display: flex;
   flex-direction: row;
   height: 400px;
 }
 
-img#previewImage {
+#spot-info {
+  grid-area: info;
+}
+#reserve {
+  grid-area: reserve;
+}
+
+#spot-review-section {
+  grid-area: reviews;
+}
+
+/* .spot-details,
+.spot-reviews {
+  max-width: 1000px;
+  margin: 0 auto;
+} */
+
+/* #spot img#previewImage {
   height: 410px;
   width: 410px;
   margin: 1%;
   object-fit: cover;
-}
-
+} */
+/* 
 #previewImage img {
-  width: 1fr;
-  height: 1fr;
+  width: 2fr;
+  height: 2fr;
   object-fit: cover;
 }
 
@@ -57,4 +97,4 @@ img#previewImage {
 .bottom-container {
   display: flex;
   justify-content: space-between;
-}
+} */

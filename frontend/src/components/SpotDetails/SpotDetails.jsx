@@ -175,12 +175,14 @@ const SpotDetails = () => {
   // }
 
   return (
-    <>
+    <div id="spot-page">
       <section className="spot-details">
-        <h1 id="spot-name">{spotDetails.name}</h1>
-        <p className="location">
-          {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
-        </p>
+        <div id="spot-header">
+          <h1 id="spot-name">{spotDetails.name}</h1>
+          <p className="location">
+            {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
+          </p>
+        </div>
         {Array.isArray(spotDetails.SpotImages) && (
           <section id="spot-images">
             <div id="previewImage">
@@ -199,7 +201,7 @@ const SpotDetails = () => {
           </section>
         )}
         <div className="bottom-container">
-          <div>
+          <div className="spot-info">
             <h2 className="hostDetails">
               Hosted by: {spotDetails.Owner.firstName}{" "}
               {spotDetails.Owner.lastName}
@@ -265,7 +267,7 @@ const SpotDetails = () => {
           </div>
         )}
       </section>
-    </>
+    </div>
   );
 };
 
