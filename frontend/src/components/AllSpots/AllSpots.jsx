@@ -20,7 +20,11 @@ const SpotList = () => {
 
   useEffect(() => {
     console.log(8);
-    dispatch(getAllSpots());
+
+    const runGetAllSpotsDispatch = async () => {
+      await dispatch(getAllSpots());
+    };
+    runGetAllSpotsDispatch();
   }, [dispatch]);
 
   if (!Array.isArray(spotList[0])) {
