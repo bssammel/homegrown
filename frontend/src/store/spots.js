@@ -127,7 +127,7 @@ export const editCurrentSpot = (editSpotData) => async (dispatch) => {
 
   if (res.ok) {
     const editedSpot = await res.json();
-    dispatch(editCurrentSpot(editedSpot));
+    dispatch(editSpot(editedSpot));
     return editedSpot;
   }
 };
