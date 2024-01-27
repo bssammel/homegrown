@@ -81,10 +81,12 @@ const UpdateSpot = () => {
     console.log(formData.price);
 
     const updateSpotDispatch = async (formData) => {
+      console.log("running actual dispatch");
       await dispatch(editCurrentSpot(formData));
     };
 
-    const updatedSpot = updateSpotDispatch(formData);
+    const updatedSpot = await updateSpotDispatch(formData);
+    console.log(updatedSpot);
 
     if (updatedSpot.id) {
       navigate(`/spots/${updatedSpot.id}`);
