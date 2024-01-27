@@ -33,7 +33,7 @@ const spotImagesReducer = (state = {}, action) => {
       return { ...state, [action.newImage.id]: action.newSpotImage };
     }
     default: {
-      console.log("The default state is running");
+      // console.log("The default state is running");
       return state;
     }
   }

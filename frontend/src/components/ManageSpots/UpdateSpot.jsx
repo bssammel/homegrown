@@ -86,13 +86,17 @@ const UpdateSpot = () => {
     };
 
     const updatedSpot = await updateSpotDispatch(formData);
+    console.log("updatedSpot");
     console.log(updatedSpot);
 
     if (updatedSpot.id) {
+      console.log("navigating to updated spot");
       navigate(`/spots/${updatedSpot.id}`);
     }
     if (updatedSpot.errors) {
+      console.log("updated spot has errors");
       setErrors(updatedSpot.errors);
+      console.log(updatedSpot.errors);
       //use error obj on form jsx to conditionally render errors using p tag
     }
   };

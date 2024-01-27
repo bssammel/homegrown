@@ -89,7 +89,7 @@ const reviewsReducer = (state = {}, action) => {
       return newState;
     }
     default: {
-      console.log("The default state is running");
+      // console.log("The default state is running");
       return state;
     }
   }

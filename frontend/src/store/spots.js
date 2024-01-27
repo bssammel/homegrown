@@ -118,8 +118,6 @@ export const editCurrentSpot = (editSpotData) => async (dispatch) => {
     },
     body: JSON.stringify(editSpotData),
   });
-  console.log("res");
-  console.log(res);
 
   if (!res.ok) {
     return res;
@@ -127,6 +125,8 @@ export const editCurrentSpot = (editSpotData) => async (dispatch) => {
 
   if (res.ok) {
     const editedSpot = await res.json();
+    console.log("res");
+    console.log(res);
     dispatch(editSpot(editedSpot));
     return editedSpot;
   }
