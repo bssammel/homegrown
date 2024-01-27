@@ -33,11 +33,10 @@ function ProfileButton({ user }) {
         console.log("close menu setting false");
         setShowMenu(false);
       }
+      return () => document.removeEventListener("click");
     };
 
     document.addEventListener("click", closeMenu());
-
-    // return () => document.removeEventListener("click");
   }, []);
 
   // const closeMenu = () => setShowMenu(false);
