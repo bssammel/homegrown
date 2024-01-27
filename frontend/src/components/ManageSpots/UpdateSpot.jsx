@@ -82,7 +82,8 @@ const UpdateSpot = () => {
 
     const updateSpotDispatch = async (formData) => {
       console.log("running actual dispatch");
-      await dispatch(editCurrentSpot(formData));
+      const value = await dispatch(editCurrentSpot(formData));
+      return value;
     };
 
     const updatedSpot = await updateSpotDispatch(formData);
