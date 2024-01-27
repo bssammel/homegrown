@@ -63,6 +63,10 @@ const UpdateSpot = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (typeof price === "string") {
+      setPrice(Number(price.replace(`"`, "")));
+    }
     const formData = {
       id: id,
       address: streetAddress,
@@ -75,7 +79,7 @@ const UpdateSpot = () => {
       lng: 2,
       description,
       name,
-      price: Number(price.replace(`"`, "")),
+      price: Number(price),
     };
 
     console.log(formData.price);
