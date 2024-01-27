@@ -109,6 +109,8 @@ export const getCurrentUserSpots = () => async (dispatch) => {
 };
 
 export const editCurrentSpot = (editSpotData) => async (dispatch) => {
+  console.log("editSpotData");
+  console.log(editSpotData);
   const res = await csrfFetch(`/api/spots/${editSpotData.id}`, {
     method: "PUT",
     headers: {
@@ -116,6 +118,8 @@ export const editCurrentSpot = (editSpotData) => async (dispatch) => {
     },
     body: JSON.stringify(editSpotData),
   });
+  console.log("res");
+  console.log(res);
 
   if (!res.ok) {
     return res;
