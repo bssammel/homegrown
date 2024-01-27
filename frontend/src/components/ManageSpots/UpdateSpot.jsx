@@ -84,7 +84,7 @@ const UpdateSpot = () => {
       await dispatch(editCurrentSpot(formData));
     };
 
-    const updatedSpot = updateSpotDispatch;
+    const updatedSpot = updateSpotDispatch(formData);
 
     if (updatedSpot.id) {
       navigate(`/spots/${updatedSpot.id}`);
