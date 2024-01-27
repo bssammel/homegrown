@@ -14,23 +14,23 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
-    console.log("toggleMenu is running");
+    // console.log("toggleMenu is running");
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
-    console.log(showMenu);
+    // console.log(showMenu);
   };
 
   useEffect(() => {
-    console.log(
-      "useEffect running where show menu state is either false or true"
-    );
-    console.log(showMenu);
+    // console.log(
+    //   "useEffect running where show menu state is either false or true"
+    // );
+    // console.log(showMenu);
     if (!showMenu) return;
-    console.log("useEffect still running where show menu state is only true");
+    // console.log("useEffect still running where show menu state is only true");
     const closeMenu = (e) => {
-      console.log("close menu running");
+      // console.log("close menu running");
       if (!ulRef.current.contains(e.target)) {
-        console.log("close menu setting false");
+        // console.log("close menu setting false");
         setShowMenu(false);
       }
     };
@@ -49,7 +49,7 @@ function ProfileButton({ user }) {
   };
 
   // const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-  console.log("Current show menu state: " + showMenu);
+  // console.log("Current show menu state: " + showMenu);
 
   return (
     <>
