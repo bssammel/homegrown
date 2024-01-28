@@ -21,7 +21,7 @@ function Navigation({ isLoaded }) {
       </h1>
       <div className="user-nav">
         {sessionUser && (
-          <div id="spot-management">
+          <div id="spot-management align-nav-buttons">
             <p className="nav-button" id="new-spot-button">
               <NavLink exact to="/spots/new" style={{ textDecoration: "none" }}>
                 Create a New Spot
@@ -29,7 +29,7 @@ function Navigation({ isLoaded }) {
             </p>
           </div>
         )}
-        <div className="profile-button">
+        <div className="profile-button align-nav-buttons">
           <ul>
             {isLoaded && (
               <li className="remove-bullet">

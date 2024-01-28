@@ -45,8 +45,28 @@ h1 {
   font-family: "Space Grotesk";
   font-size: 15px;
   margin: 3px 5px;
-  padding: 2px 10px;
+  padding: 7% 10px;
 }
+
+/* #new-spot-button {
+  display: flex;
+  order: -1;
+} */
+
+div.user-nav {
+  display: flex;
+  flex-direction: r;
+}
+
+#new-spot-button {
+  margin-top: 10%;
+}
+
+/* .align-nav-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+} */
 
 /* .profile-dropdown{
   position: relative;
