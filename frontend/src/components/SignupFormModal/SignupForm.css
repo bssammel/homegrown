@@ -1,0 +1,47 @@
+/* div#fields > input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+} */
+div#fields {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: left; */
+  /* align-items: left; */
+  width: 100%;
+}
+
+label {
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  width: 100%;
+}
+input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* align-self: center; */
+  width: 90%;
+  /* margin: 2px; */
+}
+
+p.error-message {
+  margin: 0% 5% 2% 5%;
+}
+
+.indiv-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.indiv-field label {
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+  margin: 0%;
+}
