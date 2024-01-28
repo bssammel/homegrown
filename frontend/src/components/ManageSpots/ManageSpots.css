@@ -36,6 +36,23 @@
   width: 18%;
   margin: 2%;
 }
+#manage-buttons {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  margin: 0px;
+  padding: 0%;
+}
+
+/* .ue-buttons {
+  display: inline;
+} */
+.user-spot-button {
+  padding: 0px;
+  width: fit-content;
+
+  /* display: inline; */
+}
 
 @media (max-width: 1000px) {
   .spots-grid {

@@ -116,7 +116,7 @@ const ManageSpots = () => {
                 </div>
 
                 <p id="price">${spot.price.toFixed(2)} night</p>
-                <ul>
+                <ul id="manage-buttons">
                   <li
                     className="user-spot-button button remove-underline"
                     id="update-spot-button"
