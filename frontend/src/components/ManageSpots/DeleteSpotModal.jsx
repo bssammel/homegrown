@@ -25,7 +25,7 @@ function DeleteSpotModal(props) {
         <h3>Are you sure you want to remove this spot?</h3>
         <div className="delete-buttons">
           <button
-            className="delete-buttons"
+            className="delete-buttons delete-button"
             id="yes-delete"
             onClick={handleDelete}
           >
