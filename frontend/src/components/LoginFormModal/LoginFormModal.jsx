@@ -22,9 +22,9 @@ function LoginFormModal() {
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.message) {
-            console.log(
-              " whoa there bud, looks like there are some errors with your log in"
-            );
+            // console.log(
+            //   " whoa there bud, looks like there are some errors with your log in"
+            // );
             // console.log(data.message);
             setErrors(data.message);
             // console.log(errors);
@@ -50,9 +50,9 @@ function LoginFormModal() {
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.message) {
-            console.log(
-              " whoa there bud, looks like there are some errors with your log in"
-            );
+            // console.log(
+            //   " whoa there bud, looks like there are some errors with your log in"
+            // );
             // console.log(data.message);
             setErrors(data.message);
             // console.log(errors);
