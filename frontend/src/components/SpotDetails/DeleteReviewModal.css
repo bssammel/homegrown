@@ -1,0 +1,33 @@
+section {
+  width: fit-content;
+}
+
+div#modal-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+div.delete-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+button.delete-buttons {
+  width: 90%;
+}
+
+h1 {
+  margin: 3%;
+}
+h3 {
+  font-size: medium;
+  margin: 0% 5%;
+  padding: 0% 8%;
+  text-align: justify;
+  display: inline-block;
+  width: max-content;
+}
