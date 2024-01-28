@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteCurrentSpot, getCurrentUserSpots } from "../../store/spots";
+import "./DeleteSpotModal.css";
 
 function DeleteSpotModal(props) {
   const dispatch = useDispatch();
@@ -21,8 +22,10 @@ function DeleteSpotModal(props) {
   return (
     <>
       <section id="delete-modal">
-        <h1>Confirm Delete</h1>
-        <h3>Are you sure you want to remove this spot?</h3>
+        <div id="modal-text">
+          <h1>Confirm Delete</h1>
+          <h3>Are you sure you want to remove this spot?</h3>
+        </div>
         <div className="delete-buttons">
           <button
             className="delete-buttons delete-button"
