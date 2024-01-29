@@ -190,7 +190,10 @@ const SpotDetails = () => {
               nonPreviewImageArrLengthBool && (
                 <section className="small-images">
                   {nonPreviewImageArr.map((smallImgObj) => (
-                    <div key={smallImgObj.id} className="single-small-image">
+                    <div
+                      key={smallImgObj.id}
+                      className="single-small-image class"
+                    >
                       <img src={smallImgObj.url} />
                     </div>
                   ))}

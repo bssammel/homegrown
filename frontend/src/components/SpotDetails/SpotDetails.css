@@ -4,7 +4,7 @@
   margin: 0 auto;
 }
 
-#spot-images {
+/* #spot-images {
   display: flex;
   flex-direction: row;
   height: 400px;
@@ -36,7 +36,7 @@ img#previewImage {
 .single-small-image img {
   width: 100%;
   height: 100%;
-}
+} */
 
 .reserve {
   display: flex;
